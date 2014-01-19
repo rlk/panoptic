@@ -1,0 +1,3 @@
+[submodule "scm"]
+	path = scm
+	url = https://github.com/rlk/scm.git
