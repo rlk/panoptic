@@ -1,4 +1,4 @@
-include ../../Makedefs
+include ../thumb/Makedefs
 
 #------------------------------------------------------------------------------
 
@@ -12,8 +12,8 @@ ORBDEPS= $(ORBOBJS:.o=.d)
 
 #------------------------------------------------------------------------------
 
-THUMB = ../../src/libthumb.a
-INCDIR += -I../../include -Iscm
+THUMB = ../thumb/src/libthumb.a
+INCDIR += -I../thumb/include -Iscm
 
 SCM = scm/libscm.a
 
