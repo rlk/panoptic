@@ -12,22 +12,18 @@ ORBDEPS= $(ORBOBJS:.o=.d)
 
 #------------------------------------------------------------------------------
 
-THUMB = ../thumb/src/libthumb.a
-INCDIR += -I../thumb/include -Iscm
-
-SCM = scm/libscm.a
-
-LIBS = $(THUMB) $(SCM) $(LIBFT2) $(LIBMXML) $(LIBODE) $(LIBTIF) $(LIBJPG) $(LIBPNG) $(LIBBZ2) $(LIBZ) $(LIBSDL) $(LIBGLEW) $(LIBEXT) -lm
+CFLAGS += -I../thumb/include
+LIBS   += -L../thumb/src -lthumb scm/libscm.a
 
 #------------------------------------------------------------------------------
 
 all : panoview orbiter
 
 panoview: $(SCM) $(PANOBJS) $(THUMB)
-	$(CXX) $(CFLAGS) $(CONF) -o $@ $(PANOBJS) $(LIBS)
+	$(CXX) $(CFLAGS) -o $@ $(PANOBJS) $(LIBS)
 
 orbiter: $(SCM) $(ORBOBJS) $(THUMB)
-	$(CXX) $(CFLAGS) $(CONF) -o $@ $(ORBOBJS) $(LIBS)
+	$(CXX) $(CFLAGS) -o $@ $(ORBOBJS) $(LIBS)
 
 clean:
 	$(RM) $(PANOBJS) $(PANDEPS) panoview
