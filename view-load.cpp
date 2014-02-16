@@ -19,33 +19,33 @@ static gui::widget *annot(const std::string& text)
 
 class button_load_data : public gui::button
 {
-    view_app    *V;
-    gui::editor *E;
+    view_app      *V;
+    gui::selector *S;
 
 public:
-    button_load_data(view_app *V, gui::editor *E)
-        : gui::button("Load Data"), V(V), E(E) { }
+    button_load_data(view_app *V, gui::selector *S)
+        : gui::button("Load Data"), V(V), S(S) { }
 
     void apply()
     {
-        if (!E->value().empty())
-            V->load_file(E->value());
+        if (!S->value().empty())
+            V->load_file(S->value());
     }
 };
 
 class button_load_path : public gui::button
 {
-    view_app    *V;
-    gui::editor *E;
+    view_app      *V;
+    gui::selector *S;
 
 public:
-    button_load_path(view_app *V, gui::editor *E)
-        : gui::button("Load Path"), V(V), E(E) { }
+    button_load_path(view_app *V, gui::selector *S)
+        : gui::button("Load Path"), V(V), S(S) { }
 
     void apply()
     {
-        if (!E->value().empty())
-            V->load_path(E->value());
+        if (!S->value().empty())
+            V->load_path(S->value());
     }
 };
 
@@ -69,24 +69,19 @@ public:
 
 view_load::view_load(view_app *V, int w, int h)
 {
-    gui::editor *E = new gui::editor("");
-    gui::finder *F = new gui::finder("scm", ".xml", E);
+    gui::selector *S = new gui::selector("scm", ".xml");
 
-    if (char *name = getenv("SCMINIT"))
-        E->value(name);
+    // if (char *name = getenv("SCMINIT"))
+        // S->value(name);
 
-    load_data = new button_load_data(V, E);
-    load_path = new button_load_path(V, E);
+    load_data = new button_load_data(V, S);
+    load_path = new button_load_path(V, S);
 
     root = ((new gui::frame)->
             add((new gui::vgroup)->
                 add(label("SCM Viewer \xE2\x80\x94 File Selection"))->
 
-                add((new gui::hgroup)->
-                    add(label("File:"))->
-                    add(E))->
-
-                add(F)->
+                add(S)->
 
                 add((new gui::hgroup)->
                     add(annot("Copyright \xC2\xA9 2011"
