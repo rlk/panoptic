@@ -57,6 +57,7 @@ public:
 
     virtual void move_to(int);
     virtual void jump_to(int);
+    virtual void fade_to(int);
 
 protected:
 

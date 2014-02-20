@@ -416,6 +416,25 @@ void view_app::jump_to(int n)
     }
 }
 
+void view_app::fade_to(int n)
+{
+    if (n < sys->get_step_count())
+    {
+        scm_step *there = new scm_step(&here);
+
+        there->set_foreground(sys->get_step(n)->get_foreground());
+        there->set_background(sys->get_step(n)->get_background());
+
+        sys->flush_queue();
+        sys->append_queue(there);
+
+        here = sys->get_step_blend(1.0);
+        sys->set_scene_blend(1.0);
+
+        view_from_step(here);
+    }
+}
+
 //------------------------------------------------------------------------------
 
 void view_app::play(bool movie)
@@ -444,7 +463,7 @@ bool view_app::numkey(int n, int c, int s)
         if (c == 0)
             move_to(n);
         else
-            jump_to(n);
+            fade_to(n);
     }
     else
     {
