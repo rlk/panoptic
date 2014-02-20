@@ -70,12 +70,12 @@
       <image name="upper"  scm="NAC_ROI_APOLLO14LOA-254-15.tif" k0="0.0" k1="1.5"/>
     </scene>
     <scene name="NAC" vert="glsl/scm-displace.vert" frag="glsl/scm-overlay.frag">
-      <image name="height" scm="LDEM-360-8.tif" k0="1728240" k1="1748170" />
+      <image name="height" scm="DTM-254-7.tif" k0="1728240" k1="1748170" />
       <image name="lower"  scm="WAC-254-7.tif" k0="0.0" k1="3.0"/>
       <image name="upper"  scm="NAC_ROI_2013_03-254-15.tif" k0="0.0" k1="1.6"/>
     </scene>
     <scene name="demo2" vert="glsl/scm-displace.vert" frag="glsl/scm-shaded-overlay.frag">
-      <image name="height" scm="LDEM-360-8.tif" k0="1728240" k1="1748170" />
+      <image name="height" scm="DTM-254-7.tif" k0="1728240" k1="1748170" />
       <image name="normal" scm="DTM-254-7-N.tif" />
       <image name="lower"  scm="WAC-254-7.tif" k0="0.0" k1="4.0"/>
       <image name="upper"  scm="NAC_ROI_APOLLO16HIA-254-15.tif" k0="0.0" k1="2.0"/>
