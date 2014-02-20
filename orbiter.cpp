@@ -209,8 +209,10 @@ void orbiter::offset_position(const vec3 &d)
 
     here.transform_orientation(transpose(xM));
     here.transform_position   (transpose(xM));
+    here.transform_light      (transpose(xM));
     here.transform_orientation(transpose(zM));
     here.transform_position   (transpose(zM));
+    here.transform_light      (transpose(zM));
 
     // Clamp the altitude.
 
