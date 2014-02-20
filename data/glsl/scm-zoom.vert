@@ -22,14 +22,12 @@ vec3 zoom(vec3 v)
 {
     const float pi = 3.1415927;
 
-    float a = acos(dot(v, zoomv));
+    float d = dot(v, zoomv);
 
-    if (a > 0.0)
+    if (abs(d) < 1.0)
     {
-        float b = scale(zoomk, a / pi) * pi;
-
-        vec3 y = normalize(cross(v, zoomv));
-        vec3 x = normalize(cross(zoomv, y));
+        float b = scale(zoomk, acos(d) / pi) * pi;
+        vec3  x = normalize(v - zoomv * d);
 
         return zoomv * cos(b) + x * sin(b);
     }
