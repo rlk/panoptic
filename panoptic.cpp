@@ -55,14 +55,14 @@ panoptic::panoptic(const std::string& exe,
     // Initialize all interaction state.
 
     speed_min   = ::conf->get_f("panoptic_speed_min",   0.0);
-    speed_max   = ::conf->get_f("panoptic_speed_max",   0.5);
+    speed_max   = ::conf->get_f("panoptic_speed_max",   0.2);
     minimum_agl = ::conf->get_f("panoptic_minimum_agl", 100.0);
     stick_timer = 0.0;
 
     // Initialize the reportage socket.
 
     report_addr.sin_family      = AF_INET;
-    report_addr.sin_port        =  htons(::conf->get_i("panoptic_report_port"));
+    report_addr.sin_port        =  htons(::conf->get_i("panoptic_report_port", 8111));
     report_addr.sin_addr.s_addr = lookup(::conf->get_s("panoptic_report_host"));
 
     if (report_addr.sin_addr.s_addr != INADDR_NONE)
