@@ -114,22 +114,26 @@ void panoptic::report()
 
 ogl::aabb panoptic::prep(int frusc, const app::frustum *const *frusv)
 {
+    ogl::aabb aabb = view_app::prep(frusc, frusv);
     report();
 
-    view_app::prep(frusc, frusv);
+    if (pan_mode())
+        return aabb;
+    else
+    {
+        // Compute a horizon line based upon altitude and minimum terrain height.
 
-    // Compute a horizon line based upon altitude and minimum terrain height.
+        const double r =      get_current_ground();
+        const double m =      get_minimum_ground();
+        const double d = here.get_distance();
 
-    const double r =      get_current_ground();
-    const double m =      get_minimum_ground();
-    const double d = here.get_distance();
+        double n = 0.5 *     (d     - r    );
+        double f = 1.0 * sqrt(d * d - m * m);
 
-    double n = 0.5 *     (d     - r    );
-    double f = 1.0 * sqrt(d * d - m * m);
+        // Exploit an AABB special case to transmit near and far directly.
 
-    // Exploit an AABB special case to transmit near and far directly.
-
-    return ogl::aabb(vec3(0, 0, n), vec3(0, 0, f));
+        return ogl::aabb(vec3(0, 0, n), vec3(0, 0, f));
+    }
 }
 
 void panoptic::draw(int frusi, const app::frustum *frusp, int chani)
@@ -184,51 +188,72 @@ quat panoptic::get_local() const
     return quat(mat3(x, y, z));
 }
 
+bool panoptic::pan_mode() const
+{
+    double a = here.get_distance();
+    double b = get_minimum_ground();
+    printf("%f %f %d\n", a, b, a < b);
+    return (get_minimum_ground() < 100.0);
+}
+
 quat panoptic::get_orientation() const
 {
-    return inverse(get_local()) * ::view->get_orientation();
+    if (pan_mode())
+        return view_app::get_orientation();
+    else
+        return inverse(get_local()) * ::view->get_orientation();
 }
 
 void panoptic::set_orientation(const quat &q)
 {
-    quat r = normal(get_local() * q);
-    here.set_orientation(r);
-    ::view->set_orientation(r);
+    if (pan_mode())
+        view_app::set_orientation(q);
+    else
+    {
+        quat r = normal(get_local() * q);
+        here.set_orientation(r);
+        ::view->set_orientation(r);
+    }
 }
 
 void panoptic::offset_position(const vec3 &d)
 {
-    // Set the current step using the current camera configuration.
+    if (pan_mode())
+        view_app::offset_position(d);
+    else
+    {
+        // Set the current step using the current camera configuration.
 
-    step_from_view(here);
+        step_from_view(here);
 
-    // Apply the motion vector as rotation of the step.
+        // Apply the motion vector as rotation of the step.
 
-    const double k = 500000.0 * get_speed();
-    const double r = here.get_distance();
-    const mat3   B(get_local());
+        const double k = 500000.0 * get_speed();
+        const double r = here.get_distance();
+        const mat3   B(get_local());
 
-    mat4 zM = mat4(mat3(quat(zvector(B), atan2(-d[0] * k, r))));
-    mat4 xM = mat4(mat3(quat(xvector(B), atan2( d[2] * k, r))));
+        mat4 zM = mat4(mat3(quat(zvector(B), atan2(-d[0] * k, r))));
+        mat4 xM = mat4(mat3(quat(xvector(B), atan2( d[2] * k, r))));
 
-    here.transform_orientation(transpose(xM));
-    here.transform_position   (transpose(xM));
-    here.transform_light      (transpose(xM));
-    here.transform_orientation(transpose(zM));
-    here.transform_position   (transpose(zM));
-    here.transform_light      (transpose(zM));
+        here.transform_orientation(transpose(xM));
+        here.transform_position   (transpose(xM));
+        here.transform_light      (transpose(xM));
+        here.transform_orientation(transpose(zM));
+        here.transform_position   (transpose(zM));
+        here.transform_light      (transpose(zM));
 
-    // Clamp the altitude.
+        // Clamp the altitude.
 
-    double v[3];
+        double v[3];
 
-    here.get_position(v);
-    here.set_distance(std::max(d[1] * k + r,
-                            minimum_agl + sys->get_current_ground(v)));
+        here.get_position(v);
+        here.set_distance(std::max(d[1] * k + r,
+                                minimum_agl + sys->get_current_ground(v)));
 
-    // Copy the modifed step back to the camera configuration.
+        // Copy the modifed step back to the camera configuration.
 
-    view_from_step(here);
+        view_from_step(here);
+    }
 }
 
 //------------------------------------------------------------------------------
