@@ -29,7 +29,7 @@
 #include "scm/util3d/math3d.h"
 #include "scm/scm-log.hpp"
 
-#include "orbiter.hpp"
+#include "panoptic.hpp"
 
 //------------------------------------------------------------------------------
 
@@ -48,22 +48,22 @@ static in_addr_t lookup(const std::string& hostname)
 
 //------------------------------------------------------------------------------
 
-orbiter::orbiter(const std::string& exe,
-                 const std::string& tag)
+panoptic::panoptic(const std::string& exe,
+                   const std::string& tag)
     : view_app(exe, tag)
 {
     // Initialize all interaction state.
 
-    speed_min   = ::conf->get_f("orbiter_speed_min",   0.0);
-    speed_max   = ::conf->get_f("orbiter_speed_max",   0.5);
-    minimum_agl = ::conf->get_f("orbiter_minimum_agl", 100.0);
+    speed_min   = ::conf->get_f("panoptic_speed_min",   0.0);
+    speed_max   = ::conf->get_f("panoptic_speed_max",   0.5);
+    minimum_agl = ::conf->get_f("panoptic_minimum_agl", 100.0);
     stick_timer = 0.0;
 
     // Initialize the reportage socket.
 
     report_addr.sin_family      = AF_INET;
-    report_addr.sin_port        =  htons(::conf->get_i("orbiter_report_port"));
-    report_addr.sin_addr.s_addr = lookup(::conf->get_s("orbiter_report_host"));
+    report_addr.sin_port        =  htons(::conf->get_i("panoptic_report_port"));
+    report_addr.sin_addr.s_addr = lookup(::conf->get_s("panoptic_report_host"));
 
     if (report_addr.sin_addr.s_addr != INADDR_NONE)
         report_sock = socket(AF_INET, SOCK_DGRAM, 0);
@@ -71,14 +71,18 @@ orbiter::orbiter(const std::string& exe,
         report_sock = INVALID_SOCKET;
 }
 
-orbiter::~orbiter()
+panoptic::~panoptic()
 {
     close(report_sock);
 }
 
 //------------------------------------------------------------------------------
 
-void orbiter::report()
+// The report mechanism transmits the current view location to a remote host,
+// as configured in conf.xml. This allows the creation of an external map
+// display showing the user in the context of the globe.
+
+void panoptic::report()
 {
     // If a report destination has been configured...
 
@@ -108,7 +112,7 @@ void orbiter::report()
 
 //------------------------------------------------------------------------------
 
-ogl::aabb orbiter::prep(int frusc, const app::frustum *const *frusv)
+ogl::aabb panoptic::prep(int frusc, const app::frustum *const *frusv)
 {
     report();
 
@@ -128,7 +132,7 @@ ogl::aabb orbiter::prep(int frusc, const app::frustum *const *frusv)
     return ogl::aabb(vec3(0, 0, n), vec3(0, 0, f));
 }
 
-void orbiter::draw(int frusi, const app::frustum *frusp, int chani)
+void panoptic::draw(int frusi, const app::frustum *frusp, int chani)
 {
     // Set the light position.
 
@@ -154,7 +158,7 @@ void orbiter::draw(int frusi, const app::frustum *frusp, int chani)
 
 // Return an altitude scalar.
 
-double orbiter::get_speed() const
+double panoptic::get_speed() const
 {
     const double d = here.get_distance();
     const double h =      get_current_ground();
@@ -168,7 +172,7 @@ double orbiter::get_speed() const
 
 //------------------------------------------------------------------------------
 
-quat orbiter::get_local() const
+quat panoptic::get_local() const
 {
     const vec3 p(::view->get_position());
     const mat3 R(::view->get_orientation());
@@ -180,19 +184,19 @@ quat orbiter::get_local() const
     return quat(mat3(x, y, z));
 }
 
-quat orbiter::get_orientation() const
+quat panoptic::get_orientation() const
 {
     return inverse(get_local()) * ::view->get_orientation();
 }
 
-void orbiter::set_orientation(const quat &q)
+void panoptic::set_orientation(const quat &q)
 {
     quat r = normal(get_local() * q);
     here.set_orientation(r);
     ::view->set_orientation(r);
 }
 
-void orbiter::offset_position(const vec3 &d)
+void panoptic::offset_position(const vec3 &d)
 {
     // Set the current step using the current camera configuration.
 
@@ -256,7 +260,7 @@ double spiral(double r0, double r1, double theta)
     return dr;
 }
 
-void orbiter::move_to(int i)
+void panoptic::move_to(int i)
 {
     // Construct a path from here to there.
 
@@ -354,7 +358,7 @@ int main(int argc, char *argv[])
     {
         app::prog *P;
 
-        P = new orbiter(argv[0], std::string(argc > 1 ? argv[1] : DEFAULT_TAG));
+        P = new panoptic(argv[0], std::string(argc > 1 ? argv[1] : DEFAULT_TAG));
         P->run();
 
         delete P;

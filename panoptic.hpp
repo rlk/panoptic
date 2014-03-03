@@ -1,4 +1,4 @@
-//  Copyright (C) 2005-2012 Robert Kooima
+//  Copyright (C) 2005-2014 Robert Kooima
 //
 //  THUMB is free software; you can redistribute it and/or modify it under
 //  the terms of  the GNU General Public License as  published by the Free
@@ -10,8 +10,8 @@
 //  MERCHANTABILITY  or FITNESS  FOR A  PARTICULAR PURPOSE.   See  the GNU
 //  General Public License for more details.
 
-#ifndef ORBITER_HPP
-#define ORBITER_HPP
+#ifndef PANOPTIC_HPP
+#define PANOPTIC_HPP
 
 #include <vector>
 
@@ -23,11 +23,11 @@
 
 //-----------------------------------------------------------------------------
 
-class orbiter : public view_app
+class panoptic : public view_app
 {
 public:
 
-    orbiter(const std::string&, const std::string&);
+    panoptic(const std::string&, const std::string&);
 
     virtual ogl::aabb prep(int, const app::frustum * const *);
     virtual void      draw(int, const app::frustum *, int);
@@ -38,7 +38,7 @@ public:
     virtual void set_orientation(const quat&);
     virtual void offset_position(const vec3&);
 
-    virtual ~orbiter();
+    virtual ~panoptic();
 
 private:
 

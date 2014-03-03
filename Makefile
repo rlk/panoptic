@@ -2,13 +2,8 @@ include ../thumb/Makedefs
 
 #------------------------------------------------------------------------------
 
-VIEWOBJS= view-load.o view-app.o
-
-ORBOBJS= $(VIEWOBJS) orbiter.o
-PANOBJS= $(VIEWOBJS) panoview.o
-
-PANDEPS= $(PANOBJS:.o=.d)
-ORBDEPS= $(ORBOBJS:.o=.d)
+OBJS= view-load.o view-app.o panoptic.o
+DEPS= $(OBJS:.o=.d)
 
 #------------------------------------------------------------------------------
 
@@ -17,17 +12,13 @@ LIBS   += -L../thumb/src -lthumb scm/libscm.a
 
 #------------------------------------------------------------------------------
 
-all : panoview orbiter
+all : panoptic
 
-panoview: scm $(PANOBJS) $(THUMB)
-	$(CXX) $(CFLAGS) -o $@ $(PANOBJS) $(LIBS)
-
-orbiter: scm $(ORBOBJS) $(THUMB)
-	$(CXX) $(CFLAGS) -o $@ $(ORBOBJS) $(LIBS)
+panoptic: scm $(OBJS) $(THUMB)
+	$(CXX) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
 
 clean:
-	$(RM) $(PANOBJS) $(PANDEPS) panoview
-	$(RM) $(ORBOBJS) $(ORBDEPS) orbiter
+	$(RM) $(OBJS) $(DEPS) panoptic
 
 #------------------------------------------------------------------------------
 
@@ -39,7 +30,7 @@ scm : .FORCE
 #------------------------------------------------------------------------------
 
 ifneq ($(MAKECMDGOALS),clean)
--include $(PANDEPS) $(ORBDEPS)
+-include $(DEPS)
 endif
 
 export CFLAGS

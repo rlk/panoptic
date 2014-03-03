@@ -84,6 +84,8 @@ view_app::~view_app()
 
 //------------------------------------------------------------------------------
 
+// Set the Thumb view to match the given step.
+
 void view_from_step(scm_step& step)
 {
     double p[3];
@@ -97,6 +99,8 @@ void view_from_step(scm_step& step)
     ::view->set_position   (vec3(p[0], p[1], p[2]) * r);
 }
 
+// Set the given step to match the current Thumb view.
+
 void step_from_view(scm_step& step)
 {
     quat q = ::view->get_orientation();
@@ -108,6 +112,8 @@ void step_from_view(scm_step& step)
 }
 
 //------------------------------------------------------------------------------
+
+// Initialize a step object using the given node.
 
 static void step_from_xml(scm_step *s, app::node n)
 {
@@ -135,16 +141,16 @@ static void step_from_xml(scm_step *s, app::node n)
     s->set_position   (p);
     s->set_light      (l);
     s->set_speed      (n.get_f("s", 1.0));
-    s->set_distance   (n.get_f("r", 0.0)); // 2000000.0
+    s->set_distance   (n.get_f("r", 0.0));
     s->set_tension    (n.get_f("t", 0.0));
     s->set_bias       (n.get_f("b", 0.0));
     s->set_zoom       (n.get_f("z", 1.0));
 }
 
+// Create a new step object for each step node.
+
 void view_app::load_steps(app::node p)
 {
-    // Create a new step object for each node.
-
     for (app::node n = p.find("step"); n; n = p.next(n, "step"))
     {
         if (scm_step *s = sys->get_step(sys->add_step(sys->get_step_count())))
@@ -154,10 +160,10 @@ void view_app::load_steps(app::node p)
     }
 }
 
+// Create a new image object for each image node.
+
 void view_app::load_images(app::node p, scm_scene *f)
 {
-    // Create a new image object for each node.
-
     for (app::node n = p.find("image"); n; n = p.next(n, "image"))
     {
         if (scm_image *p = f->get_image(f->add_image(f->get_image_count())))
@@ -171,10 +177,10 @@ void view_app::load_images(app::node p, scm_scene *f)
     }
 }
 
+// Create a new scene object for each scene node.
+
 void view_app::load_scenes(app::node p)
 {
-    // Create a new scene object for each node.
-
     for (app::node n = p.find("scene"); n; n = p.next(n, "scene"))
     {
         if (scm_scene *f = sys->get_scene(sys->add_scene(sys->get_scene_count())))
@@ -207,9 +213,11 @@ void view_app::load_scenes(app::node p)
     }
 }
 
+// Initialize the SCM system using the named XML file.
+
 void view_app::load_file(const std::string& name)
 {
-    // If the named file exists and contains an XML panorama definition...
+    // If the named file exists and contains an XML sphere definition...
 
     app::file file(name);
 
@@ -238,6 +246,8 @@ void view_app::load_file(const std::string& name)
     }
 }
 
+// Create a path from a series of camera configurations in the named file.
+
 void view_app::load_path(const std::string& name)
 {
     // Load the contents of the named file to a string.
@@ -257,6 +267,8 @@ void view_app::load_path(const std::string& name)
         draw_gui = false;
     }
 }
+
+// Store a path as a series of camera configurations in the named file.
 
 void view_app::save_path(const std::string& stem)
 {
@@ -281,11 +293,15 @@ void view_app::save_path(const std::string& stem)
     }
 }
 
+// Delete all scenes and steps (and by extension ALL data) in the system.
+
 void view_app::unload()
 {
     for (int i = 0; i < sys->get_scene_count(); ++i) sys->del_scene(0);
     for (int i = 0; i < sys->get_step_count();  ++i) sys->del_step (0);
 }
+
+// Respond to the GUI cancel button by dismissing the GUI.
 
 void view_app::cancel()
 {
@@ -293,6 +309,9 @@ void view_app::cancel()
 }
 
 //------------------------------------------------------------------------------
+
+// Report the globe's radius at the current location. This is a sketchy hack
+// that allows the locations of flags to be determined manually.
 
 void view_app::flag()
 {
@@ -305,6 +324,9 @@ void view_app::flag()
 
     printf("%.12f\t%.12f\t%.1f\n", lat, lon, rad);
 }
+
+// Report the current view configuration as an XML step element. This is a
+// sketchy hack that allows the manual construction of step lists.
 
 void view_app::step()
 {
@@ -326,6 +348,8 @@ void view_app::step()
 
 //------------------------------------------------------------------------------
 
+// Return the radius of the globe at the current position.
+
 double view_app::get_current_ground() const
 {
     double v[3];
@@ -333,12 +357,16 @@ double view_app::get_current_ground() const
     return sys->get_current_ground(v);
 }
 
+// Return the global minimum radius of the current SCM system.
+
 double view_app::get_minimum_ground() const
 {
     return sys->get_minimum_ground();
 }
 
 //------------------------------------------------------------------------------
+
+// Prepare for rendering.
 
 ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
 {
@@ -360,9 +388,13 @@ ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
                      vec3(+r, +r, +r));
 }
 
+// Perform any pre-render lighting.
+
 void view_app::lite(int frusc, const app::frustum *const *frusv)
 {
 }
+
+// Render the scene.
 
 void view_app::draw(int frusi, const app::frustum *frusp, int chani)
 {
@@ -379,6 +411,8 @@ void view_app::draw(int frusi, const app::frustum *frusp, int chani)
 
     sys->render_sphere(transpose(P), transpose(S * M), chani);
 }
+
+// Render the GUI and debugging overlays.
 
 void view_app::over(int frusi, const app::frustum *frusp, int chani)
 {
@@ -397,10 +431,16 @@ void view_app::over(int frusi, const app::frustum *frusp, int chani)
 
 //------------------------------------------------------------------------------
 
+// Construct a path from the current location to the step with the given index.
+// The behavior of this is highly application-specific, so the default move is
+// just a jump.
+
 void view_app::move_to(int n)
 {
     jump_to(n);
 }
+
+// Teleport the view configuration and scene to the step with the given index.
 
 void view_app::jump_to(int n)
 {
@@ -415,6 +455,9 @@ void view_app::jump_to(int n)
         view_from_step(here);
     }
 }
+
+// Construct a fade from the current scene to the scene of the step with the
+// given index. Do so without moving the view.
 
 void view_app::fade_to(int n)
 {
@@ -437,6 +480,10 @@ void view_app::fade_to(int n)
 
 //------------------------------------------------------------------------------
 
+// Toggle playback of the current step queue. Movie mode ensures that all frames
+// have equal step size, that all data access is performed synchronously, and
+// that each frame is written to a sequentially-numbered image file.
+
 void view_app::play(bool movie)
 {
     if (delta > 0)
@@ -456,6 +503,8 @@ void view_app::play(bool movie)
 
 //------------------------------------------------------------------------------
 
+// Handle a press of number key n with control status c and shift status s.
+
 bool view_app::numkey(int n, int c, int s)
 {
     if (s == 0)
@@ -465,16 +514,12 @@ bool view_app::numkey(int n, int c, int s)
         else
             fade_to(n);
     }
-    else
-    {
-        switch (n)
-        {
-            case 1: flag(); break;
-            case 2: step(); break;
-        }
-    }
+    else jump_to(n);
+
     return true;
 }
+
+// Handle a press of function key n with control status c and shift status s.
 
 bool view_app::funkey(int n, int c, int s)
 {
@@ -515,6 +560,8 @@ bool view_app::funkey(int n, int c, int s)
 
     return true;
 }
+
+// Handle a keyboard event.
 
 bool view_app::process_key(app::event *E)
 {
@@ -558,9 +605,11 @@ bool view_app::process_key(app::event *E)
     return prog::process_event(E);
 }
 
+// Handle a user-defined event. SCM viewers treat this as a named move-to.
+
 bool view_app::process_user(app::event *E)
 {
-    // Extract the landmark name from the user event structure.
+    // Extract the destination name from the user event structure.
 
     char name[sizeof (long long) + 1];
 
@@ -580,10 +629,11 @@ bool view_app::process_user(app::event *E)
     return false;
 }
 
+// Handle the passing of time by continuing the recording or playback of the
+// step queue.
+
 bool view_app::process_tick(app::event *E)
 {
-    // double dt = E->data.tick.dt;
-
     if (delta)
     {
         double prev = now;
@@ -606,6 +656,8 @@ bool view_app::process_tick(app::event *E)
 
     return false;
 }
+
+// Delegate the handling of an event, or pass it to the superclass.
 
 bool view_app::process_event(app::event *E)
 {
@@ -661,17 +713,6 @@ void view_app::gui_draw()
             gui->draw();
         }
         glDisable(GL_DEPTH_CLAMP_NV);
-#if 0
-        glEnable(GL_DEPTH_CLAMP);
-        {
-            glLoadIdentity();
-            overlay->apply_overlay();
-            glScaled(overlay->get_width() / gui_w,
-                     overlay->get_height() / gui_h, 1.0);
-            gui->draw();
-        }
-        glDisable(GL_DEPTH_CLAMP);
-#endif
     }
 }
 
