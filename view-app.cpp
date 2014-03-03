@@ -49,6 +49,7 @@ view_app::view_app(const std::string& exe,
     gui(0)
 {
     TIFFSetWarningHandler(0);
+    TIFFSetErrorHandler(0);
 
     // Configure the SCM caches.
 
