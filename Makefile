@@ -19,10 +19,10 @@ LIBS   += -L../thumb/src -lthumb scm/libscm.a
 
 all : panoview orbiter
 
-panoview: $(SCM) $(PANOBJS) $(THUMB)
+panoview: scm $(PANOBJS) $(THUMB)
 	$(CXX) $(CFLAGS) -o $@ $(PANOBJS) $(LIBS)
 
-orbiter: $(SCM) $(ORBOBJS) $(THUMB)
+orbiter: scm $(ORBOBJS) $(THUMB)
 	$(CXX) $(CFLAGS) -o $@ $(ORBOBJS) $(LIBS)
 
 clean:
@@ -31,7 +31,7 @@ clean:
 
 #------------------------------------------------------------------------------
 
-$(SCM) : .FORCE
+scm : .FORCE
 	$(MAKE) -C scm
 
 .FORCE :
