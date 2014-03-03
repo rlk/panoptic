@@ -8,14 +8,15 @@ DEPS= $(OBJS:.o=.d)
 #------------------------------------------------------------------------------
 
 CFLAGS += -I../thumb/include
-LIBS   += -L../thumb/src -lthumb scm/libscm.a
+THUMB   = -L../thumb/src -lthumb
+SCM     = scm/libscm.a
 
 #------------------------------------------------------------------------------
 
 all : panoptic
 
-panoptic: scm $(OBJS) $(THUMB)
-	$(CXX) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
+panoptic: scm $(OBJS)
+	$(CXX) $(CFLAGS) -o $@ $(OBJS) $(THUMB) $(SCM) $(LIBS)
 
 clean:
 	$(RM) $(OBJS) $(DEPS) panoptic
