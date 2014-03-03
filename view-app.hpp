@@ -61,13 +61,24 @@ public:
 
 protected:
 
+    // The SCM system and current view.
+
     scm_system *sys;
     scm_step   here;
+
+    // Recording and playback
+
     double     now;
     double     delta;
     bool       record;
 
     void play(bool);
+
+    // Zooming
+
+    double zoom;
+    double zoom_min;
+    double zoom_max;
 
 private:
 
@@ -83,9 +94,10 @@ private:
     bool numkey(int, int, int);
     bool funkey(int, int, int);
 
-    bool process_key (app::event *);
-    bool process_user(app::event *);
-    bool process_tick(app::event *);
+    bool process_key  (app::event *);
+    bool process_user (app::event *);
+    bool process_tick (app::event *);
+    bool process_click(app::event *);
 
     virtual double get_speed() const { return 1.0; }
     virtual double get_scale() const { return 1.0; }

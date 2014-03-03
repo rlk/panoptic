@@ -38,6 +38,9 @@ view_app::view_app(const std::string& exe,
     now(0),
     delta(0),
     record(false),
+    zoom(0.0),
+    zoom_min(-5.0),
+    zoom_max( 2.0),
     draw_cache(false),
     draw_path (false),
     draw_gui  (true),
@@ -370,17 +373,23 @@ double view_app::get_minimum_ground() const
 
 ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
 {
+    // Update the GUI state as requested. Doing this here avoids a chicken-egg
+    // issue during the handling of GUI-related events.
+
     if ( draw_gui && !gui) gui_show();
     if (!draw_gui &&  gui) gui_hide();
 
-    if (gui)
-        glClearColor(0.3, 0.3, 0.3, 0.0);
-    else
-        glClearColor(0.0, 0.0, 0.0, 0.0);
+    // Handle the zoom. Not all subclasses will appreciate this.
+
+    const vec3 v = ::view->get_point_vec(quat());
+    sys->get_sphere()->set_zoom(v[0], v[1], v[2], pow(2.0, zoom));
+
+    // Cycle the SCM cache. This is super-important.
 
     sys->update_cache();
 
-    // Return a world-space bounding volume for the sphere.
+    // Return a world-space bounding volume for the sphere. This simple default
+    // will be over-ridden by any decent subclass.
 
     double r = 2.0 * get_minimum_ground();
 
@@ -657,15 +666,33 @@ bool view_app::process_tick(app::event *E)
     return false;
 }
 
+// Handle a mouse button event.
+
+bool view_app::process_click(app::event *E)
+{
+    const int b = E->data.click.b;
+    const int d = E->data.click.d;
+
+    if (b == -2)
+    {
+        zoom = zoom + d / 100.0;
+        zoom = std::max(zoom, zoom_min);
+        zoom = std::min(zoom, zoom_max);
+        return true;
+    }
+    return false;
+}
+
 // Delegate the handling of an event, or pass it to the superclass.
 
 bool view_app::process_event(app::event *E)
 {
     switch (E->get_type())
     {
-        case E_KEY:   if (process_key (E)) return true; else break;
-        case E_USER:  if (process_user(E)) return true; else break;
-        case E_TICK:  if (process_tick(E)) return true; else break;
+        case E_KEY:   if (process_key  (E)) return true; else break;
+        case E_USER:  if (process_user (E)) return true; else break;
+        case E_TICK:  if (process_tick (E)) return true; else break;
+        case E_CLICK: if (process_click(E)) return true; else break;
     }
     if (gui && gui_event(E)) return true;
 
