@@ -42,3 +42,6 @@ ifneq ($(MAKECMDGOALS),clean)
 -include $(PANDEPS) $(ORBDEPS)
 endif
 
+export CFLAGS
+
+
