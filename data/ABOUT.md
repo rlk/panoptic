@@ -8,14 +8,14 @@ spherical panoramas and planetary surface maps.
 
 ## Application Controls
 
-    F1 ........... Toggle this GUI
-    F2 ........... Toggle an image cache overlay
+    F1 ............ Toggle this GUI
+    F2 ............ Toggle an image cache overlay
 
-    Left mouse ... Pan the camera
-    W A S D ...... Move the camera horizontally
-    Q E .......... Move the camera vertically
+    Right mouse ... Pan the camera
+    W A S D ....... Move the camera horizontally
+    Q E ........... Move the camera vertically
 
-    0–9 .......... Select a scene
+    0–9 ........... Select a scene
 
 ## GUI Panels
 
