@@ -724,8 +724,8 @@ bool view_app::process_event(app::event *E)
 
 void view_app::gui_show()
 {
-    gui_w = ::host->get_buffer_w();
-    gui_h = ::host->get_buffer_h();
+    gui_w = ::host->get_window_w();
+    gui_h = ::host->get_window_h();
 
     gui = new view_gui(this, gui_w, gui_h);
 
