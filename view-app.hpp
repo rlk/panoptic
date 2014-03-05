@@ -48,6 +48,9 @@ public:
     virtual void   save_path(const std::string&);
     virtual void unload();
 
+    virtual void host_up(std::string);
+    virtual void host_dn();
+
     void cancel();
     void flag();
     void step();

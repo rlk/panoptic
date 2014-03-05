@@ -70,6 +70,20 @@ view_app::view_app(const std::string& exe,
                                          scm_cache::load_queue_size);
     scm_cache::loads_per_cycle = ::conf->get_i("scm_loads_per_cycle",
                                          scm_cache::loads_per_cycle);
+}
+
+view_app::~view_app()
+{
+    ::data->free(::conf->get_s("sans_font"));
+}
+
+//------------------------------------------------------------------------------
+
+// The host is coming up. The OpenGL context will be available soon.
+
+void view_app::host_up(std::string name)
+{
+    app::prog::host_up(name);
 
     // Create the SCM rendering system.
 
@@ -86,12 +100,15 @@ view_app::view_app(const std::string& exe,
         gui_show();
 }
 
-view_app::~view_app()
+// The host is going down. Release any OpenGL context state.
+
+void view_app::host_dn()
 {
     delete sys;
+    sys = 0;
     gui_hide();
 
-    ::data->free(::conf->get_s("sans_font"));
+    app::prog::host_dn();
 }
 
 //------------------------------------------------------------------------------
