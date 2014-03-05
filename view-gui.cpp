@@ -114,8 +114,9 @@ data_panel::data_panel(view_app *V, gui::widget *w) : gui::vgroup()
             add((new gui::harray)->
                 add(new gui::filler(true, false))->
                 add(new gui::filler(true, false))->
+                add(new gui::filler(true, false))->
                 add(new button_cancel   (V   ))->
-                add(new button_load_path(V, S))->
+//              add(new button_load_path(V, S))->
                 add(new button_load_data(V, S)))));
 }
 
