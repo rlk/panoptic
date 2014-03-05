@@ -706,7 +706,7 @@ bool view_app::process_event(app::event *E)
 
 void view_app::gui_show()
 {
-    gui = new view_load(this, gui_w, gui_h);
+    gui = new view_gui(this, gui_w, gui_h);
 }
 
 // Release the file selection GUI.

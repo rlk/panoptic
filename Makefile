@@ -2,7 +2,7 @@ include ../thumb/Makedefs
 
 #------------------------------------------------------------------------------
 
-OBJS= view-load.o view-app.o panoptic.o
+OBJS= view-gui.o view-app.o panoptic.o
 DEPS= $(OBJS:.o=.d)
 
 #------------------------------------------------------------------------------
@@ -34,6 +34,6 @@ ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
 endif
 
+export CC
+export CXX
 export CFLAGS
-
-

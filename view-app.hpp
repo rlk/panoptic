@@ -25,7 +25,7 @@
 #include "scm/scm-label.hpp"
 #include "scm/scm-step.hpp"
 
-#include "view-load.hpp"
+#include "view-gui.hpp"
 
 //-----------------------------------------------------------------------------
 
@@ -106,7 +106,7 @@ private:
 
     const int  gui_w;
     const int  gui_h;
-    view_load *gui;
+    view_gui  *gui;
 
     void gui_show();
     void gui_hide();

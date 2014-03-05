@@ -190,9 +190,6 @@ quat panoptic::get_local() const
 
 bool panoptic::pan_mode() const
 {
-    double a = here.get_distance();
-    double b = get_minimum_ground();
-    printf("%f %f %d\n", a, b, a < b);
     return (get_minimum_ground() < 100.0);
 }
 
