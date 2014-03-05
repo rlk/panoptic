@@ -43,9 +43,9 @@ view_app::view_app(const std::string& exe,
     zoom_max( 2.0),
     draw_cache(false),
     draw_path (false),
-    draw_gui  (true),
-    gui_w(::host->get_buffer_w()),
-    gui_h(::host->get_buffer_h()),
+    gui_index(0),
+    gui_w(0),
+    gui_h(0),
     gui(0)
 {
     TIFFSetWarningHandler(0);
@@ -82,12 +82,13 @@ view_app::view_app(const std::string& exe,
 
     if (char *name = getenv("SCMINIT"))
         load_file(name);
+    else
+        gui_show();
 }
 
 view_app::~view_app()
 {
     delete sys;
-
     gui_hide();
 
     ::data->free(::conf->get_s("sans_font"));
@@ -252,7 +253,6 @@ void view_app::load_file(const std::string& name)
 
         // Dismiss the GUI and display the first loaded scene.
 
-        draw_gui = false;
         jump_to(0);
     }
 }
@@ -272,10 +272,6 @@ void view_app::load_path(const std::string& name)
         sys->import_queue(path);
 
         ::data->free(name);
-
-        // Dismiss the GUI.
-
-        draw_gui = false;
     }
 }
 
@@ -310,13 +306,6 @@ void view_app::unload()
 {
     for (int i = 0; i < sys->get_scene_count(); ++i) sys->del_scene(0);
     for (int i = 0; i < sys->get_step_count();  ++i) sys->del_step (0);
-}
-
-// Respond to the GUI cancel button by dismissing the GUI.
-
-void view_app::cancel()
-{
-    draw_gui = false;
 }
 
 //------------------------------------------------------------------------------
@@ -381,12 +370,6 @@ double view_app::get_minimum_ground() const
 
 ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
 {
-    // Update the GUI state as requested. Doing this here avoids a chicken-egg
-    // issue during the handling of GUI-related events.
-
-    if ( draw_gui && !gui) gui_show();
-    if (!draw_gui &&  gui) gui_hide();
-
     if (gui)
         glClearColor(0.3, 0.3, 0.3, 0.0);
     else
@@ -554,7 +537,13 @@ bool view_app::funkey(int n, int c, int s)
 
             switch (n)
             {
-                case  1: draw_gui   = !draw_gui;                  break;
+                case  1:
+                    if (gui)
+                        gui_hide();
+                    else
+                        gui_show();
+                    break;
+
                 case  2: draw_cache = !draw_cache;                break;
                 case  3: draw_path  = !draw_path;                 break;
                 case  4: ren->set_wire(!ren->get_wire());         break;
@@ -718,15 +707,31 @@ bool view_app::process_event(app::event *E)
 
 void view_app::gui_show()
 {
+    gui_w = ::host->get_buffer_w();
+    gui_h = ::host->get_buffer_h();
+
     gui = new view_gui(this, gui_w, gui_h);
+
+    gui->set_index(gui_index);
+    gui->show();
+
+    SDL_StartTextInput();
 }
 
 // Release the file selection GUI.
 
 void view_app::gui_hide()
 {
-    delete gui;
-    gui = 0;
+    if (gui)
+    {
+        SDL_StopTextInput();
+
+        gui->hide();
+        gui_index = gui->get_index();
+
+        delete gui;
+        gui = 0;
+    }
 }
 
 // Draw the file selection GUI in the overlay.
@@ -780,21 +785,20 @@ bool view_app::gui_event(app::event *E)
 
         case E_KEY:
 
-            if (E->data.key.d)
-            {
+            if (gui && E->data.key.d)
                 gui->key(E->data.key.k, E->data.key.m);
-                return true;
-            }
-            return false;
+            return true;
 
         case E_CLICK:
 
-            gui->click(E->data.click.m, E->data.click.d);
+            if (gui)
+                gui->click(E->data.click.m, E->data.click.d);
             return true;
 
         case E_TEXT:
 
-            gui->glyph(E->data.text.c);
+            if (gui)
+                gui->glyph(E->data.text.c);
             return true;
     }
     return false;

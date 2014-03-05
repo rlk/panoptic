@@ -89,7 +89,6 @@ private:
 
     bool draw_cache;
     bool draw_path;
-    bool draw_gui;
 
     bool numkey(int, int, int);
     bool funkey(int, int, int);
@@ -104,9 +103,11 @@ private:
 
     // Sphere GUI State
 
-    const int  gui_w;
-    const int  gui_h;
-    view_gui  *gui;
+
+    int       gui_index;
+    int       gui_w;
+    int       gui_h;
+    view_gui *gui;
 
     void gui_show();
     void gui_hide();
