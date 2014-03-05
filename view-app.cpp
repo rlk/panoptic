@@ -51,6 +51,13 @@ view_app::view_app(const std::string& exe,
     TIFFSetWarningHandler(0);
     TIFFSetErrorHandler(0);
 
+    // Add the static data archive.
+
+    extern unsigned char data_zip[];
+    extern unsigned int  data_zip_len;
+
+    ::data->add_pack_archive(data_zip, data_zip_len);
+
     // Configure the SCM caches.
 
     scm_cache::cache_size      = ::conf->get_i("scm_cache_size",
