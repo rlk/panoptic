@@ -69,21 +69,5 @@ public:
 };
 
 //------------------------------------------------------------------------------
-#if 0
-class view_app;
-
-class view_load : public gui::dialog
-{
-    gui::button *load_data;
-    gui::button *load_path;
-
-public:
-
-    view_load(view_app *, int, int);
-
-    void reload();
-};
-#endif
-//------------------------------------------------------------------------------
 
 #endif
