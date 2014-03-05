@@ -387,6 +387,11 @@ ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
     if ( draw_gui && !gui) gui_show();
     if (!draw_gui &&  gui) gui_hide();
 
+    if (gui)
+        glClearColor(0.3, 0.3, 0.3, 0.0);
+    else
+        glClearColor(0.0, 0.0, 0.0, 0.0);
+
     // Handle the zoom. Not all subclasses will appreciate this.
 
     const vec3 v = ::view->get_point_vec(quat());
