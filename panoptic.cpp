@@ -282,6 +282,7 @@ double spiral(double r0, double r1, double theta)
     return dr;
 }
 
+#if 0
 void panoptic::move_to(int i)
 {
     // Construct a path from here to there.
@@ -371,6 +372,7 @@ void panoptic::move_to(int i)
         }
     }
 }
+#endif
 
 //------------------------------------------------------------------------------
 

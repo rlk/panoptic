@@ -32,7 +32,7 @@ public:
     virtual ogl::aabb prep(int, const app::frustum * const *);
     virtual void      draw(int, const app::frustum *, int);
 
-    virtual void move_to(int);
+//  virtual void move_to(int);
 
     virtual quat get_orientation() const;
     virtual void set_orientation(const quat&);
