@@ -14,7 +14,6 @@ spherical panoramas and planetary surface maps.
     Right mouse ... Pan the camera
     W A S D ....... Move the camera horizontally
     Q E ........... Move the camera vertically
-
     0–9 ........... Select a scene
 
 ## GUI Panels
