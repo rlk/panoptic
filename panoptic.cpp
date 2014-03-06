@@ -50,7 +50,7 @@ static in_addr_t lookup(const std::string& hostname)
 
 panoptic::panoptic(const std::string& exe,
                    const std::string& tag)
-    : view_app(exe, tag)
+    : view_app(exe, tag), report_sock(INVALID_SOCKET)
 {
     // Initialize all interaction state.
 
@@ -61,14 +61,18 @@ panoptic::panoptic(const std::string& exe,
 
     // Initialize the reportage socket.
 
-    report_addr.sin_family      = AF_INET;
-    report_addr.sin_port        =  htons(::conf->get_i("panoptic_report_port", 8111));
-    report_addr.sin_addr.s_addr = lookup(::conf->get_s("panoptic_report_host"));
+    int         port = ::conf->get_i("panoptic_report_port", 8111);
+    std::string host = ::conf->get_s("panoptic_report_host");
 
-    if (report_addr.sin_addr.s_addr != INADDR_NONE)
-        report_sock = socket(AF_INET, SOCK_DGRAM, 0);
-    else
-        report_sock = INVALID_SOCKET;
+    if (port && !host.empty())
+    {
+        report_addr.sin_family      = AF_INET;
+        report_addr.sin_port        =  htons(port);
+        report_addr.sin_addr.s_addr = lookup(host);
+
+        if (report_addr.sin_addr.s_addr != INADDR_NONE)
+            report_sock = socket(AF_INET, SOCK_DGRAM, 0);
+    }
 }
 
 panoptic::~panoptic()
