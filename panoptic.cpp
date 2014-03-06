@@ -389,7 +389,8 @@ int main(int argc, char *argv[])
     }
     catch (std::exception& e)
     {
-        fprintf(stderr, "Exception: %s\n", e.what());
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+                                 "Uncaught exception", e.what(), 0);
     }
     return 0;
 }
