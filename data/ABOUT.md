@@ -1,3 +1,4 @@
+
 ## Copyright © 2011–2014 Robert Kooima <robert.kooima@gmail.com>
 
 Panoptic is a tool for the interactive exploration of high-resolution spherical
@@ -12,20 +13,23 @@ SCMPATH environment variable to image directory.
 
 ## Application Controls
 
-    F1 ............ Toggle this GUI
-    F2 ............ Toggle an image cache overlay
+    F1 ............. Toggle this GUI
+    F2 ............. Toggle an image cache overlay
 
-    Right mouse ... Pan the camera
-    W A S D ....... Move the camera horizontally
-    Q E ........... Move the camera vertically
-    0–9 ........... Select a scene
-    Control 0–9 ... Select a scene without moving the camera
+    Mouse button ... Pan the view
+    Mouse wheel .... Zoom in or out of a panorama
+    Return ......... Zoom reset
+    W A S D ........ Move around a planet horizontally
+    Q E ............ Move around a planet vertically
+
+    0–9 ............ Select a scene
+    Control 0–9 .... Select a scene without changing the view point
 
 ## GUI Panels
 
-    About ......... Display this documentation
-    Data .......... Load a scene definition file
-    Config ........ Change the display configuration
+    About .......... Display this documentation
+    Data ........... Load a scene definition file
+    Config ......... Change the display configuration
 
 ## Stereoscopy
 
