@@ -39,8 +39,8 @@ view_app::view_app(const std::string& exe,
     delta(0),
     record(false),
     zoom(0.0),
-    zoom_min(-5.0),
-    zoom_max( 2.0),
+    zoom_min(-2.0),
+    zoom_max( 3.0),
     draw_cache(false),
     draw_path (false),
     gui_index(0),
@@ -627,7 +627,8 @@ bool view_app::process_key(app::event *E)
             case SDL_SCANCODE_F14: return funkey(14, c, s);
             case SDL_SCANCODE_F15: return funkey(15, c, s);
 
-            case SDL_SCANCODE_SPACE: play(s); return true;
+            case SDL_SCANCODE_SPACE:  play(s);    return true;
+            case SDL_SCANCODE_RETURN: zoom = 0.0; return true;
         }
     }
     return prog::process_event(E);
@@ -694,7 +695,7 @@ bool view_app::process_click(app::event *E)
 
     if (b == -2)
     {
-        zoom = zoom + d / 100.0;
+        zoom = zoom + d / 10.0;
         zoom = std::max(zoom, zoom_min);
         zoom = std::min(zoom, zoom_max);
         return true;
@@ -767,7 +768,8 @@ void view_app::gui_draw()
             const vec3   y = normal(p[2] - p[0]);
             const vec3   z = normal(cross(x, y));
 
-            mat4 T = translation(p[0])
+            mat4 T = inverse(::view->get_tracking())
+                   * translation(p[0])
                    *   transpose(mat3(x, y, z))
                    *       scale(vec3(w, h, 1));
 
@@ -776,6 +778,29 @@ void view_app::gui_draw()
         }
         glDisable(GL_DEPTH_CLAMP_NV);
     }
+}
+
+// Apply the view tracking matrix to the given point event.
+
+static void transform_point(app::event *D, app::event *S, mat4 M)
+{
+    vec3 p(S->data.point.p[0],
+           S->data.point.p[1],
+           S->data.point.p[2]);
+    quat q(S->data.point.q[0],
+           S->data.point.q[1],
+           S->data.point.q[2],
+           S->data.point.q[3]);
+    mat3 N(q);
+    mat4 Q(N);
+
+    p = M * p;
+    Q = M * Q;
+    q = quat(mat3(Q[0][0], Q[0][1], Q[0][2],
+                  Q[1][0], Q[1][1], Q[1][2],
+                  Q[2][0], Q[2][1], Q[2][2]));
+
+    D->mk_point(S->data.point.i, p, q);
 }
 
 // Handle an event while the GUI is visible.
@@ -791,7 +816,11 @@ bool view_app::gui_event(app::event *E)
 
             if (const app::frustum *overlay = ::host->get_overlay())
             {
-                if (E->data.point.i == 0 && overlay->pointer_to_2D(E, x, y))
+                app::event F;
+
+                transform_point(&F, E, ::view->get_tracking());
+
+                if (E->data.point.i == 0 && overlay->pointer_to_2D(&F, x, y))
                 {
                     gui->point(toint(x * gui_w),
                                toint(y * gui_h));
