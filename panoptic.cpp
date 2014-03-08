@@ -180,11 +180,16 @@ double panoptic::get_speed() const
 
 double panoptic::get_scale() const
 {
-    const double d = here.get_distance();
-    const double h =      get_current_ground();
-    const double k = std::min(1.0, 1.0 / (d - h));
+    if (pan_mode())
+        return 1.0;
+    else
+    {
+        const double d = here.get_distance();
+        const double h =      get_current_ground();
+        const double k = std::min(1.0, 1.0 / (d - h));
 
-    return k;
+        return k;
+    }
 }
 
 //------------------------------------------------------------------------------
