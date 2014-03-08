@@ -46,6 +46,7 @@ private:
 
     quat   get_local() const;
     double get_speed() const;
+    double get_scale() const;
     bool   pan_mode() const;
 
     double speed_min;

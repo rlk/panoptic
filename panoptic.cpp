@@ -127,9 +127,9 @@ ogl::aabb panoptic::prep(int frusc, const app::frustum *const *frusv)
     {
         // Compute a horizon line based upon altitude and minimum terrain height.
 
-        const double r =      get_current_ground();
-        const double m =      get_minimum_ground();
-        const double d = here.get_distance();
+        const double r = get_scale() *      get_current_ground();
+        const double m = get_scale() *      get_minimum_ground();
+        const double d = get_scale() * here.get_distance();
 
         double n = 0.5 *     (d     - r    );
         double f = 1.0 * sqrt(d * d - m * m);
@@ -174,6 +174,15 @@ double panoptic::get_speed() const
 
     if (k > speed_max) return speed_max;
     if (k < speed_min) return speed_min;
+
+    return k;
+}
+
+double panoptic::get_scale() const
+{
+    const double d = here.get_distance();
+    const double h =      get_current_ground();
+    const double k = std::min(1.0, 1.0 / (d - h));
 
     return k;
 }
