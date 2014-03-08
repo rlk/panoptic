@@ -45,6 +45,10 @@
     <image name="color" scm="Bluebonnet-4-L-256-5.tif" channel="0"/>
     <image name="color" scm="Bluebonnet-4-R-256-5.tif" channel="1"/>
   </scene>
+  <scene name="LSU1" vert="glsl/scm-zoom.vert" frag="glsl/scm-basic.frag">
+    <image name="color" scm="LSU1-L-256-5.tif" channel="0"/>
+    <image name="color" scm="LSU1-R-256-5.tif" channel="1"/>
+  </scene>
   <step name="Global" foreground="global" background="milkyway" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="5000000.0"/>
   <step name="Height" foreground="height" background="milkyway" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="5000000.0"/>
   <step name="LDRM" foreground="ldrm" background="milkyway" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="5000000.0"/>
@@ -54,4 +58,5 @@
   <step name="Bluebonnet0" background="Bluebonnet0" distance="0"/>
   <step name="Bluebonnet3" background="Bluebonnet3" distance="0"/>
   <step name="Bluebonnet4" background="Bluebonnet4" distance="0"/>
+  <step name="LSU1" background="LSU1" distance="0"/>
 </sphere>
