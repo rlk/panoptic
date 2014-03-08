@@ -9,13 +9,11 @@ spherical panoramas and planetary surface maps.
 
 Download SCM TIFF imagery from this site. Move the Panoproc executable to the
 same directory to ensure the tool can find the TIFFs. Alternatively, set the
-SCMPATH environment variable to image directory.
+SCMPATH environment variable to your image directory.
 
 ## Application Controls
 
     F1 .................... Toggle this GUI
-    F2 .................... Toggle an image cache overlay
-
     0 1 2 3 4 5 6 7 8 9 ... Select a scene
 
     Mouse button .......... Look around

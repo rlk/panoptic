@@ -549,38 +549,55 @@ bool view_app::funkey(int n, int c, int s)
     {
         if (c == 0)
         {
-//          scm_sphere *sph = sys->get_sphere();
             scm_render *ren = sys->get_render();
 
             switch (n)
             {
-                case  1:
+                case 1: // Toggle the GUI
+
                     if (gui)
                         gui_hide();
                     else
                         gui_show();
                     return true;
 
-                case  2: draw_cache = !draw_cache;                return true;
-                case  3: draw_path  = !draw_path;                 return true;
-                case  4: ren->set_wire(!ren->get_wire());         return true;
+                case 2: // Toggle the wire frame
 
-                case  5: sys->flush_cache();                      return true;
-                case  7: ren->set_blur( 0);                       return true;
-                case  8: ren->set_blur(16);                       return true;
+                    ren->set_wire(!ren->get_wire());
+                    return true;
 
-                case 11:
+                case 3: // Toggle the motion blur
+
+                    ren->set_blur(ren->get_blur() ? 0 : 16);
+                    return true;
+
+                case 4: // Toggle the cache view
+
+                    draw_cache = !draw_cache;
+                    return true;
+
+                case 5: // Flush the cache
+
+                    sys->flush_cache();
+                    return true;
+
+//              case  9: Default GL flush key defined by app:prog
+//              case 10: Default screenshot key defined by app::prog
+
+                case 11: // Begin recording the view motion
+
                     sys->flush_queue();
                     record = true;
                     return true;
-                case 12:
+
+                case 12: // Stop recording the view motion
+
                     record = false;
                     save_path("scm/path");
                     return true;
             }
         }
     }
-
     return false;
 }
 
