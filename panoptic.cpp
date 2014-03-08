@@ -54,9 +54,9 @@ panoptic::panoptic(const std::string& exe,
 {
     // Initialize all interaction state.
 
-    speed_min   = ::conf->get_f("panoptic_speed_min",   0.0);
-    speed_max   = ::conf->get_f("panoptic_speed_max",   0.2);
-    minimum_agl = ::conf->get_f("panoptic_minimum_agl", 100.0);
+    speed_min   = ::conf->get_f("panoptic_speed_min",    0.0);
+    speed_max   = ::conf->get_f("panoptic_speed_max",    0.2);
+    minimum_agl = ::conf->get_f("panoptic_minimum_agl", 50.0);
     stick_timer = 0.0;
 
     // Initialize the reportage socket.
