@@ -794,29 +794,6 @@ void view_app::gui_draw()
     }
 }
 
-// Apply the view tracking matrix to the given point event.
-
-static void transform_point(app::event *D, app::event *S, mat4 M)
-{
-    vec3 p(S->data.point.p[0],
-           S->data.point.p[1],
-           S->data.point.p[2]);
-    quat q(S->data.point.q[0],
-           S->data.point.q[1],
-           S->data.point.q[2],
-           S->data.point.q[3]);
-    mat3 N(q);
-    mat4 Q(N);
-
-    p = M * p;
-    Q = M * Q;
-    q = quat(mat3(Q[0][0], Q[0][1], Q[0][2],
-                  Q[1][0], Q[1][1], Q[1][2],
-                  Q[2][0], Q[2][1], Q[2][2]));
-
-    D->mk_point(S->data.point.i, p, q);
-}
-
 // Handle an event while the GUI is visible.
 
 bool view_app::gui_event(app::event *E)
@@ -830,11 +807,7 @@ bool view_app::gui_event(app::event *E)
 
             if (const app::frustum *overlay = ::host->get_overlay())
             {
-                app::event F;
-
-                transform_point(&F, E, ::view->get_tracking());
-
-                if (E->data.point.i == 0 && overlay->pointer_to_2D(&F, x, y))
+                if (E->data.point.i == 0 && overlay->pointer_to_2D(E, x, y))
                 {
                     gui->point(toint(x * gui_w),
                                toint(y * gui_h));
