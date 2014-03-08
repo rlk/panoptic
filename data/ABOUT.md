@@ -13,28 +13,27 @@ SCMPATH environment variable to image directory.
 
 ## Application Controls
 
-    F1 ............. Toggle this GUI
-    F2 ............. Toggle an image cache overlay
+    F1 .................... Toggle this GUI
+    F2 .................... Toggle an image cache overlay
 
-    Mouse button ... Pan the view
-    Mouse wheel .... Zoom in or out of a panorama
-    Return ......... Zoom reset
-    W A S D ........ Move around a planet horizontally
-    Q E ............ Move around a planet vertically
+    0 1 2 3 4 5 6 7 8 9 ... Select a scene
 
-    0–9 ............ Select a scene
-    Control 0–9 .... Select a scene without changing the view point
+    Mouse button .......... Look around
+    Mouse wheel ........... Zoom in or out of a panorama
+    Return ................ Zoom reset
+    W A S D ............... Move around a planet horizontally
+    Q E ................... Move around a planet vertically
 
 ## GUI Panels
 
-    About .......... Display this documentation
-    Data ........... Load a scene definition file
-    Config ......... Change the display configuration
+    About .... Display this documentation
+    Data ..... Load a scene definition file
+    Config ... Change the display configuration
 
 ## Stereoscopy
 
-    To switch into 3D stereoscopic mode, select the Config panel, navigate up
-    to ".." and down to "stereoscopic". Available modes are listed there.
+    To switch to 3D stereoscopic mode, go to the Config panel. Click to navigate
+    up to ".." and down to "stereoscopic". Available modes are listed there.
 
 ## Everything else
 
