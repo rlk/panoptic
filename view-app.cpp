@@ -559,34 +559,29 @@ bool view_app::funkey(int n, int c, int s)
                         gui_hide();
                     else
                         gui_show();
-                    break;
+                    return true;
 
-                case  2: draw_cache = !draw_cache;                break;
-                case  3: draw_path  = !draw_path;                 break;
-                case  4: ren->set_wire(!ren->get_wire());         break;
+                case  2: draw_cache = !draw_cache;                return true;
+                case  3: draw_path  = !draw_path;                 return true;
+                case  4: ren->set_wire(!ren->get_wire());         return true;
 
-                case  5: sys->flush_cache();                      break;
-                case  7: ren->set_blur( 0);                       break;
-                case  8: ren->set_blur(16);                       break;
-
-//              case  9: sph->set_detail(sph->get_detail() +  2); break;
-//              case 10: sph->set_detail(sph->get_detail() -  2); break;
-//              case 11: sph->set_limit (sph->get_limit () + 10); break;
-//              case 12: sph->set_limit (sph->get_limit () - 10); break;
+                case  5: sys->flush_cache();                      return true;
+                case  7: ren->set_blur( 0);                       return true;
+                case  8: ren->set_blur(16);                       return true;
 
                 case 11:
                     sys->flush_queue();
                     record = true;
-                    break;
+                    return true;
                 case 12:
                     record = false;
                     save_path("scm/path");
-                    break;
+                    return true;
             }
         }
     }
 
-    return true;
+    return false;
 }
 
 // Handle a keyboard event.
@@ -707,6 +702,8 @@ bool view_app::process_click(app::event *E)
 
 bool view_app::process_event(app::event *E)
 {
+    if (prog::process_event(E)) return true;
+
     switch (E->get_type())
     {
         case E_KEY:   if (process_key  (E)) return true; else break;
@@ -716,7 +713,7 @@ bool view_app::process_event(app::event *E)
     }
     if (gui && gui_event(E)) return true;
 
-    return prog::process_event(E);
+    return false;
 }
 
 //------------------------------------------------------------------------------
