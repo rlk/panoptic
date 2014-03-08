@@ -702,15 +702,25 @@ bool view_app::process_tick(app::event *E)
 
 bool view_app::process_click(app::event *E)
 {
-    const int b = E->data.click.b;
-    const int d = E->data.click.d;
-
-    if (b == -2)
+    if (gui == 0)
     {
-        zoom = zoom + d / 10.0;
-        zoom = std::max(zoom, zoom_min);
-        zoom = std::min(zoom, zoom_max);
-        return true;
+        // Minor hack: forward left click as a view-motion right click.
+
+        if (E->data.click.b == SDL_BUTTON_LEFT)
+        {
+            E->data.click.b =  SDL_BUTTON_RIGHT;
+            return prog::process_event(E);
+        }
+
+        // Zoom with the mouse wheel.
+
+        if (E->data.click.b == -2)
+        {
+            zoom = zoom + E->data.click.d / 10.0;
+            zoom = std::max(zoom, zoom_min);
+            zoom = std::min(zoom, zoom_max);
+            return true;
+        }
     }
     return false;
 }
