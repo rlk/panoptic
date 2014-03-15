@@ -536,8 +536,16 @@ bool view_app::numkey(int n, int c, int s)
         else
             fade_to(n);
     }
-    else jump_to(n);
-
+    else
+    {
+        if (c == 0)
+            jump_to(n);
+        else
+        {
+            if (n == 1) flag();
+            if (n == 2) step();
+        }
+    }
     return true;
 }
 
