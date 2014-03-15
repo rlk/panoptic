@@ -222,7 +222,10 @@ quat panoptic::get_orientation() const
 void panoptic::set_orientation(const quat &q)
 {
     if (pan_mode())
+    {
+        here.set_orientation(q);
         view_app::set_orientation(q);
+    }
     else
     {
         quat r = normal(get_local() * q);
