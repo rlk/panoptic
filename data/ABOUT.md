@@ -5,7 +5,7 @@ Panoptic is a tool for the interactive exploration of high-resolution spherical
 imagery in the spherical cubemap TIFF format. This includes omnistereoscopic
 spherical panoramas and planetary surface maps.
 
-# https://github.com/rlk/scmview
+# https://rlk.github.io/panoptic
 
 Download SCM TIFF imagery from this site. Move the Panoproc executable to the
 same directory to ensure the tool can find the TIFFs. Alternatively, set the
