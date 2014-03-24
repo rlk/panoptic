@@ -199,9 +199,22 @@ quat panoptic::get_local() const
     const vec3 p(::view->get_position());
     const mat3 R(::view->get_orientation());
 
-    vec3 x = normal(xvector(R));
     vec3 y = normal(p);
-    vec3 z = normal(cross(x, y));
+    vec3 x;
+    vec3 z;
+
+    if (fabs(xvector(R) * y) < fabs(zvector(R) * y))
+    {
+        x = normal(xvector(R));
+        z = normal(cross(x, y));
+        x = normal(cross(y, z));
+    }
+    else
+    {
+        z = normal(zvector(R));
+        x = normal(cross(y, z));
+        z = normal(cross(x, y));
+    }
 
     return quat(mat3(x, y, z));
 }
