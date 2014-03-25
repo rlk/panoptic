@@ -45,9 +45,10 @@ private:
     // View motion state
 
     quat   get_local() const;
-    double get_speed() const;
-    double get_scale() const;
     bool   pan_mode() const;
+
+    virtual double get_speed() const;
+    virtual double get_scale() const;
 
     double speed_min;
     double speed_max;

@@ -40,7 +40,7 @@ view_app::view_app(const std::string& exe,
     record(false),
 
     zoom     ( 0.0),
-    zoom_min (-2.0),
+    zoom_min (-1.0),
     zoom_max ( 3.0),
     zoom_rate( 0.0),
 
@@ -409,6 +409,8 @@ ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
     else
         glClearColor(0.0, 0.0, 0.0, 0.0);
 
+    ::view->set_scaling(get_scale());
+
     // Handle the zoom. Not all subclasses will appreciate this.
 
     const vec3 v = ::view->get_point_vec(quat());
@@ -439,16 +441,13 @@ void view_app::draw(int frusi, const app::frustum *frusp, int chani)
 {
     mat4 P =  frusp->get_transform();
     mat4 M = ::view->get_transform();
-    mat4 S = scale(vec3(get_scale(),
-                        get_scale(),
-                        get_scale()));
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // TODO: Necessary?
 
-    sys->render_sphere(transpose(P), transpose(S * M), chani);
+    sys->render_sphere(transpose(P), transpose(M), chani);
 }
 
 // Render the GUI and debugging overlays.
@@ -457,10 +456,6 @@ void view_app::over(int frusi, const app::frustum *frusp, int chani)
 {
     frusp->load_transform();
    ::view->load_transform();
-
-    glScaled(get_scale(),
-             get_scale(),
-             get_scale());
 
     if (draw_path)  sys->render_queue();
     if (draw_cache) sys->render_cache();
