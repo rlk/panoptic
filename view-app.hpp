@@ -82,6 +82,7 @@ protected:
     double zoom;
     double zoom_min;
     double zoom_max;
+    double zoom_rate;
 
 private:
 
@@ -92,20 +93,34 @@ private:
 
     bool draw_cache;
     bool draw_path;
+    int  curr_step;
 
+    bool dostep(int, int, int);
     bool numkey(int, int, int);
     bool funkey(int, int, int);
 
-    bool process_key  (app::event *);
-    bool process_user (app::event *);
-    bool process_tick (app::event *);
-    bool process_click(app::event *);
+    bool process_key   (app::event *);
+    bool process_user  (app::event *);
+    bool process_tick  (app::event *);
+    bool process_click (app::event *);
+    bool process_button(app::event *);
 
     virtual double get_speed() const { return 1.0; }
     virtual double get_scale() const { return 1.0; }
 
-    // Sphere GUI State
+    // Joystick state
 
+    bool mod_shift;
+    bool mod_control;
+
+    int button_next;
+    int button_prev;
+    int button_zoom_in;
+    int button_zoom_out;
+    int button_control;
+    int button_shift;
+
+    // Sphere GUI State
 
     int       gui_index;
     int       gui_w;

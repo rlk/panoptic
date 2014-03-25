@@ -38,11 +38,19 @@ view_app::view_app(const std::string& exe,
     now(0),
     delta(0),
     record(false),
-    zoom(0.0),
-    zoom_min(-2.0),
-    zoom_max( 3.0),
+
+    zoom     ( 0.0),
+    zoom_min (-2.0),
+    zoom_max ( 3.0),
+    zoom_rate( 0.0),
+
     draw_cache(false),
     draw_path (false),
+    curr_step (0),
+
+    mod_shift  (false),
+    mod_control(false),
+
     gui_index(0),
     gui_w(0),
     gui_h(0),
@@ -70,6 +78,15 @@ view_app::view_app(const std::string& exe,
                                          scm_cache::load_queue_size);
     scm_cache::loads_per_cycle = ::conf->get_i("scm_loads_per_cycle",
                                          scm_cache::loads_per_cycle);
+
+    // Configure the joystick interface. (XBox 360 defaults)
+
+    button_next     = ::conf->get_i("view_button_next",     14);
+    button_prev     = ::conf->get_i("view_button_prev",     13);
+    button_zoom_in  = ::conf->get_i("view_button_zoom_in",   1);
+    button_zoom_out = ::conf->get_i("view_button_zoom_out",  0);
+    button_control  = ::conf->get_i("view_button_control",   5);
+    button_shift    = ::conf->get_i("view_button_shift",     4);
 }
 
 view_app::~view_app()
@@ -466,7 +483,7 @@ void view_app::move_to(int n)
 
 void view_app::jump_to(int n)
 {
-    if (n < sys->get_step_count())
+    if (0 <= n && n < sys->get_step_count())
     {
         sys->flush_queue();
         sys->append_queue(new scm_step(sys->get_step(n)));
@@ -475,6 +492,7 @@ void view_app::jump_to(int n)
         sys->set_scene_blend(1.0);
 
         view_from_step(here);
+        curr_step = n;
     }
 }
 
@@ -483,7 +501,7 @@ void view_app::jump_to(int n)
 
 void view_app::fade_to(int n)
 {
-    if (n < sys->get_step_count())
+    if (0 <= n && n < sys->get_step_count())
     {
         scm_step *there = new scm_step(&here);
 
@@ -497,6 +515,7 @@ void view_app::fade_to(int n)
         sys->set_scene_blend(1.0);
 
         view_from_step(here);
+        curr_step = n;
     }
 }
 
@@ -524,6 +543,23 @@ void view_app::play(bool movie)
 }
 
 //------------------------------------------------------------------------------
+
+bool view_app::dostep(int d, int c, int s)
+{
+    if (s == 0)
+    {
+        if (c == 0)
+            move_to(curr_step + d);
+        else
+            fade_to(curr_step + d);
+    }
+    else
+    {
+        if (c == 0)
+            jump_to(curr_step + d);
+    }
+    return true;
+}
 
 // Handle a press of number key n with control status c and shift status s.
 
@@ -647,6 +683,9 @@ bool view_app::process_key(app::event *E)
             case SDL_SCANCODE_F14: return funkey(14, c, s);
             case SDL_SCANCODE_F15: return funkey(15, c, s);
 
+            case SDL_SCANCODE_PAGEUP:   return dostep(+1, c, s);
+            case SDL_SCANCODE_PAGEDOWN: return dostep(-1, c, s);
+
             case SDL_SCANCODE_SPACE:  play(s);    return true;
             case SDL_SCANCODE_RETURN: zoom = 0.0; return true;
         }
@@ -683,6 +722,13 @@ bool view_app::process_user(app::event *E)
 
 bool view_app::process_tick(app::event *E)
 {
+    if (zoom_rate)
+    {
+        zoom += zoom_rate * E->data.tick.dt;
+        zoom = std::max(zoom, zoom_min);
+        zoom = std::min(zoom, zoom_max);
+    }
+
     if (delta)
     {
         double prev = now;
@@ -733,6 +779,26 @@ bool view_app::process_click(app::event *E)
     return false;
 }
 
+// Handle a joystic button event.
+
+bool view_app::process_button(app::event *E)
+{
+    const int  b = E->data.button.b;
+    const bool d = E->data.button.d;
+
+    if (b == button_next && d)
+        return dostep(+1, mod_control, mod_shift);
+    if (b == button_prev && d)
+        return dostep(-1, mod_control, mod_shift);
+
+    if (b == button_shift)    { mod_shift   = d;          return true; }
+    if (b == button_control)  { mod_control = d;          return true; }
+    if (b == button_zoom_in)  { zoom_rate   = d ? +1 : 0; return true; }
+    if (b == button_zoom_out) { zoom_rate   = d ? -1 : 0; return true; }
+
+    return false;
+}
+
 // Delegate the handling of an event, or pass it to the superclass.
 
 bool view_app::process_event(app::event *E)
@@ -741,10 +807,11 @@ bool view_app::process_event(app::event *E)
 
     switch (E->get_type())
     {
-        case E_KEY:   if (process_key  (E)) return true; else break;
-        case E_USER:  if (process_user (E)) return true; else break;
-        case E_TICK:  if (process_tick (E)) return true; else break;
-        case E_CLICK: if (process_click(E)) return true; else break;
+        case E_KEY:    if (process_key   (E)) return true; else break;
+        case E_USER:   if (process_user  (E)) return true; else break;
+        case E_TICK:   if (process_tick  (E)) return true; else break;
+        case E_CLICK:  if (process_click (E)) return true; else break;
+        case E_BUTTON: if (process_button(E)) return true; else break;
     }
     if (gui && gui_event(E)) return true;
 
