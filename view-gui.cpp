@@ -66,6 +66,21 @@ public:
     }
 };
 
+class button_quit : public gui::button
+{
+    gui::widget *name;
+
+public:
+    button_quit() :
+        gui::button("Quit") { }
+
+    void apply()
+    {
+        SDL_Event quit = { SDL_QUIT };
+        SDL_PushEvent(&quit);
+    }
+};
+
 //-----------------------------------------------------------------------------
 // The About panel
 
@@ -135,6 +150,7 @@ view_gui::view_gui(view_app *V, int w, int h)
     gui::widget *A = new panel_button("About",  state, 0);
     gui::widget *B = new panel_button("Config", state, 1);
     gui::widget *C = new panel_button("Data",   state, 2);
+    gui::widget *Q = new button_quit();
 
     root = ((new gui::vgroup)->
             add((new gui::harray)->
@@ -142,7 +158,8 @@ view_gui::view_gui(view_app *V, int w, int h)
                 add(B)->
                 add(C)->
                 add(new gui::spacer)->
-                add(new gui::spacer))->
+                add(new gui::spacer)->
+                add(Q))->
             add(new gui::spacer)->
             add(state->
                 add(new  about_panel(V, state))->
