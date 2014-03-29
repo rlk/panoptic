@@ -130,31 +130,23 @@ void view_app::host_dn()
 
 //------------------------------------------------------------------------------
 
-// Set the Thumb view to match the given step.
-
-void view_from_step(scm_step& step)
+void view_app::set_orientation(const quat &q)
 {
-    double p[3];
-    double q[4];
-    double r = step.get_distance();
-
-    step.get_orientation(q);
-    step.get_position   (p);
-
-    ::view->set_orientation(quat(q[0], q[1], q[2], q[3]));
-    ::view->set_position   (vec3(p[0], p[1], p[2]) * r);
+    here.set_orientation(q);
 }
 
-// Set the given step to match the current Thumb view.
-
-void step_from_view(scm_step& step)
+quat view_app::get_orientation() const
 {
-    quat q = ::view->get_orientation();
-    vec3 p = ::view->get_position();
+    double q[4];
+    here.get_orientation(q);
+    return quat(q[0], q[1], q[2], q[3]);
+}
 
-    step.set_orientation(q);
-    step.set_position   (p);
-    step.set_distance   (length(p));
+vec3 view_app::get_position() const
+{
+    double p[3], r = here.get_distance();
+    here.get_position(p);
+    return vec3(p[0], p[1], p[2]) * r;
 }
 
 //------------------------------------------------------------------------------
@@ -409,7 +401,12 @@ ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
     else
         glClearColor(0.0, 0.0, 0.0, 0.0);
 
-    ::view->set_scaling(get_scale());
+    // Transfer the current camera state to the view manager.
+
+    ::view->set_orientation(view_app::get_orientation());
+
+    ::view->set_position(get_position());
+    ::view->set_scaling (get_scale());
 
     // Handle the zoom. Not all subclasses will appreciate this.
 
@@ -486,7 +483,6 @@ void view_app::jump_to(int n)
         here = sys->get_step_blend(1.0);
         sys->set_scene_blend(1.0);
 
-        view_from_step(here);
         curr_step = n;
     }
 }
@@ -509,7 +505,6 @@ void view_app::fade_to(int n)
         here = sys->get_step_blend(1.0);
         sys->set_scene_blend(1.0);
 
-        view_from_step(here);
         curr_step = n;
     }
 }
@@ -731,8 +726,6 @@ bool view_app::process_tick(app::event *E)
 
         here = sys->get_step_blend(next);
         now = sys->set_scene_blend(next);
-
-        view_from_step(here);
 
         if (now == prev)
         {

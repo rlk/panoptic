@@ -55,6 +55,10 @@ public:
     void flag();
     void step();
 
+    virtual void set_orientation(const quat&);
+    virtual quat get_orientation() const;
+    virtual vec3 get_position   () const;
+
     double get_current_ground() const;
     double get_minimum_ground() const;
 

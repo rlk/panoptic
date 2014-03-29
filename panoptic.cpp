@@ -20,7 +20,6 @@
 #include <etc-vector.hpp>
 #include <app-data.hpp>
 #include <app-host.hpp>
-#include <app-view.hpp>
 #include <app-conf.hpp>
 #include <app-prog.hpp>
 #include <app-frustum.hpp>
@@ -212,8 +211,8 @@ double panoptic::get_scale() const
 
 quat panoptic::get_local() const
 {
-    const vec3 p(::view->get_position());
-    const mat3 R(::view->get_orientation());
+    const vec3 p(view_app::get_position());
+    const mat3 R(view_app::get_orientation());
 
     vec3 y = normal(p);
     vec3 x;
@@ -238,24 +237,17 @@ quat panoptic::get_local() const
 quat panoptic::get_orientation() const
 {
     if (pan_mode())
-        return view_app::get_orientation();
+        return                        view_app::get_orientation();
     else
-        return inverse(get_local()) * ::view->get_orientation();
+        return inverse(get_local()) * view_app::get_orientation();
 }
 
 void panoptic::set_orientation(const quat &q)
 {
     if (pan_mode())
-    {
         here.set_orientation(q);
-        view_app::set_orientation(q);
-    }
     else
-    {
-        quat r = normal(get_local() * q);
-        here.set_orientation(r);
-        ::view->set_orientation(r);
-    }
+        here.set_orientation(get_local() * q);
 }
 
 void panoptic::offset_position(const vec3 &d)
@@ -264,10 +256,6 @@ void panoptic::offset_position(const vec3 &d)
         view_app::offset_position(d);
     else
     {
-        // Set the current step using the current camera configuration.
-
-        step_from_view(here);
-
         // Apply the motion vector as rotation of the step.
 
         const double k = 500000.0 * get_speed();
@@ -291,10 +279,6 @@ void panoptic::offset_position(const vec3 &d)
         here.get_position(v);
         here.set_distance(std::max(d[1] * k + r,
                                 minimum_agl + sys->get_current_ground(v)));
-
-        // Copy the modifed step back to the camera configuration.
-
-        view_from_step(here);
     }
 }
 
@@ -333,19 +317,16 @@ double spiral(double r0, double r1, double theta)
 void panoptic::move_to(int i)
 {
     view_app::move_to(i);
-    ::view->set_lock_origin(pan_mode());
 }
 
 void panoptic::jump_to(int i)
 {
     view_app::jump_to(i);
-    ::view->set_lock_origin(pan_mode());
 }
 
 void panoptic::fade_to(int i)
 {
     view_app::fade_to(i);
-    ::view->set_lock_origin(pan_mode());
 }
 
 #if 0
