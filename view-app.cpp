@@ -399,6 +399,14 @@ double view_app::get_minimum_ground() const
 
 ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
 {
+#if 0
+    double ra = here.get_distance();
+    double gd = get_current_ground();
+    double sc = get_scale();
+
+    printf("(%f - %f) * %f = %f\n", ra, gd, sc, (ra - gd) * sc);
+#endif
+
     if (gui)
         glClearColor(0.3, 0.3, 0.3, 0.0);
     else

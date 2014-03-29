@@ -198,9 +198,10 @@ double panoptic::get_scale() const
         return 1.0;
     else
     {
-        const double d = here.get_distance();
-        const double h =      get_current_ground();
-        const double k = std::min(1.0, 0.2 / (d - h));
+        const double s = ::host->get_distance();
+        const double d =    here.get_distance();
+        const double h =         get_current_ground();
+        const double k = std::min(1.0, s / (d - h));
 
         return k;
     }
