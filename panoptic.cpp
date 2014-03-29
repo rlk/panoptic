@@ -80,6 +80,20 @@ panoptic::~panoptic()
     close(report_sock);
 }
 
+// This is a potentially troublesome function that solves a tough problem in
+// an unsatisfactory fashion. It determines whether the current scene is or is
+// not a panorama.
+//
+// Currently, a large sphere implies a planet and a small sphere implies a
+// panorama. The dividing line is 100 meters.
+//
+// The mapping of user input onto view state changes depending on the outcome.
+
+bool panoptic::pan_mode() const
+{
+    return (get_minimum_ground() < 100.0);
+}
+
 //------------------------------------------------------------------------------
 
 // The report mechanism transmits the current view location to a remote host,
@@ -195,6 +209,7 @@ double panoptic::get_scale() const
 
 //------------------------------------------------------------------------------
 
+
 quat panoptic::get_local() const
 {
     const vec3 p(::view->get_position());
@@ -218,11 +233,6 @@ quat panoptic::get_local() const
     }
 
     return quat(mat3(x, y, z));
-}
-
-bool panoptic::pan_mode() const
-{
-    return (get_minimum_ground() < 100.0);
 }
 
 quat panoptic::get_orientation() const
@@ -315,6 +325,27 @@ double spiral(double r0, double r1, double theta)
         return theta * r0;
     }
     return dr;
+}
+
+// Transition to a new scene normally, but configure the view interection to
+// match the scene type.
+
+void panoptic::move_to(int i)
+{
+    view_app::move_to(i);
+    ::view->set_lock_origin(pan_mode());
+}
+
+void panoptic::jump_to(int i)
+{
+    view_app::jump_to(i);
+    ::view->set_lock_origin(pan_mode());
+}
+
+void panoptic::fade_to(int i)
+{
+    view_app::fade_to(i);
+    ::view->set_lock_origin(pan_mode());
 }
 
 #if 0
