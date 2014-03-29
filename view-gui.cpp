@@ -68,8 +68,6 @@ public:
 
 class button_quit : public gui::button
 {
-    gui::widget *name;
-
 public:
     button_quit() :
         gui::button("Quit") { }
