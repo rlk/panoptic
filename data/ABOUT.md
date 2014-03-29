@@ -1,4 +1,6 @@
 
+# PANOPTIC
+
 ## Copyright © 2011–2014 Robert Kooima <robert.kooima@gmail.com>
 
 Panoptic is a tool for the interactive exploration of high-resolution spherical
@@ -25,8 +27,8 @@ SCMPATH environment variable to your image directory.
 ## GUI Panels
 
     About .... Display this documentation
-    Data ..... Load a scene definition file
     Config ... Change the display configuration
+    Data ..... Load a scene definition file
 
 ## Stereoscopy
 

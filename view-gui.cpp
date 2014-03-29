@@ -130,27 +130,29 @@ config_panel::config_panel(view_app *V, gui::widget *w) : gui::vgroup()
 
 view_gui::view_gui(view_app *V, int w, int h)
 {
-    gui::widget *title = new gui::string("Panoptic", gui::string::sans, 0, 0xFF, 0xC0, 0x40);
-
     state = new gui::option;
+
+    gui::widget *A = new panel_button("About",  state, 0);
+    gui::widget *B = new panel_button("Config", state, 1);
+    gui::widget *C = new panel_button("Data",   state, 2);
 
     root = ((new gui::vgroup)->
             add((new gui::harray)->
-                add(title)->
-                add(new panel_button("About",  state, 0))->
-                add(new panel_button("Data",   state, 1))->
-                add(new panel_button("Config", state, 2))->
+                add(A)->
+                add(B)->
+                add(C)->
+                add(new gui::spacer)->
                 add(new gui::spacer))->
             add(new gui::spacer)->
             add(state->
                 add(new  about_panel(V, state))->
-                add(new   data_panel(V, state))->
-                add(new config_panel(V, state))));
+                add(new config_panel(V, state))->
+                add(new   data_panel(V, state))));
 
     root->layup();
 
-    int ww = std::max(root->get_w(), title->get_w() *  6);
-    int hh = std::max(root->get_h(), title->get_h() * 12);
+    int ww = std::max(root->get_w(), A->get_w() *  6);
+    int hh = std::max(root->get_h(), A->get_h() * 12);
 
     root->laydn((w - ww) / 2,
                 (h - hh) / 2, ww, hh);
