@@ -311,8 +311,8 @@ double spiral(double r0, double r1, double theta)
     return dr;
 }
 
-// Transition to a new scene normally, but configure the view interection to
-// match the scene type.
+// Transition to a new scene normally, but override a jump when changing
+// visualization type.
 
 void panoptic::move_to(int i)
 {
@@ -326,7 +326,12 @@ void panoptic::jump_to(int i)
 
 void panoptic::fade_to(int i)
 {
+    bool before = pan_mode();
     view_app::fade_to(i);
+    bool after  = pan_mode();
+
+    if (before != after)
+        view_app::jump_to(i);
 }
 
 #if 0

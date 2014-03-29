@@ -130,6 +130,9 @@ void view_app::host_dn()
 
 //------------------------------------------------------------------------------
 
+// The view handler API is overloaded to manipulate scm_state variables instead
+// of the global app::view.
+
 void view_app::set_orientation(const quat &q)
 {
     here.set_orientation(q);
