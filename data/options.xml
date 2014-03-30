@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<conf>
+  <option name="display_config">config/common/1280x720-window.xml</option>
+  <option name="scm_cache_size">16</option>
+  <option name="input">gamepad</option>
+  <!-- Viewer gamepad axes -->
+  <option name="gamepad_axis_pos_x"> 0</option>
+  <option name="gamepad_axis_neg_x">-1</option>
+  <option name="gamepad_axis_pos_y"> 5</option>
+  <option name="gamepad_axis_neg_y"> 2</option>
+  <option name="gamepad_axis_pos_z"> 1</option>
+  <option name="gamepad_axis_neg_z">-1</option>
+  <option name="gamepad_axis_pos_yaw">-1</option>
+  <option name="gamepad_axis_neg_yaw"> 3</option>
+  <option name="gamepad_axis_pos_pitch">-1</option>
+  <option name="gamepad_axis_neg_pitch"> 4</option>
+  <!-- Viewer gamepad buttons -->
+  <option name="view_button_next">14</option>
+  <option name="view_button_prev">13</option>
+  <option name="view_button_zoom_in">1</option>
+  <option name="view_button_zoom_out">0</option>
+  <option name="view_button_control">5</option>
+  <option name="view_button_shift">4</option>
+</conf>
