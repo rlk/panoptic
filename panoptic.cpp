@@ -96,7 +96,7 @@ bool panoptic::pan_mode() const
 //------------------------------------------------------------------------------
 
 // The report mechanism transmits the current view location to a remote host,
-// as configured in conf.xml. This allows the creation of an external map
+// as configured in options.xml. This allows the creation of an external map
 // display showing the user in the context of the globe.
 
 void panoptic::report()

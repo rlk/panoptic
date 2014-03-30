@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <conf>
-  <option name="display_config">config/common/1280x720-window.xml</option>
+  <option name="config_file">config/common/1280x720-window.xml</option>
   <option name="scm_cache_size">16</option>
-  <option name="input">gamepad</option>
+  <option name="input_mode">gamepad</option>
   <!-- Viewer gamepad axes -->
   <option name="gamepad_axis_pos_x"> 0</option>
   <option name="gamepad_axis_neg_x">-1</option>
