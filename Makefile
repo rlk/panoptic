@@ -5,20 +5,29 @@ include ../thumb/Makedefs
 OBJS= view-gui.o view-app.o panoptic.o data.o
 DEPS= $(OBJS:.o=.d)
 
+ifdef ISMACOS
+	EXE = panoptic
+endif
+ifdef ISLINUX
+	EXE = panoptic
+endif
+ifdef ISMINGW
+	EXE = panoptic.exe
+endif
+
 #------------------------------------------------------------------------------
 
 CFLAGS += -I../thumb/include
 THUMB   = -L../thumb/src -lthumb
 SCM     = scm/libscm.a
-TARG    = panoptic
 
 #------------------------------------------------------------------------------
 
-$(TARG): scm $(OBJS)
+$(EXE): scm $(OBJS)
 	$(CXX) $(CFLAGS) -o $@ $(OBJS) $(THUMB) $(SCM) $(LIBS)
 
 clean:
-	$(RM) $(OBJS) $(DEPS) $(TARG) data.zip
+	$(RM) $(OBJS) $(DEPS) $(EXE) data.zip
 
 #------------------------------------------------------------------------------
 
@@ -48,18 +57,18 @@ data.cpp : data.zip
 VER = $(shell date "+%Y%m%d")
 
 ifdef ISMACOS
-	ZIP = $(TARG)-osx-$(VER).zip
+	ZIP = panoptic-osx-$(VER).zip
 endif
 ifdef ISLINUX
-	ZIP = $(TARG)-lin-$(VER).zip
+	ZIP = panoptic-lin-$(VER).zip
 endif
 ifdef ISMINGW
-	ZIP = $(TARG)-win-$(VER).zip
+	ZIP = panoptic-win-$(VER).zip
 endif
 
-dist : $(TARG)
-	strip $(TARG)
-	zip $(ZIP) $(TARG)
+dist : $(EXE)
+	strip $(EXE)
+	zip $(ZIP) $(EXE)
 
 #------------------------------------------------------------------------------
 
