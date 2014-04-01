@@ -105,7 +105,7 @@ about_panel::about_panel(view_app *V, gui::widget *w) : gui::vgroup()
 
 data_panel::data_panel(view_app *V, gui::widget *w) : gui::vgroup()
 {
-    gui::selector *S = new gui::selector("scm", ".xml");
+    gui::selector *S = new gui::selector(getcwd(0, 0), ".xml");
 
     add((new gui::frame)->
         add((new gui::vgroup)->
