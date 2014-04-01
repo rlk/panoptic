@@ -687,8 +687,8 @@ bool view_app::process_key(app::event *E)
             case SDL_SCANCODE_PAGEUP:   return dostep(+1, c, s);
             case SDL_SCANCODE_PAGEDOWN: return dostep(-1, c, s);
 
-            case SDL_SCANCODE_SPACE:  play(s);    return true;
-            case SDL_SCANCODE_RETURN: zoom = 0.0; return true;
+            case SDL_SCANCODE_SPACE: play(s);    return true;
+            case SDL_SCANCODE_HOME:  zoom = 0.0; return true;
         }
     }
     return prog::process_event(E);
