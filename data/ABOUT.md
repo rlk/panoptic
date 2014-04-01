@@ -20,7 +20,7 @@ SCMPATH environment variable to your image directory.
 
     Mouse button .......... Look around
     Mouse wheel ........... Zoom in or out of a panorama
-    Return ................ Zoom reset
+    Home .................. Zoom reset
     W A S D ............... Move around a planet horizontally
     Q E ................... Move around a planet vertically
 
