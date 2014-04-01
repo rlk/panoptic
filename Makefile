@@ -27,6 +27,7 @@ $(EXE): scm $(OBJS)
 	$(CXX) $(CFLAGS) -o $@ $(OBJS) $(THUMB) $(SCM) $(LIBS)
 
 clean:
+	$(MAKE) -C scm clean
 	$(RM) $(OBJS) $(DEPS) $(EXE) data.zip
 
 #------------------------------------------------------------------------------
