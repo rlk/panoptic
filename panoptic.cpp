@@ -32,21 +32,6 @@
 
 //------------------------------------------------------------------------------
 
-static in_addr_t lookup(const std::string& hostname)
-{
-    struct hostent *H;
-    struct in_addr  A;
-
-    if ((H = gethostbyname(hostname.c_str())))
-    {
-        memcpy(&A.s_addr, H->h_addr_list[0], H->h_length);
-        return  A.s_addr;
-    }
-    return INADDR_NONE;
-}
-
-//------------------------------------------------------------------------------
-
 panoptic::panoptic(const std::string& exe,
                    const std::string& tag)
     : view_app(exe, tag), report_sock(INVALID_SOCKET)
@@ -65,12 +50,14 @@ panoptic::panoptic(const std::string& exe,
 
     if (port && !host.empty())
     {
-        report_addr.sin_family      = AF_INET;
-        report_addr.sin_port        =  htons(port);
-        report_addr.sin_addr.s_addr = lookup(host);
+        if (inet_aton(host.c_str(), &report_addr.sin_addr))
+        {
+            report_addr.sin_family = AF_INET;
+            report_addr.sin_port   = htons(port);
 
-        if (report_addr.sin_addr.s_addr != INADDR_NONE)
-            report_sock = socket(AF_INET, SOCK_DGRAM, 0);
+            if (report_addr.sin_addr.s_addr != INADDR_NONE)
+                report_sock = socket(AF_INET, SOCK_DGRAM, 0);
+        }
     }
 }
 
