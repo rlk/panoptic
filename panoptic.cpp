@@ -50,14 +50,8 @@ panoptic::panoptic(const std::string& exe,
 
     if (port && !host.empty())
     {
-        if (inet_aton(host.c_str(), &report_addr.sin_addr))
-        {
-            report_addr.sin_family = AF_INET;
-            report_addr.sin_port   = htons(port);
-
-            if (report_addr.sin_addr.s_addr != INADDR_NONE)
-                report_sock = socket(AF_INET, SOCK_DGRAM, 0);
-        }
+        if (init_sockaddr(report_addr, host.c_str(), port))
+            report_sock = socket(AF_INET, SOCK_DGRAM, 0);
     }
 }
 
