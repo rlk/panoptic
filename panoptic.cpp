@@ -414,9 +414,27 @@ int main(int argc, char *argv[])
 {
     try
     {
+        std::string t(DEFAULT_TAG);
+        std::string d;
+
         app::prog *P;
 
-        P = new panoptic(argv[0], std::string(argc > 1 ? argv[1] : DEFAULT_TAG));
+        for (int i = 1; i < argc; i++)
+        {
+            if (std::string(argv[i]) == "-t" && i < argc - 1)
+            {
+                t = std::string(argv[i + 1]);
+                i++;
+            }
+            if (std::string(argv[i]) == "-d" && i < argc - 1)
+            {
+                d = std::string(argv[i + 1]);
+                i++;
+            }
+        }
+
+        P = new panoptic(argv[0], t);
+        if (d.size()) P->dump(d);
         P->run();
 
         delete P;
