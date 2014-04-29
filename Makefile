@@ -58,13 +58,13 @@ data.cpp : data.zip
 VER = $(shell date "+%Y%m%d")
 
 ifdef ISMACOS
-	ZIP = panoptic-osx-$(VER).zip
+	ZIP = panoptic-$(VER)-osx.zip
 endif
 ifdef ISLINUX
-	ZIP = panoptic-lin-$(VER).zip
+	ZIP = panoptic-$(VER)-lin.zip
 endif
 ifdef ISMINGW
-	ZIP = panoptic-win-$(VER).zip
+	ZIP = panoptic-$(VER)-win.zip
 endif
 
 dist : $(EXE)
