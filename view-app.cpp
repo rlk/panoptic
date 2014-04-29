@@ -465,7 +465,7 @@ void view_app::over(int frusi, const app::frustum *frusp, int chani)
     frusp->load_transform();
    ::view->load_transform();
 
-    if (draw_path)  sys->render_queue();
+    // if (draw_path)  sys->render_queue();
     if (draw_cache) sys->render_cache();
 
     if (gui) gui_draw();
