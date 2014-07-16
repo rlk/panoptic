@@ -3,14 +3,23 @@
   <scene name="MilkyWay" vert="glsl/scm-basic.vert" frag="glsl/scm-basic.frag">
     <image name="color" scm="synaspan-254-4.tif" k0="0.0" k1="1.0"/>
   </scene>
-  <scene name="Global" vert="glsl/scm-displace.vert" frag="glsl/scm-basic.frag">
+  <scene name="Moon" vert="glsl/scm-displace.vert" frag="glsl/scm-basic.frag">
     <image name="height" scm="DTM-254-7.tif" k0="1728240" k1="1748170"/>
     <image name="color" scm="WAC-254-7.tif" k0="0.0" k1="3.0"/>
   </scene>
-  <scene name="Terrain" label="IAUMOON.csv" vert="glsl/scm-displace.vert" frag="glsl/scm-relief-colormap-scalar.frag" r="0" g="0" b="0" a="255">
+  <scene name="Mars" vert="glsl/scm-displace.vert" frag="glsl/scm-basic.frag">
+    <image name="height" scm="MEGDR-K-180-6.tif" k0="3373043" k1="3417245"/>
+    <image name="color" scm="MDIM21-180-7.tif" k0="0.0" k1="1.0"/>
+  </scene>
+  <scene name="LOLA" label="IAUMOON.csv" vert="glsl/scm-displace.vert" frag="glsl/scm-relief-colormap-scalar.frag" r="0" g="0" b="0" a="255">
     <image name="height" scm="DTM-254-7.tif" k0="1728240" k1="1748170"/>
     <image name="normal" scm="DTM-254-7-N.tif"/>
     <image name="scalar" scm="DTM-254-7.tif"/>
+  </scene>
+  <scene name="MOLA" label="IAUMARS.csv" vert="glsl/scm-displace.vert" frag="glsl/scm-relief-colormap-scalar.frag" r="0" g="0" b="0" a="255">
+    <image name="height" scm="MEGDR-K-180-6.tif" k0="3373043" k1="3417245"/>
+    <image name="normal" scm="MEGDR-K-180-6-N.tif"/>
+    <image name="scalar" scm="MEGDR-K-180-6.tif"/>
   </scene>
     <scene name="LDSM" label="graticule.csv" vert="glsl/scm-displace.vert" frag="glsl/scm-relief-colormap-scalar.frag" r="0" g="0" b="0" a="255">
       <image name="height" scm="DTM-254-7.tif" k0="1728240" k1="1748170" />
@@ -49,10 +58,10 @@
     <image name="color" scm="Tiger-Stadium-2-L-254-5-J.tif" channel="0"/>
     <image name="color" scm="Tiger-Stadium-2-R-254-5-J.tif" channel="1"/>
   </scene>
-  <step name="Global" foreground="Global" background="MilkyWay" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="6000000.0"/>
-  <step name="Terrain" foreground="Terrain" background="MilkyWay" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="6000000.0"/>
-  <step name="LDSM" foreground="LDSM" background="MilkyWay" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="6000000.0"/>
-  <step name="MiniRF" foreground="MiniRF" background="MilkyWay" q0="-0.0918441" q1="+0.1159281" q2="+0.0730692" q3="+0.9862992" p0="-0.0320237" p1="+0.9369168" p2="+0.3480822" l0="-0.0036308" l1="+0.7307950" l2="-0.6825872" r="1818591"/>
+  <step name="Mars" foreground="Mars" background="MilkyWay" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="6000000.0"/>
+  <step name="MOLA" foreground="MOLA" background="MilkyWay" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="6000000.0"/>
+  <step name="Moon" foreground="Moon" background="MilkyWay" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="6000000.0"/>
+  <step name="LOLA" foreground="LOLA" background="MilkyWay" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="6000000.0"/>
   <step name="Apollo11" foreground="Apollo11" background="MilkyWay" q0="+0.331522089861" q1="+0.190962261786" q2="-0.069784655954" q3="+0.921279881633" p0="+0.398307642325" p1="+0.011697173729" p2="+0.917177299213" l0="+0.000072443066" l1="+0.020510415445" l2="+0.999789636679" r="1735607.436156"/>
   <step name="Apollo16" foreground="Apollo16" background="MilkyWay" q0="+0.649884744564" q1="-0.012644995903" q2="-0.248031303187" q3="+0.718310793112" p0="+0.263951475888" p1="-0.156056087219" p2="+0.951827776448" l0="+0.000118687489" l1="+0.000127593370" l2="+0.999999984817" r="1737457.250000"/>
   <step name="Bluebonnet0" background="Bluebonnet0"/>
