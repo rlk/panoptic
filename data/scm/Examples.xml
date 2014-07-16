@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<sphere detail="32" limit="384">
+<sphere detail="64" limit="384">
   <scene name="MilkyWay" vert="glsl/scm-basic.vert" frag="glsl/scm-basic.frag">
     <image name="color" scm="synaspan-254-4.tif" k0="0.0" k1="1.0"/>
   </scene>
@@ -7,8 +7,9 @@
     <image name="height" scm="DTM-254-7.tif" k0="1728240" k1="1748170"/>
     <image name="color" scm="WAC-254-7.tif" k0="0.0" k1="3.0"/>
   </scene>
-  <scene name="Mars" vert="glsl/scm-displace.vert" frag="glsl/scm-basic.frag">
+  <scene name="Mars" vert="glsl/scm-displace.vert" frag="glsl/scm-lomsee.frag">
     <image name="height" scm="MEGDR-K-180-6.tif" k0="3373043" k1="3417245"/>
+    <image name="normal" scm="MEGDR-K-180-6-N.tif"/>
     <image name="color" scm="MDIM21-180-7.tif" k0="0.0" k1="1.0"/>
   </scene>
   <scene name="LOLA" label="IAUMOON.csv" vert="glsl/scm-displace.vert" frag="glsl/scm-relief-colormap-scalar.frag" r="0" g="0" b="0" a="255">

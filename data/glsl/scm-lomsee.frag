@@ -88,6 +88,6 @@ void main()
     float nv = max(0.0, dot(N, V));
     float kd = 2.0 * nl / (nl + nv);
 
-    gl_FragColor = vec4(d.rgb * kd, 1.0);
+    gl_FragColor = vec4(d.rgb * clamp(kd, 0.1, 1.0), 1.0);
 }
 
