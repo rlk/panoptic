@@ -4,26 +4,23 @@
     <image name="color" scm="synaspan-254-4.tif" k0="0.0" k1="1.0"/>
   </scene>
   <scene name="Moon" vert="glsl/scm-displace.vert" frag="glsl/scm-basic.frag">
+    <atmosphere r="0.4" g="0.4" b="0.4" H="2000.0" P="0.001"/>
     <image name="height" scm="DTM-254-7.tif" k0="1728240" k1="1748170"/>
     <image name="color" scm="WAC-254-7.tif" k0="0.0" k1="3.0"/>
   </scene>
-  <scene name="Mars" vert="glsl/scm-displace.vert" frag="glsl/scm-lomsee.frag">
-    <atmosphere r="0.6" g="0.4" b="0.3" H="11100.0" P="0.0002"/>
-    <image name="height" scm="MEGDR-K-180-6.tif" k0="3373043" k1="3417245"/>
-    <image name="normal" scm="MEGDR-K-180-6-N.tif"/>
-    <image name="color" scm="MDIM21-180-7.tif" k0="0.0" k1="1.0"/>
-  </scene>
-  <scene name="Mars2" vert="glsl/scm-displace.vert" frag="glsl/scm-hybrid.frag">
+  <scene name="Mars" vert="glsl/scm-displace.vert" frag="glsl/scm-hybrid.frag">
     <atmosphere r="0.6" g="0.4" b="0.3" H="11100.0" P="0.0002"/>
     <image name="height" scm="MEGDR-K-180-6.tif" k0="3373043" k1="3417245"/>
     <image name="color" scm="MDIM21-180-7.tif" k0="0.0" k1="1.0"/>
   </scene>
   <scene name="LOLA" label="IAUMOON.csv" vert="glsl/scm-displace.vert" frag="glsl/scm-relief-colormap-scalar.frag" r="0" g="0" b="0" a="255">
+    <atmosphere r="0.0" g="1.0" b="1.0" H="5000.0" P="0.0001"/>
     <image name="height" scm="DTM-254-7.tif" k0="1728240" k1="1748170"/>
     <image name="normal" scm="DTM-254-7-N.tif"/>
     <image name="scalar" scm="DTM-254-7.tif"/>
   </scene>
   <scene name="MOLA" label="IAUMARS.csv" vert="glsl/scm-displace.vert" frag="glsl/scm-relief-colormap-scalar.frag" r="0" g="0" b="0" a="255">
+    <atmosphere r="0.0" g="1.0" b="1.0" H="10000.0" P="0.0001"/>
     <image name="height" scm="MEGDR-K-180-6.tif" k0="3373043" k1="3417245"/>
     <image name="normal" scm="MEGDR-K-180-6-N.tif"/>
     <image name="scalar" scm="MEGDR-K-180-6.tif"/>
@@ -65,7 +62,6 @@
     <image name="color" scm="Tiger-Stadium-2-L-254-5-J.tif" channel="0"/>
     <image name="color" scm="Tiger-Stadium-2-R-254-5-J.tif" channel="1"/>
   </scene>
-  <step name="Mars2" foreground="Mars2" background="MilkyWay" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="6000000.0"/>
   <step name="Mars" foreground="Mars" background="MilkyWay" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="6000000.0"/>
   <step name="MOLA" foreground="MOLA" background="MilkyWay" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="6000000.0"/>
   <step name="Moon" foreground="Moon" background="MilkyWay" q0="0.0" q1="0.0" q2="0.0" q3="1.0" p0="0.0" p1="0.0" p2="1.0" l1="0.894427" l2="0.447214" r="6000000.0"/>
