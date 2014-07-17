@@ -8,11 +8,13 @@
     <image name="color" scm="WAC-254-7.tif" k0="0.0" k1="3.0"/>
   </scene>
   <scene name="Mars" vert="glsl/scm-displace.vert" frag="glsl/scm-lomsee.frag">
+    <atmosphere r="0.6" g="0.4" b="0.3" H="11100.0" P="0.0002"/>
     <image name="height" scm="MEGDR-K-180-6.tif" k0="3373043" k1="3417245"/>
     <image name="normal" scm="MEGDR-K-180-6-N.tif"/>
     <image name="color" scm="MDIM21-180-7.tif" k0="0.0" k1="1.0"/>
   </scene>
   <scene name="Mars2" vert="glsl/scm-displace.vert" frag="glsl/scm-hybrid.frag">
+    <atmosphere r="0.6" g="0.4" b="0.3" H="11100.0" P="0.0002"/>
     <image name="height" scm="MEGDR-K-180-6.tif" k0="3373043" k1="3417245"/>
     <image name="color" scm="MDIM21-180-7.tif" k0="0.0" k1="1.0"/>
   </scene>
