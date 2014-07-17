@@ -253,15 +253,15 @@ void view_app::load_scenes(app::node p)
 
             if (app::node a = n.find("atmosphere"))
             {
-                GLfloat c[3];
+                scm_atmo atmo;
 
-                c[0]      = a.get_f("r", 1.0);
-                c[1]      = a.get_f("g", 1.0);
-                c[2]      = a.get_f("b", 1.0);
-                GLfloat H = a.get_f("H", 0.0);
-                GLfloat P = a.get_f("P", 1.0);
+                atmo.c[0] = a.get_f("r", 1.0);
+                atmo.c[1] = a.get_f("g", 1.0);
+                atmo.c[2] = a.get_f("b", 1.0);
+                atmo.H    = a.get_f("H", 0.0);
+                atmo.P    = a.get_f("P", 1.0);
 
-                f->set_atmo(c, H, P);
+                f->set_atmo(atmo);
             }
         }
     }
