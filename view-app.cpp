@@ -44,12 +44,12 @@ view_app::view_app(const std::string& exe,
     zoom_max ( 3.0),
     zoom_rate( 0.0),
 
+    mod_shift  (false),
+    mod_control(false),
+
     draw_cache(false),
     draw_path (false),
     curr_step (0),
-
-    mod_shift  (false),
-    mod_control(false),
 
     gui_index(0),
     gui_w(0),
@@ -558,18 +558,18 @@ void view_app::play(bool movie)
 
 //------------------------------------------------------------------------------
 
-bool view_app::dostep(int d, int c, int s)
+bool view_app::dostep(int d, bool c, bool s)
 {
-    if (s == 0)
+    if (s == false)
     {
-        if (c == 0)
+        if (c == false)
             move_to(curr_step + d);
         else
             fade_to(curr_step + d);
     }
     else
     {
-        if (c == 0)
+        if (c == false)
             jump_to(curr_step + d);
     }
     return true;
@@ -577,19 +577,19 @@ bool view_app::dostep(int d, int c, int s)
 
 // Handle a press of number key n with control status c and shift status s.
 
-bool view_app::numkey(int n, int c, int s)
+bool view_app::numkey(int n, bool c, bool s)
 {
-    if (s == 0)
+    if (s == false)
     {
-        if (c == 0)
-            move_to(n);
-        else
+        if (c == false)
             fade_to(n);
+        else
+            jump_to(n);
     }
     else
     {
-        if (c == 0)
-            jump_to(n);
+        if (c == false)
+            move_to(n);
         else
         {
             if (n == 1) flag();
@@ -601,11 +601,11 @@ bool view_app::numkey(int n, int c, int s)
 
 // Handle a press of function key n with control status c and shift status s.
 
-bool view_app::funkey(int n, int c, int s)
+bool view_app::funkey(int n, bool c, bool s)
 {
-    if (s == 0)
+    if (s == false)
     {
-        if (c == 0)
+        if (c == false)
         {
             scm_render *ren = sys->get_render();
 
@@ -663,8 +663,8 @@ bool view_app::funkey(int n, int c, int s)
 
 bool view_app::process_key(app::event *E)
 {
-    const int c = E->data.key.m & KMOD_CTRL;
-    const int s = E->data.key.m & KMOD_SHIFT;
+    bool c = mod_control = E->data.key.m & KMOD_CTRL;
+    bool s = mod_shift   = E->data.key.m & KMOD_SHIFT;
 
     if (E->data.key.d)
     {

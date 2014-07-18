@@ -88,6 +88,11 @@ protected:
     double zoom_max;
     double zoom_rate;
 
+    // Modifier state
+
+    bool mod_shift;
+    bool mod_control;
+
 private:
 
     void save_steps (app::node);
@@ -99,9 +104,9 @@ private:
     bool draw_path;
     int  curr_step;
 
-    bool dostep(int, int, int);
-    bool numkey(int, int, int);
-    bool funkey(int, int, int);
+    bool dostep(int, bool, bool);
+    bool numkey(int, bool, bool);
+    bool funkey(int, bool, bool);
 
     bool process_key   (app::event *);
     bool process_user  (app::event *);
@@ -113,9 +118,6 @@ private:
     virtual double get_scale() const { return 1.0; }
 
     // Joystick state
-
-    bool mod_shift;
-    bool mod_control;
 
     int button_next;
     int button_prev;

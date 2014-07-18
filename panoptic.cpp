@@ -190,7 +190,6 @@ double panoptic::get_scale() const
 
 //------------------------------------------------------------------------------
 
-
 quat panoptic::get_local() const
 {
     const vec3 p(view_app::get_position());
@@ -247,20 +246,28 @@ void panoptic::offset_position(const vec3 &d)
         mat4 zM = mat4(mat3(quat(zvector(B), atan2(-d[0] * k, r))));
         mat4 xM = mat4(mat3(quat(xvector(B), atan2( d[2] * k, r))));
 
-        here.transform_orientation(transpose(xM));
-        here.transform_position   (transpose(xM));
-        here.transform_light      (transpose(xM));
-        here.transform_orientation(transpose(zM));
-        here.transform_position   (transpose(zM));
-        here.transform_light      (transpose(zM));
+        if (mod_control)
+        {
+            here.transform_light      (transpose(xM));
+            here.transform_light      (transpose(zM));
+        }
+        else
+        {
+            here.transform_orientation(transpose(xM));
+            here.transform_position   (transpose(xM));
+            here.transform_light      (transpose(xM));
+            here.transform_orientation(transpose(zM));
+            here.transform_position   (transpose(zM));
+            here.transform_light      (transpose(zM));
 
-        // Clamp the altitude.
+            // Clamp the altitude.
 
-        double v[3];
+            double v[3];
 
-        here.get_position(v);
-        here.set_distance(std::max(d[1] * k + r,
-                                minimum_agl + sys->get_current_ground(v)));
+            here.get_position(v);
+            here.set_distance(std::max(d[1] * k + r,
+                                    minimum_agl + sys->get_current_ground(v)));
+        }
     }
 }
 
@@ -293,9 +300,6 @@ double spiral(double r0, double r1, double theta)
     return dr;
 }
 
-// Transition to a new scene normally, but override a jump when changing
-// visualization type.
-
 void panoptic::move_to(int i)
 {
     view_app::move_to(i);
@@ -308,12 +312,15 @@ void panoptic::jump_to(int i)
 
 void panoptic::fade_to(int i)
 {
+    view_app::fade_to(i);
+#if 0
     bool before = pan_mode();
     view_app::fade_to(i);
     bool after  = pan_mode();
 
     if (before != after)
         view_app::jump_to(i);
+#endif
 }
 
 #if 0
