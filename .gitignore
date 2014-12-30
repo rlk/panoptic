@@ -5,3 +5,5 @@ data.cpp
 data.zip
 panoptic
 panoptic.exe
+*.obj
+
