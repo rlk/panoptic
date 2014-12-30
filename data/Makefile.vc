@@ -1,0 +1,16 @@
+ZIP = C:\bin\zip.exe -9
+
+DATA = \
+	ABOUT.md \
+	glsl/scm-basic.frag \
+	glsl/scm-basic.vert \
+	glsl/scm-displace.vert \
+	glsl/scm-hybrid.frag \
+	glsl/scm-lomsee.frag \
+	glsl/scm-overlay.frag \
+	glsl/scm-relief-colormap-scalar.frag \
+	glsl/scm-shaded-overlay.frag \
+	glsl/scm-zoom.vert
+
+data.zip : $(DATA)
+	$(ZIP) data.zip $(DATA)

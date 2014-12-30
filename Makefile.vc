@@ -1,0 +1,80 @@
+# panoptic.exe -- Visual Studio Makefile
+
+LOCAL_INCLUDE = C:\Include
+LOCAL_LIB     = C:\Lib
+
+B2C = ..\thumb\etc\bin2c.exe
+
+#------------------------------------------------------------------------------
+
+CFLAGS = /nologo /W3 /EHsc /Z7 /Od /MTd \
+	/DGLEW_STATIC \
+	/D_CRT_SECURE_NO_WARNINGS \
+	/D_CRT_NONSTDC_NO_DEPRECATE \
+	/D_USE_MATH_DEFINES \
+	/DHAVE_M_PI \
+	/DNOMINMAX \
+	/DWIN32 \
+	/D_DEBUG \
+	/D_LIB
+
+LFLAGS = /nologo /SUBSYSTEM:WINDOWS /NODEFAULTLIB:"msvcrt.lib" /NODEFAULTLIB:"libcmt.lib"
+
+LINK = link /nologo
+
+#------------------------------------------------------------------------------
+
+TARG= panoptic.exe
+
+OBJS = \
+	view-gui.obj \
+	view-app.obj \
+	panoptic.obj \
+	data.obj
+
+LIBS = \
+	scm.lib \
+	thumb.lib \
+	libtiff.lib \
+	jpeg.lib \
+	libpng16.lib \
+	zlib.lib \
+	mxml1.lib \
+	oded.lib \
+	freetype.lib \
+	SDL2.lib \
+	SDL2main.lib \
+	glew32s.lib \
+	opengl32.lib \
+	ws2_32.lib
+
+CFLAGS = $(CFLAGS) \
+	/I$(LOCAL_INCLUDE)\freetype2 \
+	/I$(LOCAL_INCLUDE)\SDL2 \
+	/I$(LOCAL_INCLUDE) \
+	/I..\thumb\include
+
+LFLAGS = $(LFLAGS) \
+	/LIBPATH:$(LOCAL_LIB) \
+	/LIBPATH:..\thumb\src \
+	/LIBPATH:scm
+
+CPPFLAGS = $(CFLAGS)
+
+#------------------------------------------------------------------------------
+
+$(TARG) : $(OBJS)
+	$(LINK) $(LFLAGS) /out:$(TARG) $(OBJS) $(LIBS)
+
+clean:
+	-del $(TARG) $(OBJS) data.cpp
+
+#------------------------------------------------------------------------------
+
+data.cpp : data\data.zip
+	$(B2C) panoptic_data < data\data.zip > data.cpp
+
+data\data.zip : 
+	cd data
+	$(MAKE) /f Makefile.vc
+	cd ..
