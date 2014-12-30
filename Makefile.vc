@@ -16,14 +16,16 @@ CPPFLAGS = /nologo /W3 /EHsc \
 	/DNOMINMAX \
 	/DWIN32
 
+LINKFLAGS = /nologo /SUBSYSTEM:WINDOWS /NODEFAULTLIB:"msvcrt.lib"
+
 !ifdef DEBUG
 CPPFLAGS = $(CPPFLAGS) /Od /MTd /Z7
+LFLAGS   = $(LFLAGS) /debug
 !else
 CPPFLAGS = $(CPPFLAGS) /Ox /MT
 !endif
 
-LINK      = link
-LINKFLAGS = /nologo /SUBSYSTEM:WINDOWS /NODEFAULTLIB:"msvcrt.lib"
+LINK = link
 
 #------------------------------------------------------------------------------
 
