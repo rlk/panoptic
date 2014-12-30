@@ -26,8 +26,8 @@
 #include <app-frustum.hpp>
 #include <app-default.hpp>
 
-#include "scm/util3d/math3d.h"
-#include "scm/scm-cache.hpp"
+#include <util3d/math3d.h>
+#include <scm-cache.hpp>
 
 #include "view-app.hpp"
 

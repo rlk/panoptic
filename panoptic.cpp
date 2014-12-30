@@ -25,8 +25,8 @@
 #include <app-frustum.hpp>
 #include <app-default.hpp>
 
-#include "scm/util3d/math3d.h"
-#include "scm/scm-log.hpp"
+#include <util3d/math3d.h>
+#include <scm-log.hpp>
 
 #include "panoptic.hpp"
 

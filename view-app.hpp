@@ -18,12 +18,12 @@
 #include <app-prog.hpp>
 #include <app-file.hpp>
 
-#include "scm/scm-system.hpp"
-#include "scm/scm-sphere.hpp"
-#include "scm/scm-render.hpp"
-#include "scm/scm-image.hpp"
-#include "scm/scm-label.hpp"
-#include "scm/scm-step.hpp"
+#include <scm-system.hpp>
+#include <scm-sphere.hpp>
+#include <scm-render.hpp>
+#include <scm-image.hpp>
+#include <scm-label.hpp>
+#include <scm-step.hpp>
 
 #include "view-gui.hpp"
 
