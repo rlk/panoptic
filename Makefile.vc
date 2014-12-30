@@ -7,20 +7,23 @@ B2C = ..\thumb\etc\bin2c.exe
 
 #------------------------------------------------------------------------------
 
-CFLAGS = /nologo /W3 /EHsc /Z7 /Od /MTd \
+CPPFLAGS = /nologo /W3 /EHsc \
 	/DGLEW_STATIC \
 	/D_CRT_SECURE_NO_WARNINGS \
 	/D_CRT_NONSTDC_NO_DEPRECATE \
 	/D_USE_MATH_DEFINES \
 	/DHAVE_M_PI \
 	/DNOMINMAX \
-	/DWIN32 \
-	/D_DEBUG \
-	/D_LIB
+	/DWIN32
 
-LFLAGS = /nologo /SUBSYSTEM:WINDOWS /NODEFAULTLIB:"msvcrt.lib" /NODEFAULTLIB:"libcmt.lib"
+!ifdef DEBUG
+CPPFLAGS = $(CPPFLAGS) /Od /MTd /Z7
+!else
+CPPFLAGS = $(CPPFLAGS) /Ox /MT
+!endif
 
-LINK = link /nologo
+LINK      = link
+LINKFLAGS = /nologo /SUBSYSTEM:WINDOWS /NODEFAULTLIB:"msvcrt.lib"
 
 #------------------------------------------------------------------------------
 
@@ -40,31 +43,40 @@ LIBS = \
 	libpng16.lib \
 	zlib.lib \
 	mxml1.lib \
-	oded.lib \
+	ode.lib \
 	freetype.lib \
 	SDL2.lib \
 	SDL2main.lib \
 	glew32s.lib \
 	opengl32.lib \
-	ws2_32.lib
+	ws2_32.lib \
+	version.lib \
+	uuid.lib \
+	winmm.lib \
+	imm32.lib \
+	ole32.lib \
+	oleaut32.lib \
+	gdi32.lib \
+	user32.lib \
+	shell32.lib \
+	kernel32.lib \
+	comctl32.lib
 
-CFLAGS = $(CFLAGS) \
+CPPFLAGS = $(CPPFLAGS) \
 	/I$(LOCAL_INCLUDE)\freetype2 \
 	/I$(LOCAL_INCLUDE)\SDL2 \
 	/I$(LOCAL_INCLUDE) \
 	/I..\thumb\include
 
-LFLAGS = $(LFLAGS) \
+LINKFLAGS = $(LINKFLAGS) \
 	/LIBPATH:$(LOCAL_LIB) \
 	/LIBPATH:..\thumb\src \
 	/LIBPATH:scm
 
-CPPFLAGS = $(CFLAGS)
+$(TARG) : $(OBJS)
+	$(LINK) $(LINKFLAGS) /out:$(TARG) $(OBJS) $(LIBS)
 
 #------------------------------------------------------------------------------
-
-$(TARG) : $(OBJS)
-	$(LINK) $(LFLAGS) /out:$(TARG) $(OBJS) $(LIBS)
 
 clean:
 	-del $(TARG) $(OBJS) data.cpp
