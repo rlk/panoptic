@@ -17,6 +17,10 @@
 #include "view-gui.hpp"
 #include "view-app.hpp"
 
+#ifdef WIN32
+#include <direct.h>
+#endif
+
 //-----------------------------------------------------------------------------
 
 class button_load_data : public gui::button
@@ -91,7 +95,7 @@ about_panel::about_panel(view_app *V, gui::widget *w) : gui::vgroup()
         text = std::string((const char *) ::data->load("ABOUT.md"));
         ::data->free("ABOUT.md");
     }
-    catch (std::runtime_error& e)
+    catch (std::runtime_error&)
     {
         text = "## ABOUT.md not found";
     }

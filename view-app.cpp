@@ -56,15 +56,13 @@ view_app::view_app(const std::string& exe,
     gui_h(0),
     gui(0)
 {
-    TIFFSetWarningHandler(0);
-    TIFFSetErrorHandler(0);
-
     // Add the static data archive.
 
-    extern unsigned char data_zip[];
-    extern unsigned int  data_zip_len;
+    extern unsigned char panoptic_data[];
+    extern unsigned int  panoptic_data_len;
 
-    ::data->add_pack_archive(data_zip, data_zip_len);
+    ::data->add_pack_archive(panoptic_data,
+                             panoptic_data_len);
 
     // Configure the SCM caches.
 
@@ -255,11 +253,11 @@ void view_app::load_scenes(app::node p)
             {
                 scm_atmo atmo;
 
-                atmo.c[0] = a.get_f("r", 1.0);
-                atmo.c[1] = a.get_f("g", 1.0);
-                atmo.c[2] = a.get_f("b", 1.0);
-                atmo.H    = a.get_f("H", 0.0);
-                atmo.P    = a.get_f("P", 1.0);
+                atmo.c[0] = GLfloat(a.get_f("r", 1.0));
+                atmo.c[1] = GLfloat(a.get_f("g", 1.0));
+                atmo.c[2] = GLfloat(a.get_f("b", 1.0));
+                atmo.H    = GLfloat(a.get_f("H", 0.0));
+                atmo.P    = GLfloat(a.get_f("P", 1.0));
 
                 f->set_atmo(atmo);
             }
@@ -421,9 +419,9 @@ ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
 #endif
 
     if (gui)
-        glClearColor(0.3, 0.3, 0.3, 0.0);
+        glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
     else
-        glClearColor(0.0, 0.0, 0.0, 0.0);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     // Transfer the current camera state to the view manager.
 
@@ -663,8 +661,8 @@ bool view_app::funkey(int n, bool c, bool s)
 
 bool view_app::process_key(app::event *E)
 {
-    bool c = mod_control = E->data.key.m & KMOD_CTRL;
-    bool s = mod_shift   = E->data.key.m & KMOD_SHIFT;
+    bool c = mod_control = (E->data.key.m & KMOD_CTRL)  != 0;
+    bool s = mod_shift   = (E->data.key.m & KMOD_SHIFT) != 0;
 
     if (E->data.key.d)
     {
@@ -922,7 +920,7 @@ bool view_app::gui_event(app::event *E)
         case E_CLICK:
 
             if (gui)
-                gui->click(E->data.click.m, E->data.click.d);
+                gui->click(E->data.click.m, E->data.click.d != 0);
             return true;
 
         case E_TEXT:

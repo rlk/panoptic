@@ -57,7 +57,8 @@ panoptic::panoptic(const std::string& exe,
 
 panoptic::~panoptic()
 {
-    close(report_sock);
+    if (report_sock != INVALID_SOCKET)
+        close(report_sock);
 }
 
 // This is a potentially troublesome function that solves a tough problem in
