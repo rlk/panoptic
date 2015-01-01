@@ -709,21 +709,24 @@ bool view_app::process_key(app::event *E)
 
 bool view_app::process_user(app::event *E)
 {
-    // Extract the destination name from the user event structure.
-
-    char name[sizeof (long long) + 1];
-
-    memset(name, 0, sizeof (name));
-    memcpy(name, &E->data.user.d, sizeof (long long));
-
-    // Scan the steps for a matching name.
-
-    for (int i = 0; i < sys->get_step_count(); i++)
+    if (sys)
     {
-        if (sys->get_step(i)->get_name().compare(name) == 0)
+        // Extract the destination name from the user event structure.
+
+        char name[sizeof (long long) + 1];
+
+        memset(name, 0, sizeof (name));
+        memcpy(name, &E->data.user.d, sizeof (long long));
+
+        // Scan the steps for a matching name.
+
+        for (int i = 0; i < sys->get_step_count(); i++)
         {
-            move_to(i);
-            return true;
+            if (sys->get_step(i)->get_name().compare(name) == 0)
+            {
+                move_to(i);
+                return true;
+            }
         }
     }
     return false;
@@ -734,31 +737,34 @@ bool view_app::process_user(app::event *E)
 
 bool view_app::process_tick(app::event *E)
 {
-    if (zoom_rate)
+    if (sys)
     {
-        zoom += zoom_rate * E->data.tick.dt;
-        zoom = std::max(zoom, zoom_min);
-        zoom = std::min(zoom, zoom_max);
-    }
-
-    if (delta)
-    {
-        double prev = now;
-        double next = now + delta;
-
-        here = sys->get_step_blend(next);
-        now = sys->set_scene_blend(next);
-
-        if (now == prev)
+        if (zoom_rate)
         {
-          ::host->set_movie_mode(false);
-            sys->set_synchronous(false);
-            delta = 0;
+            zoom += zoom_rate * E->data.tick.dt;
+            zoom = std::max(zoom, zoom_min);
+            zoom = std::min(zoom, zoom_max);
         }
-    }
-    if (record)
-        sys->append_queue(new scm_step(here));
 
+        if (delta)
+        {
+            double prev = now;
+            double next = now + delta;
+
+            if (sys->get_step_count()  > 0) here = sys->get_step_blend(next);
+            if (sys->get_scene_count() > 0)  now = sys->set_scene_blend(next);
+
+            if (now == prev)
+            {
+              ::host->set_movie_mode(false);
+                sys->set_synchronous(false);
+                delta = 0;
+            }
+        }
+
+        if (record)
+            sys->append_queue(new scm_step(here));
+    }
     return false;
 }
 
