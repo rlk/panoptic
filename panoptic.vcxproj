@@ -56,14 +56,14 @@
     <NMakeOutput>Debug\panoptic.exe</NMakeOutput>
     <NMakeCleanCommandLine>nmake /nologo /f Makefile.vc DEBUG=1 clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>C:\Include\freetype2;C:\Include\SDL2;C:\Include</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>$(ProjectDir)..\scm;$(ProjectDir)..\thumb\Include;C:\Include\freetype2;C:\Include\SDL2;C:\Include</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeBuildCommandLine>nmake /nologo /f Makefile.vc</NMakeBuildCommandLine>
     <NMakeOutput>Release\panoptic.exe</NMakeOutput>
     <NMakeCleanCommandLine>nmake /nologo /f Makefile.vc clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>C:\Include\freetype2;C:\Include\SDL2;C:\Include</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>$(ProjectDir)..\scm;$(ProjectDir)..\thumb\Include;C:\Include\freetype2;C:\Include\SDL2;C:\Include</NMakeIncludeSearchPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>

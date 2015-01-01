@@ -2,6 +2,7 @@
 
 LOCAL_INCLUDE = C:\Include
 LOCAL_LIB     = C:\Lib
+LIBOVR        = C:\OculusSDK\LibOVR
 
 THUMB_DIR = ..\thumb
 SCM_DIR   = ..\scm
@@ -54,6 +55,7 @@ LIBS = \
 	SDL2.lib \
 	SDL2main.lib \
 	glew32s.lib \
+	libovrd.lib \
 	opengl32.lib \
 	ws2_32.lib \
 	version.lib \
@@ -82,7 +84,8 @@ CPPFLAGS = $(CPPFLAGS) \
 LINK = $(LINK) \
 	/LIBPATH:$(LOCAL_LIB) \
 	/LIBPATH:$(THUMB_DIR)\$(CONFIG) \
-	/LIBPATH:$(SCM_DIR)\$(CONFIG)
+	/LIBPATH:$(SCM_DIR)\$(CONFIG) \
+	/LIBPATH:$(LIBOVR)\Lib\Win32\VS2013
 
 $(TARGET) : $(OBJS) $(DEPS)
 	$(LINK) /out:$(CONFIG)\$(TARGET) $(OBJS) $(LIBS)
