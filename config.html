@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<link rel=stylesheet type="text/css" href="style.css">
+<title>Panoptic</title>
+</head>
+<body>
+<h1><a href="index.html">Panoptic</a></h1>
+
+<h2>Run-time Options</h2>
+
+<p>These are the useful function keys.</p>
+
+<table>
+<tr><td>F1</td><td>Toggle the GUI</td></tr>
+<tr><td>F2</td><td>Toggle wireframe rendering</td></tr>
+<tr><td>F3</td><td>Toggle motion blur</td></tr>
+<tr><td>F4</td><td>Toggle the cache overlay</td></tr>
+<tr><td>F5</td><td>Flush and reload all caches</td></tr>
+<tr><td>F10</td><td>Take a screenshot and write it to <code>snap.png</code></td></tr>
+</table>
+
+<h2>Configuration</h2>
+
+<p>Panoptic, like all Thumb application, bundles all of its configuration files within the executable. However, all of these files may be overridden by the user. The location of the Thumb data override directory depends upon the operating system:</p>
+
+<p>Under Windows it is named <code>Thumb</code> and is found in the <code>APPDATA</code> directory. In my case:</p>
+
+<pre>
+    C:/Users/rlk/AppData/Roaming/Thumb/
+</pre>
+
+<p>Under Linux and Mac OSX it is named <code>.thumb</code> and found in the <code>HOME</code> directory. On my Mac:</p>
+
+<pre>
+    /Users/rlk/.thumb/
+</pre>
+
+<p>Any file placed in this directory will override a file with the same name in the Panoptic bundle.</p>
+
+<h2>Options</h2>
+
+<p><a href="options.xml">The file <tt>options.xml</tt></a> enables the manipulation of a large number of Panoptic's internal variables.</p>
+
+<table>
+<tr><th>Rendering configuration</th><th>Key</th><th>Default Value</th></tr>
+<tr><td>Display configuration</td><td><code>config_file</code></td><td>config/common/960x540-window.xml</td></tr>
+<tr><td>Size of sans-serif GUI text</td><td><code>sans_size</code></td><td>16</td></tr>
+<tr><td>Size of mono-spaced GUI text</td><td><code>mono_size</code></td><td>16</td></tr>
+<tr><td>Vertical blanking sync interval</td><td><code>sync</code></td><td> 1</td></tr>
+<tr><td>Image cache size</td><td><code>scm_cache_size</code></td><td>16</td></tr>
+<tr><td>Input device</td><td><code>input_mode</code></td><td>gamepad</td></tr>
+
+<tr><th>Keyboard Controls</th></tr>
+<tr><td>View motion right</td><td><code>key_move_R</code></td><td> 7</td></tr>
+<tr><td>View motion left</td><td><code>key_move_L</code></td><td> 4</td></tr>
+<tr><td>View motion up</td><td><code>key_move_U</code></td><td> 8</td></tr>
+<tr><td>View motion down</td><td><code>key_move_D</code></td><td>20</td></tr>
+<tr><td>View motion backward</td><td><code>key_move_B</code></td><td>22</td></tr>
+<tr><td>View motion forward</td><td><code>key_move_F</code></td><td>26</td></tr>
+
+<tr><th>Gamepad Axes</th></tr>
+<tr><td>View motion right</td><td><code>gamepad_axis_pos_x</code></td><td> 0</td></tr>
+<tr><td>View motion left</td><td><code>gamepad_axis_neg_x</code></td><td>-1</td></tr>
+<tr><td>View motion up</td><td><code>gamepad_axis_pos_y</code></td><td> 5</td></tr>
+<tr><td>View motion down</td><td><code>gamepad_axis_neg_y</code></td><td> 2</td></tr>
+<tr><td>View motion backwant</td><td><code>gamepad_axis_pos_z</code></td><td> 1</td></tr>
+<tr><td>View motion forward</td><td><code>gamepad_axis_neg_z</code></td><td>-1</td></tr>
+<tr><td>View rotation right</td><td><code>gamepad_axis_pos_yaw</code></td><td>-1</td></tr>
+<tr><td>View rotation left</td><td><code>gamepad_axis_neg_yaw</code></td><td> 3</td></tr>
+<tr><td>View rotation up</td><td><code>gamepad_axis_pos_pitch</code></td><td>-1</td></tr>
+<tr><td>View rotation down</td><td><code>gamepad_axis_neg_pitch</code></td><td> 4</td></tr>
+
+<tr><th>Gamepad Buttons</th></tr>
+<tr><td>Switch to next scene</td><td><code>view_button_next</code></td><td>14</td></tr>
+<tr><td>Switch to previous scene</td><td><code>view_button_prev</code></td><td>13</td></tr>
+<tr><td>Zoom in</td><td><code>view_button_zoom_in</code></td><td> 1</td></tr>
+<tr><td>Zoom out</td><td><code>view_button_zoom_out</code></td><td> 0</td></tr>
+<tr><td>Control modifier</td><td><code>view_button_control</code></td><td> 5</td></tr>
+</table>
+
+<p><a href="options.xml">This <tt>options.xml</tt> file contains all of these default values.</a>  It's a good place to start if you need to modify any of them. Download it to your configuration directory&hellip;
+<pre>
+    C:/Users/rlk/AppData/Roaming/Thumb/options.xml
+</pre>
+or&hellip;
+<pre>
+    /Users/rlk/.thumb/options.xml
+</pre>
+and modify it as needed.</p>
+
+<p>Keyboard controls are defined using <a href="http://www.libsdl.org/tmp/SDL/include/SDL_scancode.h">SDL scancodes</a>. The gamepad axis and buttons define reasonable values for an XBox 360 Wireless Controller for Windows.</p>
+
+<p>The value <code>scm_cache_size</code> is of particular interest, as it can have a significant impact on performance. It controls the amount of VRAM used to cache texture images. Decreasing it can smooth out very bad performance due to texture thrashing on small GPUs. Increasing it can smooth ease IO load on large GPUs.</p>
+
+
+<h2>Options Example</h2>
+
+<p>If I always want to use my Rift DK1 on my Windows machine and I don't want to bother with changing it in-application, I would change the line
+<pre>
+   &lt;option name="config_file"&gt;config/config/common/960x540-window.xml&lt;/option&gt;
+</pre>
+to
+<pre>
+   &lt;option name="config_file"&gt;config/stereoscopic/oculus-dk1.xml&lt;/option&gt;
+</pre>
+</p>
+
+<h2>Display Configuration</h2>
+
+<p>As a further configuration example, let's modify the configuration of the Oculus Rift DK1. It has a native resolution of 1280&times;800 and default configuration uses a full-screen window at this resolution.</p>
+
+<p>However, I prefer to have the Rift connected as an extended desktop. My primary desktop is 2048&times;1152 and the Rift is to the right, aligned at the top. To configure this, I specify the <code>x</code> coordinate of the window to be 2048, and the <code>y</code> coordinate to be zero. The attribute <code>frame="0"</code> removes the window decoration, which would otherwise consume part of the non-full-screen visual. The <code>cursor="0"</code> attribute requests that the system cursor be hidden in this window. A virtual cursor, which appears in <i>both</i> eyes, replaces it.</p>
+
+<pre>
+    &lt;?xml version="1.0"?&gt;
+    &lt;host&gt;
+      &lt;node name="default"&gt;
+        &lt;window w="1280" h="800" x="2048" y="0" frame="0" cursor="0" /&gt;
+        &lt;channel w="1280" h="1600"/&gt;
+        &lt;channel w="1280" h="1600"/&gt;
+        &lt;overlay&gt;
+          &lt;frustum&gt;
+            &lt;perspective hfov="100.0" vfov="75.0"/&gt;
+          &lt;/frustum&gt;
+        &lt;/overlay&gt;
+        &lt;display type="oculus" channel="0"&gt;
+          &lt;viewport x="0" y="0" w="640" h="800"/&gt;
+        &lt;/display&gt;
+        &lt;display type="oculus" channel="1"&gt;
+          &lt;viewport x="640" y="0" w="640" h="800"/&gt;
+        &lt;/display&gt;
+      &lt;/node&gt;
+    &lt;/host&gt;
+</pre>
+
+<p>I place this data in <code>C:/Users/rlk/AppData/Roaming/Thumb/config/sterescopic/oculus-dk1.xml</code>. Because the name <code>config/sterescopic/oculus-dk1.xml</code> matches that of the bundled DK1 configuration file, that configuration is overridden.</p>
+
+<p>The other elements should be relatively clear. The <code>channel</code> elements give the resolution of the off-screen buffers that receive the scene rendering for each eye. The <code>display</code> elements indicate where each channel appears within the application window, and the <code>type="oculus"</code> attribute enables the spherical correction and head-tracking transform. The <code>overlay</code> element defines the location of the GUI, which may be enlarged or reduced by changing the field-of-view values appearing there.</p>
+
+<p>For comparison, the <a href="https://github.com/rlk/scmview/blob/master/data/config/stereoscopic/oculus-dk1.xml">bundled DK1 configuration</a> is identical in every way but one. It differs in the <code>window</code> element, where it requests a full-screen visual at 1280&times;800 with the cursor hidden.</p>
+
+<pre>
+    &lt;window w="1280" h="800" full="1" cursor="0"/&gt;
+</pre>
+
+<h2>Total Configuration</h2>
+
+<p>For a <i>complete</i> accounting of the assets and configuration in the bundle, see the <a href="https://github.com/rlk/scmview/tree/master/data">Panoptic data directory</a>, which overrides the <a href="https://github.com/rlk/thumb/tree/master/data">Thumb data directory</a>.</p>
+
+</body>
+</html>

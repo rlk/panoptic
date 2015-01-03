@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<conf>
+  <!-- Rendering configuration -->
+  <option name="config_file">config/common/960x540-window.xml</option>
+  <option name="sans_size">16</option>
+  <option name="mono_size">16</option>
+  <option name="sync">1</option>
+  <option name="scm_cache_size">16</option>
+  <option name="input_mode">gamepad</option>
+
+  <!-- Keyboard Controls -->
+  <option name="key_move_R"> 7</option>
+  <option name="key_move_L"> 4</option>
+  <option name="key_move_U"> 8</option>
+  <option name="key_move_D">20</option>
+  <option name="key_move_B">22</option>
+  <option name="key_move_F">26</option>
+
+  <!-- Gamepad Axes -->
+  <option name="gamepad_axis_pos_x"> 0</option>
+  <option name="gamepad_axis_neg_x">-1</option>
+  <option name="gamepad_axis_pos_y"> 5</option>
+  <option name="gamepad_axis_neg_y"> 2</option>
+  <option name="gamepad_axis_pos_z"> 1</option>
+  <option name="gamepad_axis_neg_z">-1</option>
+  <option name="gamepad_axis_pos_yaw">-1</option>
+  <option name="gamepad_axis_neg_yaw"> 3</option>
+  <option name="gamepad_axis_pos_pitch">-1</option>
+  <option name="gamepad_axis_neg_pitch"> 4</option>
+
+  <!-- Gamepad Buttons -->
+  <option name="view_button_next">14</option>
+  <option name="view_button_prev">13</option>
+  <option name="view_button_zoom_in"> 1</option>
+  <option name="view_button_zoom_out"> 0</option>
+  <option name="view_button_control"> 5</option>
+</conf>

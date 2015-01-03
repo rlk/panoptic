@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<link rel=stylesheet type="text/css" href="style.css">
+<title>Panoptic</title>
+</head>
+<body>
+<h1><a href="index.html">Panoptic</a></h1>
+
+<p>The following is a detailed listing of the ten examples appearing in <a href="https://github.com/rlk/scmview/blob/master/data/scm/Examples.xml">Example.xml</a> bundled with Panoptic.</p>
+
+<p>The panoramic images were captured in and around Baton Rouge, Louisiana, using the <a href="http://csc.lsu.edu/~kooima/panorama/index.html">CAVECam</a> omnistereoscopic panoramic camera.</p>
+
+<p>The lunar imagery is derived from data captured by the <a href="http://lunar.gsfc.nasa.gov">Lunar Reconnaissance Orbiter (LRO)</a>. Sources include the <a href="http://lunar.gsfc.nasa.gov/lola.html">Lunar Orbiter Laser Altimeter (LOLA)</a>, the <a href="http://lunar.gsfc.nasa.gov/mini-rf.html">Mini Radio Frequency (Mini-RF)</a> synthetic aperture radar, the <a href="http://lroc.sese.asu.edu">Lunar Reconnaissance Orbiter Camera (LROC)</a> Wide Angle Camera (WAC) and Narrow Angle Camera (NAC), and <a href="http://wms.lroc.asu.edu/lroc/view_rdr/WAC_GLD100">the 100-meter Global Lunar DTM (GLD100)</a> which was derived from stereo WAC imagery.</p>
+
+<p>These examples demonstrate most, if not all, of the capability of the shaders in the default bundle. With a basic understanding of XML, this document should provide enough background to modify the examples or to generate new ones.</p>
+
+<h2>The Images</h2>
+
+<p>The panoramas use lossy JPEG compression internally. They come in left-right pairs.</p>
+
+<blockquote><table>
+<tr><td>All examples&hellip;</td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Panoramas.zip">HTTP Download</a></td><td class="size">1.1 GB</td><td class="hash">sha1 688072cf4210f14ed1f2564ee2da8948f75f8fed</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Panoramas.torrent">Torrent Download</a></td><td class="size">1.1 GB</td><td class="hash">sha1 688072cf4210f14ed1f2564ee2da8948f75f8fed</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>Individually&hellip;</td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/1-Panoptic-Example-Panoramas.xml">1-Panoptic-Example-Panoramas.xml</a></td><td class="size">1.2 KB</td><td class="hash">sha1 8b80fb65b6178bcc077141911a386c8989244993</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-0-L-254-5-J.tif">    Bluebonnet-0-L-254-5-J.tif     </a></td><td class="size">208 MB</td><td class="hash">sha1 dc976fc575e754826898cb01c5558116dab22e6a</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-0-R-254-5-J.tif">    Bluebonnet-0-R-254-5-J.tif     </a></td><td class="size">207 MB</td><td class="hash">sha1 1eb2676c081c6271ad7226171ec79f9edfcbe9a6</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-3-L-254-5-J.tif">    Bluebonnet-3-L-254-5-J.tif     </a></td><td class="size">194 MB</td><td class="hash">sha1 ab7c28de9648956af10aca4be9ef3076599a67d9</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-3-R-254-5-J.tif">    Bluebonnet-3-R-254-5-J.tif     </a></td><td class="size">192 MB</td><td class="hash">sha1 c125ad481d3daea7030135a2a3c1840ccb6a06ba</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/LSU1-L-254-5-J.tif">            LSU1-L-254-5-J.tif             </a></td><td class="size">160 MB</td><td class="hash">sha1 a426239b7ef75e511511b01f12de1fc8072b770b</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/LSU1-R-254-5-J.tif">            LSU1-R-254-5-J.tif             </a></td><td class="size">160 MB</td><td class="hash">sha1 4dcf77b17f19bb80242fd305f4d27116e305b527</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Tiger-Stadium-2-L-254-5-J.tif"> Tiger-Stadium-2-L-254-5-J.tif  </a></td><td class="size"> 84 MB</td><td class="hash">sha1 12be01814692a4f301e3bd32d0e42f31d1fb652f</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Tiger-Stadium-2-R-254-5-J.tif"> Tiger-Stadium-2-R-254-5-J.tif  </a></td><td class="size"> 82 MB</td><td class="hash">sha1 b7818a015442fcf69bd558bf9a324285460f95b5</td></tr>
+</table></blockquote>
+
+<p>The planetary data uses lossless ZIP compression internally.</p>
+
+<blockquote><table>
+<tr><td>All examples&hellip;</td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Moon.zip">HTTP Download</a></td><td class="size"> 22 GB</td><td class="hash">sha1 e8f6a9d0b5ad154ced9c5cb7d05a58a39b09409e</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Moon.torrent">Torrent Download</a></td><td class="size"> 22 GB</td><td class="hash">sha1 e8f6a9d0b5ad154ced9c5cb7d05a58a39b09409e</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>Individually&hellip;</td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/0-Panoptic-Example-Moon.xml">   0-Panoptic-Example-Moon.xml    </a></td><td class="size">3.4 KB</td><td class="hash">sha1 f375c083e5796b19d282c148d23aeb9ed2057aa8</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7-N.tif">               DTM-254-7-N.tif                </a></td><td class="size">6.6 GB</td><td class="hash">sha1 c8a4151d646541351025b539f32e4c2367aba207</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7.tif">                 DTM-254-7.tif                  </a></td><td class="size">7.3 GB</td><td class="hash">sha1 621ef452cdb1b154f92a38cfc191d3f69e59b59e</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/WAC-254-7.tif">                 WAC-254-7.tif                  </a></td><td class="size">2.8 GB</td><td class="hash">sha1 87d9962f5d27baa4843019b65ac6fe3fc6603e68</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/LDSM-254-4.tif">                LDSM-254-4.tif                 </a></td><td class="size"> 58 MB</td><td class="hash">sha1 61f87df8b23fbff58b1e55ee5212fa9a98e23fec</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Mini-RF-CP-254-7.tif">          Mini-RF-CP-254-7.tif           </a></td><td class="size">355 MB</td><td class="hash">sha1 08715b65fd6660c463a417f668e5a8c4acc46e38</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/NAC_ROI_APOLLO11LOA-254-15.tif">NAC_ROI_APOLLO11LOA-254-15.tif </a></td><td class="size">1.1 GB</td><td class="hash">sha1 1c24ad25457f277248e2a668b3bc4e5241f60404</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/NAC_ROI_APOLLO16HIA-254-15.tif">NAC_ROI_APOLLO16HIA-254-15.tif </a></td><td class="size">3.1 GB</td><td class="hash">sha1 ae02e9badbc0f1f6a172f02b42dc6236e9c516ee</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/synaspan-254-4.tif">            synaspan-254-4.tif             </a></td><td class="size">134 MB</td><td class="hash">sha1 65279ca574e02daa29544c34c16a28f390559325</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/IAUMOON.csv">                   IAUMOON.csv                    </a></td><td class="size">578 KB</td><td class="hash">sha1 e43cff1cdc745695c6123be7c930b75fc4d1cffd</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/graticule.csv">                 graticule.csv                  </a></td><td class="size">8.6 KB</td><td class="hash">sha1 535a735655deab3f9e804101ca16c028a5be41cc</td></tr>
+<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Apollo11.csv">                  Apollo11.csv                   </a></td><td class="size"> 64 4B</td><td class="hash">sha1 770908d1c4b806857a0fe018cc26435dae135dad</td></tr>
+</table></blockquote>
+
+<h2>The Scenes</h2>
+
+<table>
+<tr><td><img class="ex" src="img/example0.jpg"></td><td>
+<b>Example 0</b> is the best scene for exploring the Moon and appreciating its beauty. The scene uses the vertex displacement shader to render a DTM as a height map. This DTM is a seamless merger of LOLA (which is good at the poles but bad at the equator) with GLD100 (good at the equator but bad at the poles). The WAC global mosaic is mapped onto this by the basic fragment shader. The DTM is normalized to a range of 1,728,240m to 1,748,170m to match the scale of the Moon one-to-one. The WAC is stretched a bit to brighten it.<pre class="small">
+&lt;scene name="Global" vert="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-displace.vert">glsl/scm-displace.vert</a>" frag="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-basic.frag">glsl/scm-basic.frag</a>"&gt;
+  &lt;image name="height" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7.tif">DTM-254-7.tif</a>" k0="1728240" k1="1748170"/&gt;
+  &lt;image name="color" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/WAC-254-7.tif">WAC-254-7.tif</a>" k0="0.0" k1="3.0"/&gt;
+&lt;/scene&gt;
+</pre></td></tr>
+
+<tr><td><img class="ex" src="img/example1.jpg"></td><td>
+<b>Example 1</b> emphasizes terrain, using the DTM three ways. First it is used as a displacement map as in the Global example, second as a scalar field colorized by a color mapping shader, and third as a normal map which enables shaded relief. The complete <a href="http://planetarynames.wr.usgs.gov/Page/MOON/target">IAU lunar nomenclature</a> is drawn atop in opaque black.<pre class="small">
+&lt;scene name="Terrain" vert="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-displace.vert">glsl/scm-displace.vert</a>"
+                      frag="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-relief-colormap-scalar.frag">glsl/scm-relief-colormap-scalar.frag</a>"
+                      label="<a href="https://www.cct.lsu.edu/~rkooima/data/IAUMOON.csv">IAUMOON.csv</a>" r="0" g="0" b="0" a="255"&gt;
+  &lt;image name="height" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7.tif">DTM-254-7.tif</a>" k0="1728240" k1="1748170"/&gt;
+  &lt;image name="normal" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7-N.tif">DTM-254-7-N.tif</a>"/&gt;
+  &lt;image name="scalar" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7.tif">DTM-254-7.tif</a>"/&gt;
+&lt;/scene&gt;
+</pre></td></tr>
+
+<tr><td><img class="ex" src="img/example2.jpg"></td><td>
+<b>Example 2</b> shows shaded relief of a displaced surface as in the Terrain example, but this time with a separate color-mapped scalar data set applied. This is the Lunar Digital Slope Map, <a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7-N.tif">LDSM</a>, a secondary product of the Laser Altimeter. A 10-degree graticule is drawn atop in opaque black.<pre class="small">
+&lt;scene name="LDSM" vert="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-displace.vert">glsl/scm-displace.vert</a>"
+                   frag="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-relief-colormap-scalar.frag">glsl/scm-relief-colormap-scalar.frag</a>"
+                   label="<a href="https://www.cct.lsu.edu/~rkooima/data/graticule.csv">graticule.csv</a>" r="0" g="0" b="0" a="255"&gt
+  &lt;image name="height" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7.tif">DTM-254-7.tif</a>" k0="1728240" k1="1748170"/&gt;
+  &lt;image name="normal" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7-N.tif">DTM-254-7-N.tif</a>"/&gt;
+  &lt;image name="scalar" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/LDSM-254-4.tif">LDSM-254-4.tif</a>" k0="0.0" k1="2.0"/&gt;
+&lt;/scene&gt;
+</pre></td></tr>
+
+<tr><td><img class="ex" src="img/example3.jpg"></td><td>
+<b>Example 3</b> works the same as a the LDSM example, but shows Mini-RF data instead. Mini-RF is particularly notable for its presentation of information deep in the craters near the poles, where the light of the sun can never reach. Mini-RF is <i>only</i> available near the poles, and the shader fills in gray shaded relief elsewhere.<pre class="small">
+&lt;scene name="MiniRF" vert="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-displace.vert">glsl/scm-displace.vert</a>"
+                     frag="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-relief-colormap-scalar.frag">glsl/scm-relief-colormap-scalar.frag</a>"&gt;
+  &lt;image name="height" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7.tif">DTM-254-7.tif</a>" k0="1728240" k1="1748170"/&gt;
+  &lt;image name="normal" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7-N.tif">DTM-254-7-N.tif</a>"/&gt;
+  &lt;image name="scalar" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/Mini-RF-CP-254-7.tif">Mini-RF-CP-254-7.tif</a>"/&gt;
+&lt;/scene&gt;
+</pre></td></tr>
+
+<tr><td><img class="ex" src="img/example4.jpg"></td><td>
+<b>Example 4</b> demonstrates the overlay of high-resolution data atop low-resolution, letting you explore detail in context. In this case, the low-resolution data is the DTM and WAC with a resolution around 100 meters per pixel, as above. The high-resolution data is a NAC view of the site of the landing of Apollo 11, with a resolution of around one half meter per pixel. Relevant features of the scene are labeled.<pre class="small">
+&lt;scene name="Apollo11" vert="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-displace.vert">glsl/scm-displace.vert</a>"
+                       frag="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-overlay.frag">glsl/scm-overlay.frag</a>" label="<a href="https://www.cct.lsu.edu/~rkooima/data/Apollo11.csv">Apollo11.csv</a>"&gt;
+  &lt;image name="height" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7.tif">DTM-254-7.tif</a>" k0="1728240" k1="1748170"/&gt;
+  &lt;image name="lower" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/WAC-254-7.tif">WAC-254-7.tif</a>" k0="0.0" k1="3.0"/&gt;
+  &lt;image name="upper" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/NAC_ROI_APOLLO11LOA-254-15.tif">NAC_ROI_APOLLO11LOA-254-15.tif</a>" k0="0.0" k1="1.65"/&gt;
+&lt;/scene&gt;
+</pre></td></tr>
+
+<tr><td><img class="ex" src="img/example5.jpg"></td><td>
+<b>Example 5</b> is the most complex example in the set. It shows a NAC overlay of the site of Apollo 16 in the context of DTM and WAC, displayed with shaded relief. The Apollo 16 image is rich with human and rover tracks and gives stunning detail close-up. Viewed from afar, the shaded context provides the highest-fidelity and most information-dense presentation of the full globe of the moon currently available.<pre class="small">
+&lt;scene name="Apollo16" vert="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-displace.vert">glsl/scm-displace.vert</a>" frag="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-shaded-overlay.frag">glsl/scm-shaded-overlay.frag</a>"&gt;
+  &lt;image name="height" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7.tif">DTM-254-7.tif</a>" k0="1728240" k1="1748170"/&gt;
+  &lt;image name="normal" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7-N.tif">DTM-254-7-N.tif</a>"/&gt;
+  &lt;image name="lower" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/WAC-254-7.tif">WAC-254-7.tif</a>" k0="0.0" k1="4.0"/&gt;
+  &lt;image name="upper" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/NAC_ROI_APOLLO16HIA-254-15.tif">NAC_ROI_APOLLO16HIA-254-15.tif</a>" k0="0.0" k1="2.0"/&gt;
+&lt;/scene&gt;
+</pre></td></tr>
+
+<tr><td><img class="ex" src="img/example6.jpg"></td><td>
+<b>Example 6</b> is an omnistereoscopic panorama of the cypress-tupelo forest in the Bluebonnet swamp. The scene includes one color image for each eye, with the channel mapping given explicitly. The zooming vertex shader enables magnification, allowing two gigapixels of data per eye to be explored.<pre class="small">
+&lt;scene name="Bluebonnet0" vert="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-zoom.vert">glsl/scm-zoom.vert</a>" frag="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-basic.frag">glsl/scm-basic.frag</a>"&gt;
+  &lt;image name="color" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-0-L-254-5-J.tif">Bluebonnet-0-L-254-5-J.tif</a>" channel="0"/&gt;
+  &lt;image name="color" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-0-R-254-5-J.tif">Bluebonnet-0-R-254-5-J.tif</a>" channel="1"/&gt;
+&lt;/scene&gt;
+</pre></td></tr>
+
+<tr><td><img class="ex" src="img/example7.jpg"></td><td>
+<b>Example 7</b> is another high-resolution omnistereoscopic panorama captured at the Bluebonnet swamp.<pre class="small">
+&lt;scene name="Bluebonnet3" vert="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-zoom.vert">glsl/scm-zoom.vert</a>" frag="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-basic.frag">glsl/scm-basic.frag</a>"&gt;
+  &lt;image name="color" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-3-L-254-5-J.tif">Bluebonnet-3-L-254-5-J.tif</a>" channel="0"/&gt;
+  &lt;image name="color" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-3-R-254-5-J.tif">Bluebonnet-3-R-254-5-J.tif</a>" channel="1"/&gt;
+&lt;/scene&gt;
+</pre></td></tr>
+
+<tr><td><img class="ex" src="img/example8.jpg"></td><td>
+<b>Example 8</b> is an omnistereoscopic panorama captured on the campus of Louisiana State University. This image may be challenging to view, as the sun shines upon one eye but not the other. Also, small discrepancies in the panoramic stitching result in a number of false 3D artifacts.<pre class="small">
+&lt;scene name="LSU1" vert="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-zoom.vert">glsl/scm-zoom.vert</a>" frag="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-basic.frag">glsl/scm-basic.frag</a>"&gt;
+  &lt;image name="color" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/LSU1-L-254-5-J.tif">LSU1-L-254-5-J.tif</a>" channel="0"/&gt;
+  &lt;image name="color" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/LSU1-R-254-5-J.tif">LSU1-R-254-5-J.tif</a>" channel="1"/&gt;
+&lt;/scene&gt;
+</pre></td></tr>
+
+<tr><td><img class="ex" src="img/example9.jpg"></td><td>
+<b>Example 9</b> is an omnistereoscopic panorama captured in Tiger Stadium on the campus of Louisiana State University. Note the men changing lightbulbs.<pre class="small">
+&lt;scene name="Tiger2" vert="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-zoom.vert">glsl/scm-zoom.vert</a>" frag="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-basic.frag">glsl/scm-basic.frag</a>"&gt;
+  &lt;image name="color" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/Tiger-Stadium-2-L-254-5-J.tif">Tiger-Stadium-2-L-254-5-J.tif</a>" channel="0"/&gt;
+  &lt;image name="color" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/Tiger-Stadium-2-R-254-5-J.tif">Tiger-Stadium-2-R-254-5-J.tif</a>" channel="1"/&gt;
+&lt;/scene&gt;
+</pre></td></tr>
+
+<tr><td><img class="ex" src="img/synaspan.jpg"></td><td>
+<b>The background</b> of the planetary examples is a rendering of the <a href="https://github.com/rlk/synaspan">Synthetic All-Sky Panorama</a>.<pre class="small">
+  &ltscene name="MilkyWay" vert="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-basic.vert">glsl/scm-basic.vert</a>" frag="<a href="https://github.com/rlk/scmview/blob/master/data/glsl/scm-basic.frag">glsl/scm-basic.frag</a>"&gt;
+    &ltimage name="color" scm="<a href="https://www.cct.lsu.edu/~rkooima/data/synaspan-254-4.tif">synaspan-254-4.tif</a>" k0="0.0" k1="1.0"/&gt;
+  &lt/scene&gt;
+</pre></td></tr>
+
+</table>
+
+<h2>The Steps</h2>
+
+Step elements in <a href="https://github.com/rlk/scmview/blob/master/data/scm/Examples.xml">Example.xml</a> associate foreground scenes with background scenes and camera positions. When you press a number key in Panoptic, you are selecting one of these ten steps. This file is designed with ten scenes, ten steps, and uniform naming, so the mapping is trivial.
+</body>
+</html>
