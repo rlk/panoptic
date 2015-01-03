@@ -1,82 +1,63 @@
-include ../thumb/Makedefs
+# Panoptic -- Linux / Mac OSX Makefile
+
+# Panoptic assumes that Thumb and SCM can be found in adjacent directories
+# and both have been built: that libthumb, libscm, and bin2c all exist.
+
+THUMB_DIR = ../thumb
+SCM_DIR   = ../scm
+
+# Panoptic configuration piggy-backs atop the Thumb configuration.
+
+include $(THUMB_DIR)/Makedefs
+
+LIBS   += -L$(THUMB_DIR)/$(CONFIG) -L$(SCM_DIR)/$(CONFIG) -lthumb -lscm
+CFLAGS += -I$(THUMB_DIR)/include   -I$(SCM_DIR)
+
+B2C = $(THUMB_DIR)/etc/bin2c
 
 #------------------------------------------------------------------------------
 
 OBJS= view-gui.o view-app.o panoptic.o data.o
 DEPS= $(OBJS:.o=.d)
-
-ifdef ISMACOS
-	EXE = panoptic
-endif
-ifdef ISLINUX
-	EXE = panoptic
-endif
-ifdef ISMINGW
-	EXE = panoptic.exe
-endif
+TARG= panoptic
 
 #------------------------------------------------------------------------------
 
-CFLAGS += -I../thumb/include
-THUMB   = -L../thumb/src -lthumb
-SCM     = scm/libscm.a
+$(CONFIG)/$(TARG): $(CONFIG) $(OBJS)
+	$(CXX) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
 
-#------------------------------------------------------------------------------
-
-$(EXE): scm $(OBJS)
-	$(CXX) $(CFLAGS) -o $@ $(OBJS) $(THUMB) $(SCM) $(LIBS)
+$(CONFIG) :
+	mkdir -p $(CONFIG)
 
 clean:
-	$(MAKE) -C scm clean
-	$(RM) $(OBJS) $(DEPS) $(EXE) data.zip
+	$(RM) $(OBJS) $(DEPS) $(TARG) data/data.zip
 
 #------------------------------------------------------------------------------
 
-scm : .FORCE
-	$(MAKE) -C scm
+data.cpp : data/data.zip
+	$(B2C) panoptic_data < $< > $@
 
-.FORCE :
-
-#------------------------------------------------------------------------------
-# Package the contents of the data directory in an embedded ZIP archive.
-
-DATA= $(shell find data -name \*.md   \
-                     -o -name \*.xml  \
-                     -o -name \*.csv  \
-                     -o -name \*.vert \
-                     -o -name \*.frag)
-
-data.zip : $(DATA)
-	(cd data && zip -FS9r ../data.zip $(subst data/,,$(DATA)))
-
-data.cpp : data.zip
-	xxd -i data.zip > data.cpp
+data/data.zip :
+	$(MAKE) -C data
 
 #------------------------------------------------------------------------------
 # Package the target in a ZIP archive, including the OS and date in the name.
 
 VER = $(shell date "+%Y%m%d")
 
-ifdef ISMACOS
-	ZIP = panoptic-$(VER)-osx.zip
+ifdef MACOS
+	DIST = panoptic-$(VER)-osx.zip
 endif
-ifdef ISLINUX
-	ZIP = panoptic-$(VER)-lin.zip
-endif
-ifdef ISMINGW
-	ZIP = panoptic-$(VER)-win.zip
+ifdef LINUX
+	DIST = panoptic-$(VER)-lin.zip
 endif
 
-dist : $(EXE)
-	strip $(EXE)
-	zip $(ZIP) $(EXE)
+dist : $(CONFIG)/$(TARG)
+	strip $(CONFIG)/$(TARG)
+	zip -9 $(DIST) $(CONFIG)/$(TARG)
 
 #------------------------------------------------------------------------------
 
 ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
 endif
-
-export CC
-export CXX
-export CFLAGS

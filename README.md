@@ -1,15 +1,42 @@
-# SCM View
+# Panoptic
 
 Copyright &copy; 2011-2014 [Robert Kooima](http://kooima.net)
 
-The SCM View repository contains a series of experiments in the rendering of [SCM](https://github.com/rlk/scm) data using the [Thumb](https://github.com/rlk/thumb) interactive application framework. These include a giga-pixel omni-stereoscopic panorama viewer and a planetary data exploration tool, both of which benefit from Thumb's broad support for virtual reality devices and head-mounted displays.
+Panoptic is a giga-pixel omni-stereoscopic panorama viewer and a planetary data exploration tool. It embeds the [Spherical Cube Map](https://github.com/rlk/scm) library within a [Thumb](https://github.com/rlk/thumb) application, giving an SCM renderer with broad support for virtual reality devices and head-mounted displays.
 
-The SCM View build requires the presence of [Thumb](https://github.com/rlk/thumb) in an adjacent directory.
+## Dependencies
+
+The Panoptic build requires the presence of [Spherical Cube Map](https://github.com/rlk/scm) and [Thumb](https://github.com/rlk/thumb) in adjacent directories.
 
 	$ ls
+	panoptic
+	scm
 	thumb
-	scmview
 
-The repo has a submodule ([SCM](https://github.com/rlk/scm)) with a submodule ([util3d](https://github.com/rlk/util3d)). These need to be explicitly added to a fresh clone. To do so...
+The Panoptic repo has a submodule ([util3d](https://github.com/rlk/util3d)) that must be explicitly added to a fresh clone:
 
-    git submodule update --init --recursive
+    git submodule update --init
+
+## Build
+
+Panoptic may be build with either a Debug or Release configuration. The adjacent Thumb and SCM source trees *must* be build with the same configuration. In all cases, debug builds are placed in `Debug` while release builds are placed in `Release`, so these configurations may cleanly coexist.
+
+### Linux and Mac OSX
+
+To build `Release/panoptic` under Linux or Mac OSX:
+
+	make
+
+To build `Debug/panoptic`:
+
+	make DEBUG=1
+
+### Windows
+
+To build `Release\panoptic.exe` under Windows, use the Visual Studio project or the included `Makefile.vc`:
+
+	nmake /f Makefile.vc
+
+To build `Debug\panoptic.exe`:
+
+	nmake /f Makefile.vc DEBUG=1
