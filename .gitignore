@@ -1,9 +1,0 @@
-*.o
-*.d
-*.DS_Store
-data.cpp
-data.zip
-panoptic
-panoptic.exe
-*.obj
-
