@@ -21,9 +21,9 @@ The Panoptic repo has a submodule ([util3d](https://github.com/rlk/util3d)) that
 
 Panoptic may be build with either a Debug or Release configuration. The adjacent Thumb and SCM source trees *must* be build with the same configuration. In all cases, debug builds are placed in `Debug` while release builds are placed in `Release`, so these configurations may cleanly coexist.
 
-### Linux and Mac OSX
+### Linux and OS X
 
-To build `Release/panoptic` under Linux or Mac OSX:
+To build `Release/panoptic` under Linux or OS X:
 
 	make
 

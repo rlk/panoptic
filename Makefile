@@ -1,4 +1,4 @@
-# Panoptic -- Linux / Mac OSX Makefile
+# Panoptic -- Linux / OS X Makefile
 
 # Panoptic assumes that Thumb and SCM can be found in adjacent directories
 # and both have been built: that libthumb, libscm, and bin2c all exist.
@@ -45,7 +45,7 @@ data/data.zip :
 
 VER = $(shell date "+%Y%m%d")
 
-ifdef MACOS
+ifdef OSX
 	DIST = panoptic-$(VER)-osx.zip
 endif
 ifdef LINUX
