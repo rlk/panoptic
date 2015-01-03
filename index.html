@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<link rel=stylesheet type="text/css" href="style.css">
+<title>Panoptic</title>
+</head>
+<body>
+<h1><a href="index.html">Panoptic</a></h1>
+
+<p>Copyright &copy; 2011&ndash;2014 Robert Kooima &lt;<i>robert.kooima&#64;gmail&#46;com</i>&gt;</p>
+
+<p class="lead">Panoptic lets you interactively browse giga-pixel stereoscopic panoramas and high-resolution planetary surfaces on your laptop display, on your 3D TV, or with your Oculus Rift.</p>
+
+<img src="img/panorama.png">
+
+<p class="lead">The common thread linking panoramas and planets is their spherical nature. A panorama is a sphere as seen from the inside, and a planet is a sphere as seen from the outside.</p>
+
+<img src="img/moon.png">
+
+<h2><a href="https://github.com/rlk/scmview">Getting Panoptic</a></h2>
+
+<p>Panoptic is open source. Its code resides in the <a href="https://github.com/rlk/scmview">SCM View</a> project, which binds the <a href="https://github.com/rlk/scm">Spherical Cube Map</a> rendering library with the <a href="https://github.com/rlk/thumb">Thumb</a> virtual reality application framework.</p>
+
+<p>These pre-compiled binaries statically link the Oculus SDK:</p>
+
+<ul>
+<li><a href="https://www.cct.lsu.edu/~rkooima/panoptic/panoptic-20140402-win.zip">Panoptic-20140402 &mdash; Windows</a></li>
+<li><a href="https://www.cct.lsu.edu/~rkooima/panoptic/panoptic-20140402-osx.zip">Panoptic-20140402 &mdash; OS X</a></li>
+<li><a href="https://www.cct.lsu.edu/~rkooima/panoptic/panoptic-20140402-lin.zip">Panoptic-20140402 &mdash; Linux 64-bit</a></li>
+</ul>
+
+<p>Installation is trivial. The executable is self-contained. <b>Just place it in the same directory as the image data you download next.</b> This will ensure that it can find the data when needed.</p>
+
+<h2><a href="scenes.html">Getting Images</a></h2>
+
+<p><a href="scenes.html">Ten example scene definitions</a> are bundled with Panoptic. The image data used by these definitions must be downloaded separately. Panoptic is a tool for browsing very large images, so its inputs are large. Several gigabytes of downloads are necessary to get the full effect of all ten examples. Start with the panoramas (1.1 GB via <a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Panoramas.zip">HTTP</a> or <a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Panoramas.torrent">torrent</a>), then work your way over to the Moon (22GB via <a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Moon.zip">HTTP</a> or <a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Moon.torrent">torrent</a>).</p>
+
+<h2>Running Panoptic</h2>
+
+<p>Download and unzip one or both of the example packages. Start the application normally.
+<ul>
+<li>The <b>About</b> tab gives basic usage information.</li>
+<li>The <b>Config</b> tab lets you select a display configuration.</li>
+<li>The <b>Data</b> tab lets you load imagery.</li>
+	<ul>
+	<li>Select and load <code>0-Panoptic-Example-Moon.xml</code> for the lunar examples.</li>
+	<li>Select and load <code>1-Panoptic-Example-Panoramas.xml</code> for the panorama examples.</li>
+	</ul>
+</ul>
+</p>
+
+<p><a href="config.html">The full Panoptic feature set is documented here</a>.</p>
+
+<p>If you want to see what it looks like without downloading all that data, here's a video:</p>
+
+<div style="text-align:center">
+<iframe width="640" height="385" src="//www.youtube.com/embed/bwr5JglLnBE" frameborder="0" allowfullscreen></iframe>
+</div>
+
+</body>
+</html>
