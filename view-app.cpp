@@ -410,14 +410,6 @@ double view_app::get_minimum_ground() const
 
 ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
 {
-#if 0
-    double ra = here.get_distance();
-    double gd = get_current_ground();
-    double sc = get_scale();
-
-    printf("(%f - %f) * %f = %f\n", ra, gd, sc, (ra - gd) * sc);
-#endif
-
     if (gui)
         glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
     else
@@ -432,7 +424,10 @@ ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
 
     // Handle the zoom. Not all subclasses will appreciate this.
 
-    const vec3 v = ::view->get_point_vec(quat());
+    const mat4 V =   ::view->get_transform();
+    const mat4 P = frusv[0]->get_transform();
+    const vec4 v = transpose(P * V) * vec4(0, 0, 1, 0);
+
     sys->get_sphere()->set_zoom(v[0], v[1], v[2], pow(2.0, zoom));
 
     // Cycle the SCM cache. This is super-important.
@@ -463,8 +458,6 @@ void view_app::draw(int frusi, const app::frustum *frusp, int chani)
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-
-    // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // TODO: Necessary?
 
     sys->render_sphere(transpose(P), transpose(M), chani);
 }
