@@ -120,7 +120,7 @@ ogl::aabb panoptic::prep(int frusc, const app::frustum *const *frusv)
         return aabb;
     else
     {
-        // Compute a horizon line based upon altitude and minimum terrain height.
+        // Compute a horizon line based on altitude and minimum terrain height.
 
         const double k =          get_scale();
         const double r = k *      get_current_ground();

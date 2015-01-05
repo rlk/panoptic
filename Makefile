@@ -23,7 +23,14 @@ TARG= panoptic
 
 #------------------------------------------------------------------------------
 
-$(CONFIG)/$(TARG): $(CONFIG) $(OBJS)
+# If the Thumb or SCM libraries change, then panoptic must be rebuilt.
+
+THUMB = $(THUMB_DIR)/$(CONFIG)/libthumb.a
+SCM   =   $(SCM_DIR)/$(CONFIG)/libscm.a
+
+#------------------------------------------------------------------------------
+
+$(CONFIG)/$(TARG): $(CONFIG) $(OBJS) $(THUMB) $(SCM)
 	$(CXX) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
 
 $(CONFIG) :
