@@ -40,7 +40,7 @@ view_app::view_app(const std::string& exe,
     record(false),
 
     zoom     ( 0.0),
-    zoom_min (-1.0),
+    zoom_min (-3.0),
     zoom_max ( 3.0),
     zoom_rate( 0.0),
 
