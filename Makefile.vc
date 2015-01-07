@@ -87,8 +87,11 @@ LINK = $(LINK) \
 	/LIBPATH:$(SCM_DIR)\$(CONFIG) \
 	/LIBPATH:$(LIBOVR)\Lib\Win32\VS2013
 
-$(TARGET) : $(OBJS) $(DEPS)
+$(CONFIG)\$(TARGET) : $(CONFIG) $(OBJS) $(DEPS)
 	$(LINK) /out:$(CONFIG)\$(TARGET) $(OBJS) $(LIBS)
+
+$(CONFIG) :
+	mkdir $(CONFIG)
 
 #------------------------------------------------------------------------------
 
@@ -100,7 +103,7 @@ clean:
 data.cpp : data\data.zip
 	$(B2C) panoptic_data < data\data.zip > data.cpp
 
-data\data.zip : 
+data\data.zip :
 	cd data
 	$(MAKE) /f Makefile.vc
 	cd ..
