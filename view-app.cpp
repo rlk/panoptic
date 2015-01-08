@@ -16,6 +16,7 @@
 
 #include <ogl-opengl.hpp>
 
+#include <etc-log.hpp>
 #include <etc-vector.hpp>
 #include <app-data.hpp>
 #include <app-host.hpp>
@@ -79,8 +80,8 @@ view_app::view_app(const std::string& exe,
 
     // Configure the joystick interface. (XBox 360 defaults)
 
-    button_next     = ::conf->get_i("view_button_next",     14);
-    button_prev     = ::conf->get_i("view_button_prev",     13);
+    button_next     = ::conf->get_i("view_button_next",      2);
+    button_prev     = ::conf->get_i("view_button_prev",      3);
     button_zoom_in  = ::conf->get_i("view_button_zoom_in",   1);
     button_zoom_out = ::conf->get_i("view_button_zoom_out",  0);
     button_control  = ::conf->get_i("view_button_control",   5);
@@ -794,6 +795,8 @@ bool view_app::process_button(app::event *E)
 {
     const int  b = E->data.button.b;
     const bool d = E->data.button.d;
+
+    etc::log("button %d", b);
 
     if (b == button_next && d)
         return dostep(+1, mod_control, mod_shift);
