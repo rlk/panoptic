@@ -191,6 +191,9 @@ view_gui::view_gui(view_app *V, int w, int h)
 
     root->laydn((w - ww) / 2,
                 (h - hh) / 2, ww, hh);
+
+    last_x = w / 2;
+    last_y = h / 2;
 }
 
 //------------------------------------------------------------------------------
