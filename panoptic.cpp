@@ -16,12 +16,14 @@
 
 #include <ogl-opengl.hpp>
 
+#include <etc-log.hpp>
 #include <etc-socket.hpp>
 #include <etc-vector.hpp>
 #include <app-data.hpp>
 #include <app-host.hpp>
 #include <app-conf.hpp>
 #include <app-prog.hpp>
+#include <app-view.hpp>
 #include <app-frustum.hpp>
 #include <app-default.hpp>
 
@@ -128,7 +130,7 @@ ogl::aabb panoptic::prep(int frusc, const app::frustum *const *frusv)
         const double d = k * here.get_distance();
 
         double n = 0.5 *     (d     - r    );
-        double f = 1.0 * sqrt(d * d - m * m);
+        double f = 1.5 * sqrt(d * d - m * m);
 
         // Exploit an AABB special case to transmit near and far directly.
 
@@ -138,6 +140,22 @@ ogl::aabb panoptic::prep(int frusc, const app::frustum *const *frusv)
 
 void panoptic::draw(int frusi, const app::frustum *frusp, int chani)
 {
+    mat4 M = ::view->get_transform();
+
+    // Set the label clipping plane.
+
+    const double m =      get_minimum_ground();
+    const double d = here.get_distance();
+
+    double C[4] = { 0.0, 0.0, 1.0, 0.0 };
+
+    here.get_position(C);
+
+    C[3] = -m * m / d;
+
+    glLoadMatrixd(transpose(M));
+    glClipPlane(GL_CLIP_PLANE0, C);
+
     // Set the light position.
 
     double  l[3];
@@ -151,7 +169,6 @@ void panoptic::draw(int frusi, const app::frustum *frusp, int chani)
     L[3] = 0.0f;
 
     glLoadIdentity();
-
     glLightfv(GL_LIGHT0, GL_POSITION, L);
 
     view_app::draw(frusi, frusp, chani);
