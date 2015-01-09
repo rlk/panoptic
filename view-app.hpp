@@ -125,12 +125,16 @@ private:
     int button_zoom_out;
     int button_control;
     int button_shift;
+    int button_gui;
+    int button_select;
 
     // Sphere GUI State
 
     int       gui_index;
     int       gui_w;
     int       gui_h;
+    double    gui_dx;
+    double    gui_dy;
     view_gui *gui;
 
     void gui_show();

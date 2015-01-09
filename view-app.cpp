@@ -55,6 +55,8 @@ view_app::view_app(const std::string& exe,
     gui_index(0),
     gui_w(0),
     gui_h(0),
+    gui_dx(0),
+    gui_dy(0),
     gui(0)
 {
     // Add the static data archive.
@@ -80,12 +82,14 @@ view_app::view_app(const std::string& exe,
 
     // Configure the joystick interface. (XBox 360 defaults)
 
+    button_zoom_in  = ::conf->get_i("view_button_zoom_in",   0);
+    button_zoom_out = ::conf->get_i("view_button_zoom_out",  1);
     button_next     = ::conf->get_i("view_button_next",      2);
     button_prev     = ::conf->get_i("view_button_prev",      3);
-    button_zoom_in  = ::conf->get_i("view_button_zoom_in",   1);
-    button_zoom_out = ::conf->get_i("view_button_zoom_out",  0);
-    button_control  = ::conf->get_i("view_button_control",   5);
     button_shift    = ::conf->get_i("view_button_shift",     4);
+    button_control  = ::conf->get_i("view_button_control",   5);
+    button_gui      = ::conf->get_i("view_button_gui",       7);
+    button_select   = ::conf->get_i("view_button_select",    0);
 }
 
 view_app::~view_app()
@@ -796,7 +800,13 @@ bool view_app::process_button(app::event *E)
     const int  b = E->data.button.b;
     const bool d = E->data.button.d;
 
-    etc::log("button %d", b);
+    if (b == button_gui && d)
+    {
+        if (gui)
+            gui_hide();
+        else
+            gui_show();
+    }
 
     if (b == button_next && d)
         return dostep(+1, mod_control, mod_shift);
@@ -815,6 +825,7 @@ bool view_app::process_button(app::event *E)
 
 bool view_app::process_event(app::event *E)
 {
+    if (gui &&    gui_event(E)) return true;
     if (prog::process_event(E)) return true;
 
     switch (E->get_type())
@@ -825,12 +836,18 @@ bool view_app::process_event(app::event *E)
         case E_CLICK:  if (process_click (E)) return true; else break;
         case E_BUTTON: if (process_button(E)) return true; else break;
     }
-    if (gui && gui_event(E)) return true;
 
     return false;
 }
 
 //------------------------------------------------------------------------------
+
+static double deaden(double k)
+{
+    if      (k > +0.2) return k + 0.2 * (k - 1);
+    else if (k < -0.2) return k + 0.2 * (k + 1);
+    else               return 0;
+}
 
 // Initialize the file selection GUI.
 
@@ -913,22 +930,60 @@ bool view_app::gui_event(app::event *E)
             }
             return false;
 
+        case E_AXIS:
+
+            if (gui)
+            {
+                int    a = E->data.axis.a;
+                double v = E->data.axis.v;
+
+                if (a == 0) gui_dx = v / 32768.0;
+                if (a == 1) gui_dy = v / 32768.0;
+            }
+            return true;
+  
+        case E_TICK:
+
+            if (gui)
+            {
+                double dx = copysign(pow(deaden(gui_dx), 2.0), gui_dx);
+                double dy = copysign(pow(deaden(gui_dy), 2.0), gui_dy);
+
+                if (dx || dy)
+                {
+                    int x = toint(gui->get_last_x() + dx * 16);
+                    int y = toint(gui->get_last_y() - dy * 16);
+
+                    x = std::max(0, std::min(x, gui_w));
+                    y = std::max(0, std::min(y, gui_h));
+
+                    gui->point(x, y);
+                }
+            }
+            return false;
+
+        case E_BUTTON:
+            if (E->data.button.b == button_select)
+            {
+                gui->click(0, E->data.button.d != 0);
+                return true;
+            }
+            return false;
+
         case E_KEY:
 
-            if (gui && E->data.key.d)
+            if (E->data.key.d)
                 gui->key(E->data.key.k, E->data.key.m);
             return true;
 
         case E_CLICK:
 
-            if (gui)
-                gui->click(E->data.click.m, E->data.click.d != 0);
+            gui->click(E->data.click.m, E->data.click.d != 0);
             return true;
 
         case E_TEXT:
 
-            if (gui)
-                gui->glyph(E->data.text.c);
+            gui->glyph(E->data.text.c);
             return true;
     }
     return false;
