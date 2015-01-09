@@ -91,6 +91,7 @@ view_app::view_app(const std::string& exe,
     button_control   = ::conf->get_i("view_button_control",   5);
     button_gui       = ::conf->get_i("view_button_gui",       7);
     button_select    = ::conf->get_i("view_button_select",    0);
+    button_snap      = ::conf->get_i("view_button_snap",      8);
 }
 
 view_app::~view_app()
@@ -803,6 +804,7 @@ bool view_app::process_button(app::event *E)
     if (b == button_zoom_in)   { zoom_rate   = d ? -1 : 0; return true; }
     if (b == button_zoom_out)  { zoom_rate   = d ? +1 : 0; return true; }
     if (b == button_zoom_home) { zoom        = 0;          return true; }
+    if (b == button_snap && d) { snap();                   return true; }
 
     return false;
 }

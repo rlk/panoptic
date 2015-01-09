@@ -128,6 +128,7 @@ private:
     int button_shift;
     int button_gui;
     int button_select;
+    int button_snap;
 
     // Sphere GUI State
 
