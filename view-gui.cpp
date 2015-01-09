@@ -13,6 +13,7 @@
 #include <app-font.hpp>
 #include <app-host.hpp>
 #include <app-data.hpp>
+#include <etc-dir.hpp>
 
 #include "view-gui.hpp"
 #include "view-app.hpp"
@@ -142,8 +143,9 @@ config_panel::config_panel(view_app *V, gui::widget *w) : gui::vgroup()
     const std::string b((const char *) glGetString(GL_SHADING_LANGUAGE_VERSION));
 
     const std::string s = "OpenGL " + a + " GLSL " + b;
+    const std::string f = "config" + std::string(1, PATH_SEPARATOR) + "common";
 
-    gui::selector *S = new gui::selector("config/common", ".xml");
+    gui::selector *S = new gui::selector(f, ".xml");
 
     add((new gui::frame)->
         add((new gui::vgroup)->
