@@ -123,6 +123,7 @@ private:
     int button_prev;
     int button_zoom_in;
     int button_zoom_out;
+    int button_zoom_home;
     int button_control;
     int button_shift;
     int button_gui;

@@ -82,14 +82,15 @@ view_app::view_app(const std::string& exe,
 
     // Configure the joystick interface. (XBox 360 defaults)
 
-    button_zoom_in  = ::conf->get_i("view_button_zoom_in",   0);
-    button_zoom_out = ::conf->get_i("view_button_zoom_out",  1);
-    button_next     = ::conf->get_i("view_button_next",      2);
-    button_prev     = ::conf->get_i("view_button_prev",      3);
-    button_shift    = ::conf->get_i("view_button_shift",     4);
-    button_control  = ::conf->get_i("view_button_control",   5);
-    button_gui      = ::conf->get_i("view_button_gui",       7);
-    button_select   = ::conf->get_i("view_button_select",    0);
+    button_zoom_in   = ::conf->get_i("view_button_zoom_in",   0);
+    button_zoom_out  = ::conf->get_i("view_button_zoom_out",  1);
+    button_zoom_home = ::conf->get_i("view_button_zoom_home", 6);
+    button_next      = ::conf->get_i("view_button_next",      2);
+    button_prev      = ::conf->get_i("view_button_prev",      3);
+    button_shift     = ::conf->get_i("view_button_shift",     4);
+    button_control   = ::conf->get_i("view_button_control",   5);
+    button_gui       = ::conf->get_i("view_button_gui",       7);
+    button_select    = ::conf->get_i("view_button_select",    0);
 }
 
 view_app::~view_app()
@@ -797,10 +798,11 @@ bool view_app::process_button(app::event *E)
     if (b == button_prev && d)
         return dostep(-1, mod_control, mod_shift);
 
-    if (b == button_shift)    { mod_shift   = d;          return true; }
-    if (b == button_control)  { mod_control = d;          return true; }
-    if (b == button_zoom_in)  { zoom_rate   = d ? +1 : 0; return true; }
-    if (b == button_zoom_out) { zoom_rate   = d ? -1 : 0; return true; }
+    if (b == button_shift)     { mod_shift   = d;          return true; }
+    if (b == button_control)   { mod_control = d;          return true; }
+    if (b == button_zoom_in)   { zoom_rate   = d ? -1 : 0; return true; }
+    if (b == button_zoom_out)  { zoom_rate   = d ? +1 : 0; return true; }
+    if (b == button_zoom_home) { zoom        = 0;          return true; }
 
     return false;
 }
@@ -965,6 +967,7 @@ bool view_app::gui_event(app::event *E)
                 gui->click(0, E->data.button.d != 0);
                 return true;
             }
+
             return false;
 
         case E_KEY:
