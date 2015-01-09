@@ -607,14 +607,6 @@ bool view_app::funkey(int n, bool c, bool s)
 
             switch (n)
             {
-                case 1: // Toggle the GUI
-
-                    if (gui)
-                        gui_hide();
-                    else
-                        gui_show();
-                    return true;
-
                 case 2: // Toggle the wire frame
 
                     ren->set_wire(!ren->get_wire());
@@ -793,20 +785,12 @@ bool view_app::process_click(app::event *E)
     return false;
 }
 
-// Handle a joystic button event.
+// Handle a joystick button event.
 
 bool view_app::process_button(app::event *E)
 {
     const int  b = E->data.button.b;
     const bool d = E->data.button.d;
-
-    if (b == button_gui && d)
-    {
-        if (gui)
-            gui_hide();
-        else
-            gui_show();
-    }
 
     if (b == button_next && d)
         return dostep(+1, mod_control, mod_shift);
@@ -825,6 +809,18 @@ bool view_app::process_button(app::event *E)
 
 bool view_app::process_event(app::event *E)
 {
+    if ((E->get_type() == E_KEY    && E->data.key.d
+                                   && E->data.key.k == SDL_SCANCODE_F1) ||
+        (E->get_type() == E_BUTTON && E->data.button.d
+                                   && E->data.button.b == button_gui))
+    {
+        if (gui)
+            gui_hide();
+        else
+            gui_show();
+        return true;
+    }
+
     if (gui &&    gui_event(E)) return true;
     if (prog::process_event(E)) return true;
 
@@ -963,6 +959,7 @@ bool view_app::gui_event(app::event *E)
             return false;
 
         case E_BUTTON:
+
             if (E->data.button.b == button_select)
             {
                 gui->click(0, E->data.button.d != 0);
