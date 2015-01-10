@@ -36,6 +36,10 @@ pre.small {
   font-size: 12px;
 }
 
+span.popup {
+  border-bottom: 1px dashed black;
+}
+
 img {
   display: block;
   margin: 0 auto;
