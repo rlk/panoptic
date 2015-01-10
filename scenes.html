@@ -7,52 +7,62 @@
 <body>
 <h1><a href="index.html">Panoptic</a></h1>
 
-<p>The following is a detailed listing of the ten examples appearing in <a href="https://github.com/rlk/scmview/blob/master/data/scm/Examples.xml">Example.xml</a> bundled with Panoptic.</p>
+<p>The following is a detailed listing of the ten examples bundled with Panoptic. These examples demonstrate most, if not all, of the capability of the shaders in the default bundle. With a basic understanding of XML, this document should provide enough background to modify the examples or to generate new ones.</p>
 
-<p>The panoramic images were captured in and around Baton Rouge, Louisiana, using the <a href="http://csc.lsu.edu/~kooima/panorama/index.html">CAVECam</a> omnistereoscopic panoramic camera.</p>
-
-<p>The lunar imagery is derived from data captured by the <a href="http://lunar.gsfc.nasa.gov">Lunar Reconnaissance Orbiter (LRO)</a>. Sources include the <a href="http://lunar.gsfc.nasa.gov/lola.html">Lunar Orbiter Laser Altimeter (LOLA)</a>, the <a href="http://lunar.gsfc.nasa.gov/mini-rf.html">Mini Radio Frequency (Mini-RF)</a> synthetic aperture radar, the <a href="http://lroc.sese.asu.edu">Lunar Reconnaissance Orbiter Camera (LROC)</a> Wide Angle Camera (WAC) and Narrow Angle Camera (NAC), and <a href="http://wms.lroc.asu.edu/lroc/view_rdr/WAC_GLD100">the 100-meter Global Lunar DTM (GLD100)</a> which was derived from stereo WAC imagery.</p>
-
-<p>These examples demonstrate most, if not all, of the capability of the shaders in the default bundle. With a basic understanding of XML, this document should provide enough background to modify the examples or to generate new ones.</p>
+<p>Be advised, <span class="popup" title="e.g. OS X's default Info-Zip UnZip 5.52">some common ZIP archive utilities</span> are not capable of handling archives larger than 2GB. If you have trouble, check the SHA1 sum before declaring the ZIP corrupt. If the checksum matches but the problem persists, try another ZIP utility.
 
 <h2>The Images</h2>
 
-<p>The panoramas use lossy JPEG compression internally. They come in left-right pairs.</p>
+<p>The panoramic images were captured in and around Baton Rouge, Louisiana, using the <a href="http://csc.lsu.edu/~kooima/panorama/index.html">CAVECam</a> omnistereoscopic panoramic camera. They are compressed using lossy JPEG and come in left-right pairs.</p>
 
 <blockquote><table>
-<tr><td>All examples&hellip;</td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Panoramas.zip">HTTP Download</a></td><td class="size">1.1 GB</td><td class="hash">sha1 688072cf4210f14ed1f2564ee2da8948f75f8fed</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Panoramas.torrent">Torrent Download</a></td><td class="size">1.1 GB</td><td class="hash">sha1 688072cf4210f14ed1f2564ee2da8948f75f8fed</td></tr>
+<tr><td>All panoramas&hellip;</td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Panoramas.zip">HTTP Download</a></td><td class="size">1.1 GB</td><td class="hash">sha1 688072cf4210f14ed1f2564ee2da8948f75f8fed</td></tr>
+<tr><td>                     </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Panoramas.torrent">Torrent Download</a></td><td class="size">1.1 GB</td><td class="hash">sha1 688072cf4210f14ed1f2564ee2da8948f75f8fed</td></tr>
 <tr><td>&nbsp;</td></tr>
-<tr><td>Individually&hellip;</td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/1-Panoptic-Example-Panoramas.xml">1-Panoptic-Example-Panoramas.xml</a></td><td class="size">1.2 KB</td><td class="hash">sha1 8b80fb65b6178bcc077141911a386c8989244993</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-0-L-254-5-J.tif">    Bluebonnet-0-L-254-5-J.tif     </a></td><td class="size">208 MB</td><td class="hash">sha1 dc976fc575e754826898cb01c5558116dab22e6a</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-0-R-254-5-J.tif">    Bluebonnet-0-R-254-5-J.tif     </a></td><td class="size">207 MB</td><td class="hash">sha1 1eb2676c081c6271ad7226171ec79f9edfcbe9a6</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-3-L-254-5-J.tif">    Bluebonnet-3-L-254-5-J.tif     </a></td><td class="size">194 MB</td><td class="hash">sha1 ab7c28de9648956af10aca4be9ef3076599a67d9</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-3-R-254-5-J.tif">    Bluebonnet-3-R-254-5-J.tif     </a></td><td class="size">192 MB</td><td class="hash">sha1 c125ad481d3daea7030135a2a3c1840ccb6a06ba</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/LSU1-L-254-5-J.tif">            LSU1-L-254-5-J.tif             </a></td><td class="size">160 MB</td><td class="hash">sha1 a426239b7ef75e511511b01f12de1fc8072b770b</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/LSU1-R-254-5-J.tif">            LSU1-R-254-5-J.tif             </a></td><td class="size">160 MB</td><td class="hash">sha1 4dcf77b17f19bb80242fd305f4d27116e305b527</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Tiger-Stadium-2-L-254-5-J.tif"> Tiger-Stadium-2-L-254-5-J.tif  </a></td><td class="size"> 84 MB</td><td class="hash">sha1 12be01814692a4f301e3bd32d0e42f31d1fb652f</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Tiger-Stadium-2-R-254-5-J.tif"> Tiger-Stadium-2-R-254-5-J.tif  </a></td><td class="size"> 82 MB</td><td class="hash">sha1 b7818a015442fcf69bd558bf9a324285460f95b5</td></tr>
+<tr><td>Individually&hellip; </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/1-Panoptic-Example-Panoramas.xml">1-Panoptic-Example-Panoramas.xml</a></td><td class="size">1.2 KB</td><td class="hash">sha1 8b80fb65b6178bcc077141911a386c8989244993</td></tr>
+<tr><td>                     </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-0-L-254-5-J.tif">    Bluebonnet-0-L-254-5-J.tif     </a></td><td class="size">208 MB</td><td class="hash">sha1 dc976fc575e754826898cb01c5558116dab22e6a</td></tr>
+<tr><td>                     </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-0-R-254-5-J.tif">    Bluebonnet-0-R-254-5-J.tif     </a></td><td class="size">207 MB</td><td class="hash">sha1 1eb2676c081c6271ad7226171ec79f9edfcbe9a6</td></tr>
+<tr><td>                     </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-3-L-254-5-J.tif">    Bluebonnet-3-L-254-5-J.tif     </a></td><td class="size">194 MB</td><td class="hash">sha1 ab7c28de9648956af10aca4be9ef3076599a67d9</td></tr>
+<tr><td>                     </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Bluebonnet-3-R-254-5-J.tif">    Bluebonnet-3-R-254-5-J.tif     </a></td><td class="size">192 MB</td><td class="hash">sha1 c125ad481d3daea7030135a2a3c1840ccb6a06ba</td></tr>
+<tr><td>                     </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/LSU1-L-254-5-J.tif">            LSU1-L-254-5-J.tif             </a></td><td class="size">160 MB</td><td class="hash">sha1 a426239b7ef75e511511b01f12de1fc8072b770b</td></tr>
+<tr><td>                     </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/LSU1-R-254-5-J.tif">            LSU1-R-254-5-J.tif             </a></td><td class="size">160 MB</td><td class="hash">sha1 4dcf77b17f19bb80242fd305f4d27116e305b527</td></tr>
+<tr><td>                     </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Tiger-Stadium-2-L-254-5-J.tif"> Tiger-Stadium-2-L-254-5-J.tif  </a></td><td class="size"> 84 MB</td><td class="hash">sha1 12be01814692a4f301e3bd32d0e42f31d1fb652f</td></tr>
+<tr><td>                     </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Tiger-Stadium-2-R-254-5-J.tif"> Tiger-Stadium-2-R-254-5-J.tif  </a></td><td class="size"> 82 MB</td><td class="hash">sha1 b7818a015442fcf69bd558bf9a324285460f95b5</td></tr>
 </table></blockquote>
 
-<p>The planetary data uses lossless ZIP compression internally.</p>
+<p>The Mars imagery is derived from data captured by the <a href="http://mars.jpl.nasa.gov/mgs/">Mars Global Surveyor (MGS)</a>, the <a href="http://mars.nasa.gov/programmissions/missions/past/viking/">Viking Orbiter</a>, and <a href="http://mars.nasa.gov/programmissions/missions/past/mariner89/">Mariner 9</a>. Sources include the <a href="http://astrogeology.usgs.gov/search/details/Mars/GlobalSurveyor/MOLA/Mars_MGS_MOLA_DEM_mosaic_global_463m/cub">MGS Mars Orbiter Laser Altimeter (MOLA) Elevation Model</a>, and the <a href="http://astrogeology.usgs.gov/search/details/Mars/Viking/MDIM21/Mars_Viking_MDIM21_ClrMosaic_global_232m/cub">Viking MDIM2.1 Colorized Global Mosaic</a>.</p>
 
 <blockquote><table>
-<tr><td>All examples&hellip;</td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Moon.zip">HTTP Download</a></td><td class="size"> 22 GB</td><td class="hash">sha1 e8f6a9d0b5ad154ced9c5cb7d05a58a39b09409e</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Moon.torrent">Torrent Download</a></td><td class="size"> 22 GB</td><td class="hash">sha1 e8f6a9d0b5ad154ced9c5cb7d05a58a39b09409e</td></tr>
+<tr><td>All Mars examples&hellip;</td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Mars.zip">HTTP Download</a></td><td class="size"> 22 GB</td><td class="hash">sha1 e8f6a9d0b5ad154ced9c5cb7d05a58a39b09409e</td></tr>
+<tr><td>                         </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Mars.torrent">Torrent Download</a></td><td class="size"> 22 GB</td><td class="hash">sha1 e8f6a9d0b5ad154ced9c5cb7d05a58a39b09409e</td></tr>
 <tr><td>&nbsp;</td></tr>
-<tr><td>Individually&hellip;</td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/0-Panoptic-Example-Moon.xml">   0-Panoptic-Example-Moon.xml    </a></td><td class="size">3.4 KB</td><td class="hash">sha1 f375c083e5796b19d282c148d23aeb9ed2057aa8</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7-N.tif">               DTM-254-7-N.tif                </a></td><td class="size">6.6 GB</td><td class="hash">sha1 c8a4151d646541351025b539f32e4c2367aba207</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7.tif">                 DTM-254-7.tif                  </a></td><td class="size">7.3 GB</td><td class="hash">sha1 621ef452cdb1b154f92a38cfc191d3f69e59b59e</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/WAC-254-7.tif">                 WAC-254-7.tif                  </a></td><td class="size">2.8 GB</td><td class="hash">sha1 87d9962f5d27baa4843019b65ac6fe3fc6603e68</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/LDSM-254-4.tif">                LDSM-254-4.tif                 </a></td><td class="size"> 58 MB</td><td class="hash">sha1 61f87df8b23fbff58b1e55ee5212fa9a98e23fec</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Mini-RF-CP-254-7.tif">          Mini-RF-CP-254-7.tif           </a></td><td class="size">355 MB</td><td class="hash">sha1 08715b65fd6660c463a417f668e5a8c4acc46e38</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/NAC_ROI_APOLLO11LOA-254-15.tif">NAC_ROI_APOLLO11LOA-254-15.tif </a></td><td class="size">1.1 GB</td><td class="hash">sha1 1c24ad25457f277248e2a668b3bc4e5241f60404</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/NAC_ROI_APOLLO16HIA-254-15.tif">NAC_ROI_APOLLO16HIA-254-15.tif </a></td><td class="size">3.1 GB</td><td class="hash">sha1 ae02e9badbc0f1f6a172f02b42dc6236e9c516ee</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/synaspan-254-4.tif">            synaspan-254-4.tif             </a></td><td class="size">134 MB</td><td class="hash">sha1 65279ca574e02daa29544c34c16a28f390559325</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/IAUMOON.csv">                   IAUMOON.csv                    </a></td><td class="size">578 KB</td><td class="hash">sha1 e43cff1cdc745695c6123be7c930b75fc4d1cffd</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/graticule.csv">                 graticule.csv                  </a></td><td class="size">8.6 KB</td><td class="hash">sha1 535a735655deab3f9e804101ca16c028a5be41cc</td></tr>
-<tr><td>                    </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Apollo11.csv">                  Apollo11.csv                   </a></td><td class="size"> 64 4B</td><td class="hash">sha1 770908d1c4b806857a0fe018cc26435dae135dad</td></tr>
+<tr><td>Individual images&hellip;</td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/2-Panoptic-Example-Mars.xml">   2-Panoptic-Example-Mars.xml</a></td><td class="size">3.4 KB</td><td class="hash">sha1 f375c083e5796b19d282c148d23aeb9ed2057aa8</td></tr>
+<tr><td>                         </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/MDIM21-180-7.tif">              MDIM21-180-7.tif           </a></td><td class="size">6.3 GB</td><td class="hash">sha1 cae55f38590ec48cbaf51091091e454e5af2237a</td></tr>
+<tr><td>                         </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/MEGDR-K-180-6.tif">             MEGDR-K-180-6.tif          </a></td><td class="size">981 MB</td><td class="hash">sha1 24614476d9c6fd811532e8ddfe0ddd2400748402</td></tr>
+<tr><td>                         </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/MEGDR-K-180-6-N.tif">           MEGDR-K-180-6-N.tif        </a></td><td class="size">743 MB</td><td class="hash">sha1 2a81e1fe4950b45745d251ec18ad2f8c815f9ac8</td></tr>
+<tr><td>Annotations&hellip;      </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/IAUMARS.csv">                   IAUMARS.csv                </a></td><td class="size"> 91 KB</td><td class="hash">sha1 be31efea8eacd263764eac1dd88810954bf82d12</td></tr>
 </table></blockquote>
+
+<p>The lunar imagery is derived from data captured by the <a href="http://lunar.gsfc.nasa.gov">Lunar Reconnaissance Orbiter (LRO)</a>. Sources include the <a href="http://lunar.gsfc.nasa.gov/lola.html">Lunar Orbiter Laser Altimeter (LOLA)</a>, the <a href="http://lunar.gsfc.nasa.gov/mini-rf.html">Mini Radio Frequency (Mini-RF)</a> synthetic aperture radar, the <a href="http://lroc.sese.asu.edu">Lunar Reconnaissance Orbiter Camera (LROC)</a> Wide Angle Camera (WAC) and Narrow Angle Camera (NAC), and <a href="http://wms.lroc.asu.edu/lroc/view_rdr/WAC_GLD100">the 100-meter Global Lunar DTM (GLD100)</a> which was derived from stereo WAC imagery. All use lossless FLATE compression.</p>
+
+<blockquote><table>
+<tr><td>All lunar examples&hellip;</td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Moon.zip">HTTP Download</a></td><td class="size"> 22 GB</td><td class="hash">sha1 e8f6a9d0b5ad154ced9c5cb7d05a58a39b09409e</td></tr>
+<tr><td>                          </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Panoptic-Example-Moon.torrent">Torrent Download</a></td><td class="size"> 22 GB</td><td class="hash">sha1 e8f6a9d0b5ad154ced9c5cb7d05a58a39b09409e</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td>Individual images&hellip; </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/0-Panoptic-Example-Moon.xml">   0-Panoptic-Example-Moon.xml    </a></td><td class="size">3.4 KB</td><td class="hash">sha1 f375c083e5796b19d282c148d23aeb9ed2057aa8</td></tr>
+<tr><td>                          </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7.tif">                 DTM-254-7.tif                  </a></td><td class="size">7.3 GB</td><td class="hash">sha1 621ef452cdb1b154f92a38cfc191d3f69e59b59e</td></tr>
+<tr><td>                          </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/DTM-254-7-N.tif">               DTM-254-7-N.tif                </a></td><td class="size">6.6 GB</td><td class="hash">sha1 c8a4151d646541351025b539f32e4c2367aba207</td></tr>
+<tr><td>                          </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/WAC-254-7.tif">                 WAC-254-7.tif                  </a></td><td class="size">2.8 GB</td><td class="hash">sha1 87d9962f5d27baa4843019b65ac6fe3fc6603e68</td></tr>
+<tr><td>                          </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/LDSM-254-4.tif">                LDSM-254-4.tif                 </a></td><td class="size"> 58 MB</td><td class="hash">sha1 61f87df8b23fbff58b1e55ee5212fa9a98e23fec</td></tr>
+<tr><td>                          </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Mini-RF-CP-254-7.tif">          Mini-RF-CP-254-7.tif           </a></td><td class="size">355 MB</td><td class="hash">sha1 08715b65fd6660c463a417f668e5a8c4acc46e38</td></tr>
+<tr><td>                          </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/NAC_ROI_APOLLO11LOA-254-15.tif">NAC_ROI_APOLLO11LOA-254-15.tif </a></td><td class="size">1.1 GB</td><td class="hash">sha1 1c24ad25457f277248e2a668b3bc4e5241f60404</td></tr>
+<tr><td>                          </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/NAC_ROI_APOLLO16HIA-254-15.tif">NAC_ROI_APOLLO16HIA-254-15.tif </a></td><td class="size">3.1 GB</td><td class="hash">sha1 ae02e9badbc0f1f6a172f02b42dc6236e9c516ee</td></tr>
+<tr><td>                          </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/synaspan-254-4.tif">            synaspan-254-4.tif             </a></td><td class="size">134 MB</td><td class="hash">sha1 65279ca574e02daa29544c34c16a28f390559325</td></tr>
+<tr><td>Annotations&hellip;       </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/IAUMOON.csv">                   IAUMOON.csv                    </a></td><td class="size">578 KB</td><td class="hash">sha1 e43cff1cdc745695c6123be7c930b75fc4d1cffd</td></tr>
+<tr><td>                          </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/graticule.csv">                 graticule.csv                  </a></td><td class="size">8.6 KB</td><td class="hash">sha1 535a735655deab3f9e804101ca16c028a5be41cc</td></tr>
+<tr><td>                          </td><td class="file"><a href="https://www.cct.lsu.edu/~rkooima/data/Apollo11.csv">                  Apollo11.csv                   </a></td><td class="size"> 64 4B</td><td class="hash">sha1 770908d1c4b806857a0fe018cc26435dae135dad</td></tr>
+</table></blockquote>
+
 
 <h2>The Scenes</h2>
 
@@ -157,9 +167,5 @@
 </pre></td></tr>
 
 </table>
-
-<h2>The Steps</h2>
-
-Step elements in <a href="https://github.com/rlk/scmview/blob/master/data/scm/Examples.xml">Example.xml</a> associate foreground scenes with background scenes and camera positions. When you press a number key in Panoptic, you are selecting one of these ten steps. This file is designed with ten scenes, ten steps, and uniform naming, so the mapping is trivial.
 </body>
 </html>
