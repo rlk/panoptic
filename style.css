@@ -45,6 +45,10 @@ img.ex {
   margin: 0 10px 10px 0;
 }
 
+img.thumbnail {
+  margin: 5px 5px 5px 5px;
+}
+
 table {
   font: inherit;
   margin-left: auto;
