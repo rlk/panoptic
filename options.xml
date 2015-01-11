@@ -29,9 +29,14 @@
   <option name="gamepad_axis_neg_pitch"> 4</option>
 
   <!-- Gamepad Buttons -->
-  <option name="view_button_next">14</option>
-  <option name="view_button_prev">13</option>
-  <option name="view_button_zoom_in"> 1</option>
-  <option name="view_button_zoom_out"> 0</option>
-  <option name="view_button_control"> 5</option>
+  <option name="view_button_select">0</option>
+  <option name="view_button_zoom_in">0</option>
+  <option name="view_button_zoom_out">1</option>
+  <option name="view_button_next">2</option>
+  <option name="view_button_prev">3</option>
+  <option name="view_button_shift">4</option>
+  <option name="view_button_control">5</option>
+  <option name="view_button_zoom_home">6</option>
+  <option name="view_button_gui">7</option>
+  <option name="view_button_snap">8</option>
 </conf>
