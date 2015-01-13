@@ -276,6 +276,22 @@ void view_app::load_scenes(app::node p)
 
 void view_app::load_file(const std::string& name)
 {
+    // If the given scene file name includes a directory, that scene's images
+    // are likely in the same directory. Temporarily push it onto the path.
+
+    std::string path = name;
+    bool pushed      = false;
+
+    if (std::string::size_type s = path.rfind('/'))
+    {
+        if (s != std::string::npos)
+        {
+            pushed = true;
+            path.erase(s);
+            sys->push_path(path);
+        }
+    }
+
     // If the named file exists and contains an XML sphere definition...
 
     app::file file(name);
@@ -302,6 +318,8 @@ void view_app::load_file(const std::string& name)
 
         jump_to(0);
     }
+
+    if (pushed) sys->pop_path();
 }
 
 // Create a path from a series of camera configurations in the named file.
@@ -941,7 +959,7 @@ bool view_app::gui_event(app::event *E)
                 if (a == 1) gui_dy = v / 32768.0;
             }
             return true;
-  
+
         case E_TICK:
 
             if (gui)
