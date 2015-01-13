@@ -31,6 +31,11 @@ SCMPATH environment variable to your image directory.
     Config ... Change the display configuration
     Data ..... Load a scene definition file
 
+## Oculus Rift and 3D TV Modes
+
+To engage a stereoscopic 3D viewing mode, navigate the Config panel up a level
+and down to config/stereoscopic. An Oculus short-cut button is also provided.
+
 ## Everything else
 
     Please see the web site for documentation of all features.
