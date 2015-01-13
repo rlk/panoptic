@@ -876,6 +876,9 @@ void view_app::gui_show()
 
     gui = new view_gui(this, gui_w, gui_h);
 
+    if (!gui_conf.empty()) gui->set_conf(gui_conf);
+    if (!gui_data.empty()) gui->set_data(gui_data);
+
     gui->set_index(gui_index);
     gui->show();
 
@@ -892,6 +895,8 @@ void view_app::gui_hide()
 
         gui->hide();
         gui_index = gui->get_index();
+        gui_conf  = gui->get_conf();
+        gui_data  = gui->get_data();
 
         delete gui;
         gui = 0;

@@ -132,12 +132,14 @@ private:
 
     // Sphere GUI State
 
-    int       gui_index;
-    int       gui_w;
-    int       gui_h;
-    double    gui_dx;
-    double    gui_dy;
-    view_gui *gui;
+    std::string gui_conf;
+    std::string gui_data;
+    int         gui_index;
+    int         gui_w;
+    int         gui_h;
+    double      gui_dx;
+    double      gui_dy;
+    view_gui   *gui;
 
     void gui_show();
     void gui_hide();

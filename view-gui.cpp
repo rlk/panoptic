@@ -122,16 +122,16 @@ about_panel::about_panel(view_app *V, gui::widget *w) : gui::vgroup()
 
 data_panel::data_panel(view_app *V, gui::widget *w) : gui::vgroup()
 {
-    gui::selector *S = new gui::selector(getcwd(0, 0), ".xml");
+    selector = new gui::selector(getcwd(0, 0), ".xml");
 
     add((new gui::frame)->
         add((new gui::vgroup)->
-            add(S)->
+            add(selector)->
             add((new gui::harray)->
                 add(new gui::filler(true, false))->
                 add(new gui::filler(true, false))->
                 add(new gui::filler(true, false))->
-                add(new button_load_data(V, S)))));
+                add(new button_load_data(V, selector)))));
 }
 
 //-----------------------------------------------------------------------------
@@ -145,15 +145,15 @@ config_panel::config_panel(view_app *V, gui::widget *w) : gui::vgroup()
     const std::string s = "OpenGL " + a + " GLSL " + b;
     const std::string f = "config" + std::string(1, PATH_SEPARATOR) + "common";
 
-    gui::selector *S = new gui::selector(f, ".xml");
+    selector = new gui::selector(f, ".xml");
 
     add((new gui::frame)->
         add((new gui::vgroup)->
-            add(S)->
+            add(selector)->
             add((new gui::hgroup)->
                 add(new gui::filler(true, false))->
                 add(new gui::string(s, gui::string::mono, 0, 0, 0, 0))->
-                add(new button_load_config(S)))));
+                add(new button_load_config(selector)))));
 }
 
 //-----------------------------------------------------------------------------
@@ -169,6 +169,9 @@ view_gui::view_gui(view_app *V, int w, int h)
     gui::widget *D = new button_vr();
     gui::widget *Q = new button_quit();
 
+    datapan = new   data_panel(V, state);
+    confpan = new config_panel(V, state);
+
     root = ((new gui::vgroup)->
             add((new gui::harray)->
                 add(A)->
@@ -181,8 +184,8 @@ view_gui::view_gui(view_app *V, int w, int h)
             add(new gui::spacer)->
             add(state->
                 add(new  about_panel(V, state))->
-                add(new config_panel(V, state))->
-                add(new   data_panel(V, state))));
+                add(confpan)->
+                add(datapan)));
 
     root->layup();
 
