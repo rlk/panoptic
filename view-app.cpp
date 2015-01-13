@@ -978,8 +978,8 @@ bool view_app::gui_event(app::event *E)
                     int x = toint(gui->get_last_x() + dx * 16);
                     int y = toint(gui->get_last_y() - dy * 16);
 
-                    x = std::max(0, std::min(x, gui_w));
-                    y = std::max(0, std::min(y, gui_h));
+                    //x = std::max(0, std::min(x, gui_w));
+                    //y = std::max(0, std::min(y, gui_h));
 
                     gui->point(x, y);
                 }
