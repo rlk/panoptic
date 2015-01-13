@@ -17,6 +17,7 @@
 #include <ogl-opengl.hpp>
 
 #include <etc-log.hpp>
+#include <etc-dir.hpp>
 #include <etc-vector.hpp>
 #include <app-data.hpp>
 #include <app-host.hpp>
@@ -282,7 +283,7 @@ void view_app::load_file(const std::string& name)
     std::string path = name;
     bool pushed      = false;
 
-    if (std::string::size_type s = path.rfind('/'))
+    if (std::string::size_type s = path.rfind(PATH_SEPARATOR))
     {
         if (s != std::string::npos)
         {
