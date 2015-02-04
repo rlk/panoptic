@@ -42,8 +42,8 @@ view_app::view_app(const std::string& exe,
     record(false),
 
     zoom     ( 0.0),
-    zoom_min (-3.0),
-    zoom_max ( 3.0),
+    zoom_min (-3.0),                    // How far can we zoom in
+    zoom_max ( 2.0),                    // How far can we zoom out
     zoom_rate( 0.0),
 
     mod_shift  (false),
@@ -234,12 +234,18 @@ void view_app::load_scenes(app::node p)
         {
             load_images(n, f);
 
-            GLubyte r = n.get_i("r", 0xFF);
-            GLubyte g = n.get_i("g", 0xBF);
-            GLubyte b = n.get_i("b", 0x00);
-            GLubyte a = n.get_i("a", 0xFF);
+            GLubyte labelr = n.get_i("labelr", 0x00);
+            GLubyte labelg = n.get_i("labelg", 0x00);
+            GLubyte labelb = n.get_i("labelb", 0x00);
+            GLubyte labela = n.get_i("labela", 0xFF);
 
-            f->set_color(r << 24 | g << 16 | b << 8 | a);
+            GLubyte clearr = n.get_i("clearr", 0x00);
+            GLubyte clearg = n.get_i("clearg", 0x00);
+            GLubyte clearb = n.get_i("clearb", 0x00);
+            GLubyte cleara = n.get_i("cleara", 0x00);
+
+            f->set_color(labelr << 24 | labelg << 16 | labelb << 8 | labela);
+            f->set_clear(clearr << 24 | clearg << 16 | clearb << 8 | cleara);
             f->set_name (n.get_s("name"));
             f->set_label(n.get_s("label"));
 
@@ -436,11 +442,6 @@ double view_app::get_minimum_ground() const
 
 ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
 {
-    if (gui)
-        glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
-    else
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
     // Transfer the current camera state to the view manager.
 
     ::view->set_orientation(view_app::get_orientation());
