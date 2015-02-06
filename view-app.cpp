@@ -661,7 +661,7 @@ bool view_app::funkey(int n, bool c, bool s)
                 case 12: // Stop recording the view motion
 
                     record = false;
-                    save_path("scm/path");
+                    save_path("path");
                     return true;
             }
         }
@@ -819,12 +819,12 @@ bool view_app::process_button(app::event *E)
     if (b == button_prev && d)
         return dostep(-1, mod_control, mod_shift);
 
-    if (b == button_shift)     { mod_shift   = d;          return true; }
-    if (b == button_control)   { mod_control = d;          return true; }
-    if (b == button_zoom_in)   { zoom_rate   = d ? -1 : 0; return true; }
-    if (b == button_zoom_out)  { zoom_rate   = d ? +1 : 0; return true; }
-    if (b == button_zoom_home) { zoom        = 0;          return true; }
-    if (b == button_snap && d) { snap();                   return true; }
+    if (b == button_shift)     { mod_shift   = d;            return true; }
+    if (b == button_control)   { mod_control = d;            return true; }
+    if (b == button_zoom_in)   { zoom_rate   = d ? -1 : 0;   return true; }
+    if (b == button_zoom_out)  { zoom_rate   = d ? +1 : 0;   return true; }
+    if (b == button_zoom_home) { zoom        = 0;            return true; }
+    if (b == button_snap && d) { ::host->set_movie_mode(-1); return true; }
 
     return false;
 }
