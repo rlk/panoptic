@@ -66,6 +66,11 @@ public:
     virtual void jump_to(int);
     virtual void fade_to(int);
 
+    // SCM content queries
+
+    int                get_step_count()   const;
+    const std::string& get_step_name(int) const;
+
 protected:
 
     // The SCM system and current view.

@@ -11,6 +11,7 @@
 //  General Public License for more details.
 
 #include <cmath>
+#include <cassert>
 #include <iomanip>
 #include <sstream>
 
@@ -324,6 +325,9 @@ void view_app::load_file(const std::string& name)
         // Dismiss the GUI and display the first loaded scene.
 
         jump_to(0);
+
+        gui_hide();
+        gui_show();
     }
 
     if (pushed) sys->pop_path();
@@ -549,6 +553,22 @@ void view_app::fade_to(int n)
 
         curr_step = n;
     }
+}
+
+//------------------------------------------------------------------------------
+
+// These functions allow the viewer GUI to query the scenes of the currently
+// loaded SCM system and generate buttons to navigate them.
+
+int view_app::get_step_count() const
+{
+    return sys ? sys->get_step_count() : 0;
+}
+
+const std::string& view_app::get_step_name(int i) const
+{
+    assert(0 <= i && i < get_step_count());
+    return sys->get_step(i)->get_name();
 }
 
 //------------------------------------------------------------------------------
@@ -975,15 +995,8 @@ bool view_app::gui_event(app::event *E)
                 double dy = copysign(pow(deaden(gui_dy), 2.0), gui_dy);
 
                 if (dx || dy)
-                {
-                    int x = toint(gui->get_last_x() + dx * 16);
-                    int y = toint(gui->get_last_y() - dy * 16);
-
-                    //x = std::max(0, std::min(x, gui_w));
-                    //y = std::max(0, std::min(y, gui_h));
-
-                    gui->point(x, y);
-                }
+                    gui->point(toint(gui->get_last_x() + dx * 16),
+                               toint(gui->get_last_y() - dy * 16));
             }
             return false;
 

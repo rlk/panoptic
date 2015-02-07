@@ -96,6 +96,21 @@ public:
     }
 };
 
+class button_step : public gui::button
+{
+    view_app *V;
+    int       i;
+
+public:
+    button_step(view_app *V, int i) :
+        gui::button(V->get_step_name(i)), V(V), i(i) { }
+
+    void apply()
+    {
+        V->jump_to(i);
+    }
+};
+
 //-----------------------------------------------------------------------------
 // The About panel
 
@@ -122,16 +137,29 @@ about_panel::about_panel(view_app *V, gui::widget *w) : gui::vgroup()
 
 data_panel::data_panel(view_app *V, gui::widget *w) : gui::vgroup()
 {
+    gui::vgroup *G = new gui::vgroup();
+
     selector = new gui::selector(getcwd(0, 0), ".xml");
 
-    add((new gui::frame)->
-        add((new gui::vgroup)->
-            add(selector)->
-            add((new gui::harray)->
-                add(new gui::filler(true, false))->
-                add(new gui::filler(true, false))->
-                add(new gui::filler(true, false))->
-                add(new button_load_data(V, selector)))));
+    G->add(selector)->
+       add((new gui::harray())->
+            add(new gui::filler(true, false))->
+            add(new gui::filler(true, false))->
+            add(new gui::filler(true, false))->
+            add(new button_load_data(V, selector)));
+
+    if (int n = V->get_step_count())
+    {
+        gui::widget *T = new gui::harray();
+
+        for (int i = 0; i < n; i++)
+            T->add(new button_step(V, i));
+
+        G->add(new gui::spacer);
+        G->add(T);
+    }
+
+    add((new gui::frame)->add(G));
 }
 
 //-----------------------------------------------------------------------------
@@ -183,7 +211,7 @@ view_gui::view_gui(view_app *V, int w, int h)
                 add(Q))->
             add(new gui::spacer)->
             add(state->
-                add(new  about_panel(V, state))->
+                add(new about_panel(V, state))->
                 add(confpan)->
                 add(datapan)));
 
