@@ -47,6 +47,8 @@ data.cpp : data/data.zip
 data/data.zip :
 	$(MAKE) -C data
 
+.PHONY : data/data.zip
+
 #------------------------------------------------------------------------------
 # Package the target in a ZIP archive, including the OS and date in the name.
 
