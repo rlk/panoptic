@@ -17,7 +17,7 @@
 <tr><td>F3 &emsp;</td><td>Toggle motion blur</td></tr>
 <tr><td>F4 &emsp;</td><td>Toggle the cache overlay</td></tr>
 <tr><td>F5 &emsp;</td><td>Flush and reload all caches</td></tr>
-<tr><td>F10&emsp;</td><td>Take a screenshot and write it to <code>snap0000.png</code></td></tr>
+<tr><td>F10&emsp;</td><td>Take a screenshot and write it to <code>frame000000.tga</code></td></tr>
 </table>
 
 <h2>Configuration Options</h2>
@@ -41,7 +41,7 @@ Substitute your own login, of course. This file does not exist initially, so <a 
 <tr><td>Image cache size</td><td><code>scm_cache_size</code></td><td>16</td></tr>
 <tr><td>Input device</td><td><code>input_mode</code></td><td>gamepad</td></tr>
 
-<tr><th>Keyboard Controls</th></tr>
+<tr><th>Keyboard View Controls</th></tr>
 <tr><td>View motion right</td><td><code>key_move_R</code></td><td> 7</td></tr>
 <tr><td>View motion left</td><td><code>key_move_L</code></td><td> 4</td></tr>
 <tr><td>View motion up</td><td><code>key_move_U</code></td><td> 8</td></tr>
@@ -49,19 +49,7 @@ Substitute your own login, of course. This file does not exist initially, so <a 
 <tr><td>View motion backward</td><td><code>key_move_B</code></td><td>22</td></tr>
 <tr><td>View motion forward</td><td><code>key_move_F</code></td><td>26</td></tr>
 
-<tr><th>Gamepad Axes</th></tr>
-<tr><td>View motion right</td><td><code>gamepad_axis_pos_x</code></td><td> 0</td></tr>
-<tr><td>View motion left</td><td><code>gamepad_axis_neg_x</code></td><td>-1</td></tr>
-<tr><td>View motion up</td><td><code>gamepad_axis_pos_y</code></td><td> 5</td></tr>
-<tr><td>View motion down</td><td><code>gamepad_axis_neg_y</code></td><td> 2</td></tr>
-<tr><td>View motion backwant</td><td><code>gamepad_axis_pos_z</code></td><td> 1</td></tr>
-<tr><td>View motion forward</td><td><code>gamepad_axis_neg_z</code></td><td>-1</td></tr>
-<tr><td>View rotation right</td><td><code>gamepad_axis_pos_yaw</code></td><td>-1</td></tr>
-<tr><td>View rotation left</td><td><code>gamepad_axis_neg_yaw</code></td><td> 3</td></tr>
-<tr><td>View rotation up</td><td><code>gamepad_axis_pos_pitch</code></td><td>-1</td></tr>
-<tr><td>View rotation down</td><td><code>gamepad_axis_neg_pitch</code></td><td> 4</td></tr>
-
-<tr><th>Gamepad Buttons</th></tr>
+<tr><th>Gamepad App Controls</th></tr>
 <tr><td>GUI Toggle</td><td><code>view_button_gui</code></td><td>7&emsp;(Start)</td></tr>
 <tr><td>GUI Select</td><td><code>view_button_select</code></td><td>0&emsp;(A)</td></tr>
 <tr><td>Next scene</td><td><code>view_button_next</code></td><td>2&emsp;(X)</td></tr>
@@ -72,6 +60,30 @@ Substitute your own login, of course. This file does not exist initially, so <a 
 <tr><td>Shift modifier</td><td><code>view_button_shift</code></td><td>4&emsp;(LB)</td></tr>
 <tr><td>Control modifier</td><td><code>view_button_control</code></td><td>5&emsp;(RB)</td></tr>
 <tr><td>Screenshot</td><td><code>view_button_snap</code></td><td>8&emsp;(LS)</td></tr>
+
+<tr><th>Gamepad View Axes</th></tr>
+<tr><td>View motion right</td><td><code>gamepad_axis_move_R</code></td><td> 0</td></tr>
+<tr><td>View motion left</td><td><code>gamepad_axis_move_L</code></td><td>-1</td></tr>
+<tr><td>View motion up</td><td><code>gamepad_axis_move_U</code></td><td> 5</td></tr>
+<tr><td>View motion down</td><td><code>gamepad_axis_move_D</code></td><td> 2</td></tr>
+<tr><td>View motion backward</td><td><code>gamepad_axis_move_B</code></td><td> 1</td></tr>
+<tr><td>View motion forward</td><td><code>gamepad_axis_move_B</code></td><td>-1</td></tr>
+<tr><td>View rotation right</td><td><code>gamepad_axis_turn_R</code></td><td>-1</td></tr>
+<tr><td>View rotation left</td><td><code>gamepad_axis_turn_L</code></td><td> 3</td></tr>
+<tr><td>View rotation up</td><td><code>gamepad_axis_turn_U</code></td><td>-1</td></tr>
+<tr><td>View rotation down</td><td><code>gamepad_axis_turn_D</code></td><td> 4</td></tr>
+
+<tr><th>Gamepad View Buttons</th></tr>
+<tr><td>View motion right</td><td><code>gamepad_button_move_R</code></td><td>-1</td></tr>
+<tr><td>View motion left</td><td><code>gamepad_button_move_L</code></td><td>-1</td></tr>
+<tr><td>View motion up</td><td><code>gamepad_button_move_U</code></td><td>-1</td></tr>
+<tr><td>View motion down</td><td><code>gamepad_button_move_D</code></td><td>-1</td></tr>
+<tr><td>View motion backward</td><td><code>gamepad_button_move_B</code></td><td>-1</td></tr>
+<tr><td>View motion forward</td><td><code>gamepad_button_move_B</code></td><td>-1</td></tr>
+<tr><td>View rotation right</td><td><code>gamepad_button_turn_R</code></td><td>-1</td></tr>
+<tr><td>View rotation left</td><td><code>gamepad_button_turn_L</code></td><td>-1</td></tr>
+<tr><td>View rotation up</td><td><code>gamepad_button_turn_U</code></td><td>-1</td></tr>
+<tr><td>View rotation down</td><td><code>gamepad_button_turn_D</code></td><td>-1</td></tr>
 </table>
 
 <p>Keyboard controls are defined using <a href="http://www.libsdl.org/tmp/SDL/include/SDL_scancode.h">SDL scancodes</a>. The gamepad axis and buttons define reasonable values for an XBox 360 Wireless Controller for Windows.</p>
