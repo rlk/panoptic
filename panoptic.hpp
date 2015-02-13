@@ -56,6 +56,7 @@ private:
     double speed_max;
     double stick_timer;
     double minimum_agl;
+    int    auto_pitch;
 
     // Report stream configuration
 

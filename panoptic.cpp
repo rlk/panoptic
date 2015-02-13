@@ -43,6 +43,7 @@ panoptic::panoptic(const std::string& exe,
     speed_min   = ::conf->get_f("panoptic_speed_min",    0.0);
     speed_max   = ::conf->get_f("panoptic_speed_max",    0.2);
     minimum_agl = ::conf->get_f("panoptic_minimum_agl", 50.0);
+    auto_pitch  = ::conf->get_i("panoptic_auto_pitch" , 0);
     stick_timer = 0.0;
 
     // Initialize the reportage socket.
@@ -285,6 +286,17 @@ void panoptic::offset_position(const vec3 &d)
             here.get_position(v);
             here.set_distance(std::max(d[1] * k + r,
                                     minimum_agl + sys->get_current_ground(v)));
+        }
+
+        // Set the automatic view pitch if requested.
+
+        if (auto_pitch)
+        {
+            const double d = here.get_distance();
+            const double h =      get_minimum_ground();
+            const double a = (d - h) / h;
+
+            here.set_pitch(-M_PI_2 * mix(std::min(1.0, cbrt(a)), 1.0, a));
         }
     }
 }
