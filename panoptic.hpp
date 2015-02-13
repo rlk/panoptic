@@ -44,6 +44,8 @@ public:
 
 private:
 
+    virtual bool process_tick(app::event *);
+
     // View motion state
 
     quat   get_local() const;
@@ -54,9 +56,12 @@ private:
 
     double speed_min;
     double speed_max;
-    double stick_timer;
+    double demo_delay;
     double minimum_agl;
     int    auto_pitch;
+
+    vec3   demo_d;
+    double demo_a;
 
     // Report stream configuration
 

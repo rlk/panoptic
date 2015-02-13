@@ -853,10 +853,12 @@ bool view_app::process_button(app::event *E)
 
 bool view_app::process_event(app::event *E)
 {
-    if ((E->get_type() == E_KEY    && E->data.key.d
-                                   && E->data.key.k == SDL_SCANCODE_F1) ||
-        (E->get_type() == E_BUTTON && E->data.button.d
-                                   && E->data.button.b == button_gui))
+    int e = E->get_type();
+
+    if ((e == E_KEY    && E->data.key.d
+                       && E->data.key.k == SDL_SCANCODE_F1) ||
+        (e == E_BUTTON && E->data.button.d
+                       && E->data.button.b == button_gui))
     {
         if (gui)
             gui_hide();
@@ -868,7 +870,7 @@ bool view_app::process_event(app::event *E)
     if (gui &&    gui_event(E)) return true;
     if (prog::process_event(E)) return true;
 
-    switch (E->get_type())
+    switch (e)
     {
         case E_KEY:    if (process_key   (E)) return true; else break;
         case E_USER:   if (process_user  (E)) return true; else break;

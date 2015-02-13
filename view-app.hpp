@@ -98,6 +98,14 @@ protected:
     bool mod_shift;
     bool mod_control;
 
+    // Event handlers
+
+    virtual bool process_key   (app::event *);
+    virtual bool process_user  (app::event *);
+    virtual bool process_tick  (app::event *);
+    virtual bool process_click (app::event *);
+    virtual bool process_button(app::event *);
+
 private:
 
     void save_steps (app::node);
@@ -112,12 +120,6 @@ private:
     bool dostep(int, bool, bool);
     bool numkey(int, bool, bool);
     bool funkey(int, bool, bool);
-
-    bool process_key   (app::event *);
-    bool process_user  (app::event *);
-    bool process_tick  (app::event *);
-    bool process_click (app::event *);
-    bool process_button(app::event *);
 
     virtual double get_speed() const { return 1.0; }
     virtual double get_scale() const { return 1.0; }

@@ -24,6 +24,7 @@
 #include <app-conf.hpp>
 #include <app-prog.hpp>
 #include <app-view.hpp>
+#include <app-event.hpp>
 #include <app-frustum.hpp>
 #include <app-default.hpp>
 
@@ -36,7 +37,7 @@
 
 panoptic::panoptic(const std::string& exe,
                    const std::string& tag)
-    : view_app(exe, tag), report_sock(INVALID_SOCKET)
+    : view_app(exe, tag), demo_a(0), report_sock(INVALID_SOCKET)
 {
     // Initialize all interaction state.
 
@@ -44,7 +45,7 @@ panoptic::panoptic(const std::string& exe,
     speed_max   = ::conf->get_f("panoptic_speed_max",    0.2);
     minimum_agl = ::conf->get_f("panoptic_minimum_agl", 50.0);
     auto_pitch  = ::conf->get_i("panoptic_auto_pitch" , 0);
-    stick_timer = 0.0;
+    demo_delay  = ::conf->get_i("panoptic_demo_delay" , 60);
 
     // Initialize the reportage socket.
 
@@ -444,6 +445,41 @@ void panoptic::move_to(int i)
     }
 }
 #endif
+
+//------------------------------------------------------------------------------
+
+bool panoptic::process_tick(app::event *E)
+{
+    double t  = ::host->get_time_since_event() - demo_delay;
+    double dt = E->data.tick.dt;
+
+    view_app::process_tick(E);
+
+    if (t > 0)
+    {
+        const double h = here.get_distance();
+        const double m =      get_minimum_ground();
+
+        vec3   d = vec3(0, 0, -0.5);
+        double a = sin(t / 20.0) / 20.0;
+
+        if (h > m * 1.10) d[1] = -1.0;
+        if (h < m * 1.05) d[1] = +1.0;
+
+        demo_d = mix(d, demo_d, 0.99);
+        demo_a = mix(a, demo_a, 0.99);
+
+        set_orientation(quat(vec3(0, 1, 0), demo_a * dt) * get_orientation());
+
+        offset_position(demo_d * dt);
+    }
+    else
+    {
+        demo_a = 0;
+        demo_d = vec3();
+    }
+    return false;
+}
 
 //------------------------------------------------------------------------------
 
