@@ -34,6 +34,26 @@ public:
 };
 
 //------------------------------------------------------------------------------
+// Step selection button array.
+
+class step_button : public gui::button
+{
+    view_app *V;
+    int       i;
+
+public:
+    step_button(view_app *V, int i);
+
+    void apply();
+};
+
+class step_array : public gui::harray
+{
+public:
+    step_array(view_app *V);
+};
+
+//------------------------------------------------------------------------------
 // Panels.
 
 class about_panel : public gui::vgroup
@@ -45,10 +65,16 @@ public:
 class data_panel : public gui::vgroup
 {
 public:
-    data_panel(view_app *, gui::widget *);
+    data_panel(view_app *, gui::widget *, bool);
 
-    std::string get_dir()                { return selector->get_dir();    }
-    void        set_dir(const std::string &dir) { selector->set_dir(dir); }
+    std::string get_dir() {
+        return selector ? selector->get_dir() : "";
+    }
+
+    void set_dir(const std::string &dir) {
+        if (selector)
+            selector->set_dir(dir);
+    }
 
 private:
     gui::selector *selector;
@@ -59,8 +85,14 @@ class config_panel : public gui::vgroup
 public:
     config_panel(view_app *, gui::widget *);
 
-    std::string get_dir()                { return selector->get_dir();    }
-    void        set_dir(const std::string &dir) { selector->set_dir(dir); }
+    std::string get_dir() {
+        return selector ? selector->get_dir() : "";
+    }
+
+    void set_dir(const std::string &dir) {
+        if (selector)
+            selector->set_dir(dir);
+    }
 
 private:
     gui::selector *selector;
@@ -79,14 +111,14 @@ class view_gui : public gui::dialog
 public:
     view_gui(view_app *, int, int);
 
-    int  get_index() { return state->get_index( ); }
-    void set_index(int i)   { state->set_index(i); }
+    int  get_index()  { return (state) ? state->get_index( ) : 0; }
+    void set_index(int i) { if (state)   state->set_index(i); }
 
-    std::string get_conf() { return confpan->get_dir(); }
-    std::string get_data() { return datapan->get_dir(); }
+    std::string get_conf() { return confpan ? confpan->get_dir() : ""; }
+    std::string get_data() { return datapan ? datapan->get_dir() : ""; }
 
-    void set_conf(const std::string &dir) { confpan->set_dir(dir); }
-    void set_data(const std::string &dir) { datapan->set_dir(dir); }
+    void set_conf(const std::string &dir) { if (confpan) confpan->set_dir(dir); }
+    void set_data(const std::string &dir) { if (datapan) datapan->set_dir(dir); }
 };
 
 //------------------------------------------------------------------------------
