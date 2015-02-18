@@ -13,10 +13,6 @@ The Panoptic build requires the presence of [Spherical Cube Map](https://github.
 	scm
 	thumb
 
-The Panoptic repo has a submodule ([util3d](https://github.com/rlk/util3d)) that must be explicitly added to a fresh clone:
-
-    git submodule update --init
-
 ## Build
 
 Panoptic may be build with either a Debug or Release configuration. The adjacent Thumb and SCM source trees *must* be build with the same configuration. In all cases, debug builds are placed in `Debug` while release builds are placed in `Release`, so these configurations may cleanly coexist.
