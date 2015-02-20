@@ -60,8 +60,19 @@ private:
     double minimum_agl;
     int    auto_pitch;
 
-    vec3   demo_d;
-    double demo_a;
+    // Demo state
+
+    vec3   demo_move;
+    double demo_turn;
+
+    double demo_dist_delay;
+    double demo_dist_T;
+    double demo_dist_t;
+    double demo_dist_0;
+    double demo_dist_1;
+
+    double demo_turn_delay;
+    double demo_turn_value;
 
     // Report stream configuration
 
