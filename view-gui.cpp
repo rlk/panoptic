@@ -13,6 +13,7 @@
 #include <app-font.hpp>
 #include <app-host.hpp>
 #include <app-data.hpp>
+#include <app-conf.hpp>
 #include <etc-dir.hpp>
 
 #include "view-gui.hpp"
@@ -96,21 +97,6 @@ public:
     }
 };
 
-class button_step : public gui::button
-{
-    view_app *V;
-    int       i;
-
-public:
-    button_step(view_app *V, int i) :
-        gui::button(V->get_step_name(i)), V(V), i(i) { }
-
-    void apply()
-    {
-        V->jump_to(i);
-    }
-};
-
 //-----------------------------------------------------------------------------
 // The About panel
 
@@ -135,31 +121,50 @@ about_panel::about_panel(view_app *V, gui::widget *w) : gui::vgroup()
 //-----------------------------------------------------------------------------
 // The Data panel
 
-data_panel::data_panel(view_app *V, gui::widget *w) : gui::vgroup()
+step_button::step_button(view_app *V, int i) :
+    gui::button(V->get_step_name(i)), V(V), i(i)
 {
-    gui::vgroup *G = new gui::vgroup();
+}
 
-    selector = new gui::selector(getcwd(0, 0), ".xml");
+void step_button::apply()
+{
+    V->jump_to(i);
+}
 
-    G->add(selector)->
-       add((new gui::harray())->
-            add(new gui::filler(true, false))->
-            add(new gui::filler(true, false))->
-            add(new gui::filler(true, false))->
-            add(new button_load_data(V, selector)));
+step_array::step_array(view_app *V)
+{
+    for (int i = 0; i < V->get_step_count(); i++)
+        add(new step_button(V, i));
+}
 
-    if (int n = V->get_step_count())
+data_panel::data_panel(view_app *V, gui::widget *w, bool simple)
+    : gui::vgroup(), selector(0)
+{
+    if (simple)
     {
-        gui::widget *T = new gui::harray();
-
-        for (int i = 0; i < n; i++)
-            T->add(new button_step(V, i));
-
-        G->add(new gui::spacer);
-        G->add(T);
+        add((new gui::frame)->add(new step_array(V)));        
     }
+    else
+    {
+        gui::vgroup *G = new gui::vgroup();
 
-    add((new gui::frame)->add(G));
+        selector = new gui::selector(getcwd(0, 0), ".xml");
+
+        G->add(selector)->
+           add((new gui::harray())->
+                add(new gui::filler(true, false))->
+                add(new gui::filler(true, false))->
+                add(new gui::filler(true, false))->
+                add(new button_load_data(V, selector)));
+
+        if (V->get_step_count())
+        {
+            G->add(new gui::spacer);
+            G->add(new step_array(V));
+        }
+
+        add((new gui::frame)->add(G));
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -187,38 +192,47 @@ config_panel::config_panel(view_app *V, gui::widget *w) : gui::vgroup()
 //-----------------------------------------------------------------------------
 // The toplevel control panel
 
-view_gui::view_gui(view_app *V, int w, int h)
+view_gui::view_gui(view_app *V, int w, int h) : state(0), datapan(0), confpan(0)
 {
-    state = new gui::option;
+    int ss = ::conf->get_i("sans_size", 16);
 
-    gui::widget *A = new panel_button("About",  state, 0);
-    gui::widget *B = new panel_button("Config", state, 1);
-    gui::widget *C = new panel_button("Data",   state, 2);
-    gui::widget *D = new button_vr();
-    gui::widget *Q = new button_quit();
+    if (::conf->get_i("panoptic_simple_gui", 0))
+    {
+        root = new data_panel(V, state, true);
+    }
+    else
+    {
+        state = new gui::option;
 
-    datapan = new   data_panel(V, state);
-    confpan = new config_panel(V, state);
+        gui::widget *A = new panel_button("About",  state, 0);
+        gui::widget *B = new panel_button("Config", state, 1);
+        gui::widget *C = new panel_button("Data",   state, 2);
+        gui::widget *D = new button_vr();
+        gui::widget *Q = new button_quit();
 
-    root = ((new gui::vgroup)->
-            add((new gui::harray)->
-                add(A)->
-                add(B)->
-                add(C)->
+        datapan = new   data_panel(V, state, false);
+        confpan = new config_panel(V, state);
+
+        root = ((new gui::vgroup)->
+                add((new gui::harray)->
+                    add(A)->
+                    add(B)->
+                    add(C)->
+                    add(new gui::spacer)->
+                    add(new gui::spacer)->
+                    add(D)->
+                    add(Q))->
                 add(new gui::spacer)->
-                add(new gui::spacer)->
-                add(D)->
-                add(Q))->
-            add(new gui::spacer)->
-            add(state->
-                add(new about_panel(V, state))->
-                add(confpan)->
-                add(datapan)));
+                add(state->
+                    add(new about_panel(V, state))->
+                    add(confpan)->
+                    add(datapan)));
+    }
 
     root->layup();
 
-    int ww = std::max(root->get_w(), A->get_w() *  6);
-    int hh = std::max(root->get_h(), A->get_h() * 12);
+    int ww = std::max(root->get_w(), ss * 50);
+    int hh = std::max(root->get_h(), ss * 25);
 
     root->laydn((w - ww) / 2,
                 (h - hh) / 2, ww, hh);

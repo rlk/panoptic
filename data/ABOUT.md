@@ -18,12 +18,12 @@ SCMPATH environment variable to your image directory.
     Gamepad           Keyboard / Mouse
 
     Start ........... F1 ................ Toggle this GUI
-    X / Y ........... 0-9 ............... Select a scene
     R Stick ......... Drag .............. Look around
+    X / Y ........... 0-9 ............... Select a scene
     A / B ........... Wheel ............. Zoom a panorama
     Back ............ Home .............. Zoom reset
-    L Stick ......... W A S D ........... Move around a planet horizontally
-    LT / RT ......... Q E ............... Move around a planet vertically
+    L Stick ......... W A S D ........... Fly horizontally
+    LT / RT ......... Q E ............... Fly vertically
 
 ## GUI Panels
 

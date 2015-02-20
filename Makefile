@@ -10,7 +10,7 @@ SCM_DIR   = ../scm
 
 include $(THUMB_DIR)/Makedefs
 
-LIBS   += -L$(THUMB_DIR)/$(CONFIG) -L$(SCM_DIR)/$(CONFIG) -lthumb -lscm
+APPLIBS = -L$(THUMB_DIR)/$(CONFIG) -L$(SCM_DIR)/$(CONFIG) -lthumb -lscm
 CFLAGS += -I$(THUMB_DIR)/include   -I$(SCM_DIR)
 
 B2C = $(THUMB_DIR)/etc/bin2c
@@ -31,7 +31,7 @@ SCM   =   $(SCM_DIR)/$(CONFIG)/libscm.a
 #------------------------------------------------------------------------------
 
 $(CONFIG)/$(TARG): $(CONFIG) $(OBJS) $(THUMB) $(SCM)
-	$(CXX) $(CFLAGS) -o $@ $(OBJS) $(LIBS)
+	$(CXX) $(CFLAGS) -o $@ $(OBJS) $(APPLIBS) $(LIBS)
 
 $(CONFIG) :
 	mkdir -p $(CONFIG)
