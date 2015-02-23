@@ -470,11 +470,11 @@ bool panoptic::process_tick(app::event *E)
             const double h = here.get_distance();
             const double g =      get_minimum_ground();
 
-            demo_dist_delay = mix(30, 60, drand48());
+            demo_dist_delay = mix(40, 60, drand48());
             demo_dist_T     = mix(10, 20, drand48());
             demo_dist_t     = 0;
             demo_dist_0     = h;
-            demo_dist_1     = mix(g * 1.01, g * 2.5, pow(drand48(), 3.0));
+            demo_dist_1     = mix(g * 1.05, g * 2.5, pow(drand48(), 2.0));
         }
 
         // If the demo turn timer has expired, choose a new turning radius.
@@ -487,7 +487,7 @@ bool panoptic::process_tick(app::event *E)
 
         // Set the current move and turn values, filtered.
 
-        vec3   d = vec3(0, 0, -0.5);
+        vec3   d = vec3(0, 0, -1.0);
         double a = demo_turn_value;
 
         demo_move = mix(d, demo_move, 0.99);
