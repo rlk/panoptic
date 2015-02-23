@@ -63,7 +63,7 @@ endif
 
 dist : $(CONFIG)/$(TARG)
 	strip $(CONFIG)/$(TARG)
-	zip -9 $(DIST) $(CONFIG)/$(TARG)
+	cd $(CONFIG); zip -9 $(DIST) $(TARG)
 
 #------------------------------------------------------------------------------
 
