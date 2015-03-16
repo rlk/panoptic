@@ -301,7 +301,6 @@ void panoptic::offset_position(const vec3 &d)
             const double a = (d - h) / h;
 
             here.set_pitch(-M_PI_2 * mix(std::min(1.0, pow(a, 0.4)), 1.0, a));
-            // here.set_pitch(-M_PI_2 * mix(std::min(1.0, cbrt(a)), 1.0, a));
         }
     }
 }
