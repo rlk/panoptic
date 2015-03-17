@@ -61,7 +61,7 @@ vec3 scube(vec2 t)
 
 void main()
 {
-    float k = sample_height(gl_Vertex.xy).r;
+    float k = sample_height(gl_Vertex.xy * vec2(6.0 / 7.0) + vec2(0.5 / 7.0)).r;
     float h = mix(height.k0, height.k1, k);
     vec3  n = scube(A[0] * gl_Vertex.xy + B[0]);
     vec3  v = h * n;
