@@ -61,7 +61,8 @@ vec3 scube(vec2 t)
 
 void main()
 {
-    float k = sample_height(gl_Vertex.xy * vec2(6.0 / 7.0) + vec2(0.5 / 7.0)).r;
+    vec2  t = clamp(gl_Vertex.xy, 0.0, 1.0) * vec2(128.0 / 129.0) + vec2(0.5 / 129.0);
+    float k = sample_height(t).r;
     float h = mix(height.k0, height.k1, k);
     vec3  n = scube(A[0] * gl_Vertex.xy + B[0]);
     vec3  v = h * n;
@@ -70,6 +71,6 @@ void main()
     var_V = v;
     var_N = n;
 
-    gl_TexCoord[0].xy = gl_Vertex.xy;
+    gl_TexCoord[0].xy = t;
     gl_Position       = gl_ModelViewProjectionMatrix * vec4(v, 1.0);
 }

@@ -25,8 +25,8 @@ uniform vec2 B[16];
 
 vec4 sample_scalar(vec2 t)
 {
-    const float L = 0.2;
-    const float H = 0.8;
+    const float L = 0.5;
+    const float H = 1.0;
 
     vec4   c = vec4(L, L, L, 1.0);
     c = mix(c, vec4(H, L, L, 1.0), scalar.a[ 1]);
