@@ -596,6 +596,9 @@ void view_app::play(bool movie)
 
 //------------------------------------------------------------------------------
 
+// Transition to the next or previous step with control status c and shift
+// status s.
+
 bool view_app::dostep(int d, bool c, bool s)
 {
     if (s == false)
