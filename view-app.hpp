@@ -23,7 +23,7 @@
 #include <scm-render.hpp>
 #include <scm-image.hpp>
 #include <scm-label.hpp>
-#include <scm-step.hpp>
+#include <scm-state.hpp>
 
 #include "view-gui.hpp"
 
@@ -76,7 +76,8 @@ protected:
     // The SCM system and current view.
 
     scm_system *sys;
-    scm_step   here;
+    scm_state   here;
+    scm_state_v queue;
 
     // Recording and playback
 
@@ -156,8 +157,8 @@ private:
 
 //-----------------------------------------------------------------------------
 
-void view_from_step(scm_step&);
-void step_from_view(scm_step&);
+void view_from_step(scm_state&);
+void step_from_view(scm_state&);
 
 //-----------------------------------------------------------------------------
 

@@ -163,7 +163,7 @@ vec3 view_app::get_position() const
 
 // Initialize a step object using the given node.
 
-static void step_from_xml(scm_step *s, app::node n)
+static void step_from_xml(scm_state *s, app::node n)
 {
     double q[4];
     double p[3];
@@ -201,7 +201,7 @@ void view_app::load_steps(app::node p)
 {
     for (app::node n = p.find("step"); n; n = p.next(n, "step"))
     {
-        if (scm_step *s = sys->get_step(sys->add_step(sys->get_step_count())))
+        if (scm_state *s = sys->get_step(sys->add_step(sys->get_step_count())))
         {
             step_from_xml(s, n);
         }
@@ -508,6 +508,103 @@ void view_app::over(int frusi, const app::frustum *frusp, int chani)
 
 //------------------------------------------------------------------------------
 
+/// Parse the given string as a series of camera states. Enqueue each. This
+/// function ingests Maya MOV exports.
+
+void view_app::import_queue(const std::string& data)
+{
+    std::stringstream file(data);
+    std::string       line;
+
+    queue.clear();
+
+    int n = 0;
+
+    while (std::getline(file, line))
+    {
+        std::stringstream in(line);
+
+        double t[3] = { 0, 0, 0 };
+        double r[3] = { 0, 0, 0 };
+        double l[3] = { 0, 0, 0 };
+
+        if (in) in >> t[0] >> t[1] >> t[2];
+        if (in) in >> r[0] >> r[1] >> r[2];
+        if (in) in >> l[0] >> l[1] >> l[2];
+
+        r[0] = radians(r[0]);
+        r[1] = radians(r[1]);
+        r[2] = radians(r[2]);
+
+        l[0] = radians(l[0]);
+        l[1] = radians(l[1]);
+        l[2] = radians(l[2]);
+
+        scm_state *S = new scm_state(t, r, l);
+
+        if (fore0) S->set_foreground(fore0->get_name());
+        if (back0) S->set_background(back0->get_name());
+
+        append_queue(S);
+
+        n++;
+    }
+}
+
+/// Print all steps on the current queue to the given string using the same
+/// format expected by import_queue.
+
+void view_app::export_queue(std::string& data)
+{
+    std::stringstream file;
+
+    for (size_t i = 0; i < queue.size(); ++i)
+    {
+        double d = queue[i]->get_distance();
+        double p[3];
+        double q[4];
+        double r[3];
+
+        queue[i]->get_position(p);
+        queue[i]->get_orientation(q);
+
+        p[0] *= d;
+        p[1] *= d;
+        p[2] *= d;
+
+        equaternion(r, q);
+
+        file << std::setprecision(std::numeric_limits<long double>::digits10)
+             << p[0] << " "
+             << p[1] << " "
+             << p[2] << " "
+             << degrees(r[0]) << " "
+             << degrees(r[1]) << " "
+             << degrees(r[2]) << " "
+             << "0.0 0.0 0.0" << std::endl;
+    }
+    data = file.str();
+}
+
+/// Take ownership of the given step and append it to the current queue.
+
+void view_app::append_queue(scm_state *s)
+{
+    queue.push_back(s);
+}
+
+/// Flush the current step queue, deleting all steps in it.
+
+void view_app::flush_queue()
+{
+    for (size_t i = 0; i < queue.size(); i++)
+        delete queue[i];
+
+    queue.clear();
+}
+
+//------------------------------------------------------------------------------
+
 // Construct a path from the current location to the step with the given index.
 // The behavior of this is highly application-specific, so the default move is
 // just a jump.
@@ -524,7 +621,7 @@ void view_app::jump_to(int n)
     if (0 <= n && n < sys->get_step_count())
     {
         sys->flush_queue();
-        sys->append_queue(new scm_step(sys->get_step(n)));
+        sys->append_queue(new scm_state(sys->get_step(n)));
 
         here = sys->get_step_blend(1.0);
         sys->set_scene_blend(1.0);
@@ -540,7 +637,7 @@ void view_app::fade_to(int n)
 {
     if (0 <= n && n < sys->get_step_count())
     {
-        scm_step *there = new scm_step(&here);
+        scm_state *there = new scm_state(&here);
 
         there->set_foreground(sys->get_step(n)->get_foreground());
         there->set_background(sys->get_step(n)->get_background());
@@ -798,7 +895,7 @@ bool view_app::process_tick(app::event *E)
         }
 
         if (record)
-            sys->append_queue(new scm_step(here));
+            sys->append_queue(new scm_state(here));
     }
     return false;
 }

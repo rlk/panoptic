@@ -368,8 +368,8 @@ void panoptic::move_to(int i)
         {
             // Set the location and destination.
 
-            scm_step *src = &here;
-            scm_step *dst = sys->get_step(i);
+            scm_state *src = &here;
+            scm_state *dst = sys->get_step(i);
 
             // Determine the beginning and ending positions and altitudes.
 
@@ -410,8 +410,8 @@ void panoptic::move_to(int i)
 
                     // Estimate the current velocity.
 
-                    scm_step t0(src, dst, t);
-                    scm_step t1(src, dst, t + dt);
+                    scm_state t0(src, dst, t);
+                    scm_state t1(src, dst, t + dt);
 
                     t0.set_distance(t0.get_distance() + dd * q);
                     t1.set_distance(t1.get_distance() + dd * q);
@@ -428,7 +428,7 @@ void panoptic::move_to(int i)
                         t0.set_foreground(dst->get_foreground());
                         t0.set_background(dst->get_background());
                     }
-                    sys->append_queue(new scm_step(t0));
+                    sys->append_queue(new scm_state(t0));
 
                     // Move forward at a velocity appropriate for the altitude.
 
@@ -439,7 +439,7 @@ void panoptic::move_to(int i)
                     t += 2 * (t0.get_distance() - g) * dt * dt / (t1 - t0);
                 }
             }
-            sys->append_queue(new scm_step(dst));
+            sys->append_queue(new scm_state(dst));
 
             // Trigger playback.
 
