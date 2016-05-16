@@ -285,11 +285,8 @@ void panoptic::offset_position(const vec3 &d)
 
             // Clamp the altitude.
 
-            double v[3];
-
-            here.get_position(v);
             here.set_distance(std::max(d[1] * k + r,
-                                    minimum_agl + sys->get_current_ground(v)));
+                                    minimum_agl + here.get_current_ground()));
         }
 
         // Set the automatic view pitch if requested.

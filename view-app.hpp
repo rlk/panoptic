@@ -24,6 +24,7 @@
 #include <scm-image.hpp>
 #include <scm-label.hpp>
 #include <scm-state.hpp>
+#include <scm-deque.hpp>
 
 #include "view-gui.hpp"
 
@@ -68,22 +69,25 @@ public:
 
     // SCM content queries
 
-    int                get_step_count()   const;
-    const std::string& get_step_name(int) const;
+    int               get_location_count()   const;
+    const std::string get_location_name(int) const;
 
 protected:
 
-    // The SCM system and current view.
+    static const int max_location = 12;
+
+    // The SCM system and view states.
 
     scm_system *sys;
     scm_state   here;
-    scm_state_v queue;
+    scm_deque   sequence;
+    scm_deque   location[max_location];
 
     // Recording and playback
 
-    double     now;
-    double     delta;
-    bool       record;
+    double now;
+    double delta;
+    bool   record;
 
     void play(bool);
 
@@ -109,17 +113,13 @@ protected:
 
 private:
 
-    void save_steps (app::node);
-    void load_steps (app::node);
     void load_images(app::node, scm_scene *);
     void load_scenes(app::node);
+    void load_states(app::node);
+    void free_states();
 
     bool draw_cache;
-    bool draw_path;
-    int  curr_step;
 
-    bool dostep(int, bool, bool);
-    bool numkey(int, bool, bool);
     bool funkey(int, bool, bool);
 
     virtual double get_speed() const { return 1.0; }
@@ -127,8 +127,6 @@ private:
 
     // Joystick state
 
-    int button_next;
-    int button_prev;
     int button_zoom_in;
     int button_zoom_out;
     int button_zoom_home;

@@ -51,8 +51,6 @@ view_app::view_app(const std::string& exe,
     mod_control(false),
 
     draw_cache(false),
-    draw_path (false),
-    curr_step (0),
 
     gui_index(0),
     gui_w(0),
@@ -87,8 +85,6 @@ view_app::view_app(const std::string& exe,
     button_zoom_in   = ::conf->get_i("view_button_zoom_in",   0);
     button_zoom_out  = ::conf->get_i("view_button_zoom_out",  1);
     button_zoom_home = ::conf->get_i("view_button_zoom_home", 6);
-    button_next      = ::conf->get_i("view_button_next",      2);
-    button_prev      = ::conf->get_i("view_button_prev",      3);
     button_shift     = ::conf->get_i("view_button_shift",     4);
     button_control   = ::conf->get_i("view_button_control",   5);
     button_gui       = ::conf->get_i("view_button_gui",       7);
@@ -160,53 +156,6 @@ vec3 view_app::get_position() const
 }
 
 //------------------------------------------------------------------------------
-
-// Initialize a step object using the given node.
-
-static void step_from_xml(scm_state *s, app::node n)
-{
-    double q[4];
-    double p[3];
-    double l[3];
-
-    q[0] = n.get_f("q0", 0.0);
-    q[1] = n.get_f("q1", 0.0);
-    q[2] = n.get_f("q2", 0.0);
-    q[3] = n.get_f("q3", 1.0);
-
-    p[0] = n.get_f("p0", 0.0);
-    p[1] = n.get_f("p1", 0.0);
-    p[2] = n.get_f("p2", 1.0);
-
-    l[0] = n.get_f("l0", 0.0);
-    l[1] = n.get_f("l1", 0.0);
-    l[2] = n.get_f("l2", 1.0);
-
-    s->set_name       (n.get_s("name"));
-    s->set_foreground (n.get_s("foreground"));
-    s->set_background (n.get_s("background"));
-    s->set_orientation(q);
-    s->set_position   (p);
-    s->set_light      (l);
-    s->set_speed      (n.get_f("s", 1.0));
-    s->set_distance   (n.get_f("r", 0.0));
-    s->set_tension    (n.get_f("t", 0.0));
-    s->set_bias       (n.get_f("b", 0.0));
-    s->set_zoom       (n.get_f("z", 1.0));
-}
-
-// Create a new step object for each step node.
-
-void view_app::load_steps(app::node p)
-{
-    for (app::node n = p.find("step"); n; n = p.next(n, "step"))
-    {
-        if (scm_state *s = sys->get_step(sys->add_step(sys->get_step_count())))
-        {
-            step_from_xml(s, n);
-        }
-    }
-}
 
 // Create a new image object for each image node.
 
@@ -280,6 +229,65 @@ void view_app::load_scenes(app::node p)
     }
 }
 
+//------------------------------------------------------------------------------
+
+// Create a new state object for each state node.
+
+void view_app::load_states(app::node p)
+{
+    for (app::node n = p.find("state"); n; n = p.next(n, "state"))
+    {
+        scm_state s;
+
+        double q[4];
+        double p[3];
+        double l[3];
+
+        int i = n.get_i("i", 0);
+
+        q[0] = n.get_f("q0", 0.0);
+        q[1] = n.get_f("q1", 0.0);
+        q[2] = n.get_f("q2", 0.0);
+        q[3] = n.get_f("q3", 1.0);
+
+        p[0] = n.get_f("p0", 0.0);
+        p[1] = n.get_f("p1", 0.0);
+        p[2] = n.get_f("p2", 1.0);
+
+        l[0] = n.get_f("l0", 0.0);
+        l[1] = n.get_f("l1", 0.0);
+        l[2] = n.get_f("l2", 1.0);
+
+        s.set_name       (n.get_s("name"));
+        s.set_foreground0(sys->find_scene(n.get_s("f0")));
+        s.set_foreground1(sys->find_scene(n.get_s("f1")));
+        s.set_background0(sys->find_scene(n.get_s("b0")));
+        s.set_background1(sys->find_scene(n.get_s("b1")));
+        s.set_orientation(q);
+        s.set_position   (p);
+        s.set_light      (l);
+        s.set_distance   (n.get_f("r", 0.0));
+        s.set_zoom       (n.get_f("z", 1.0));
+        s.set_fade       (n.get_f("k", 0.0));
+
+        if (0 <= i && i < max_location)
+            location[i].push_back(s);
+    }
+}
+
+
+// Delete all states.
+
+void view_app::free_states()
+{
+    for (int i = 0; i < max_location; i++)
+        location[i].clear();
+
+    sequence.clear();
+}
+
+//------------------------------------------------------------------------------
+
 // Initialize the SCM system using the named XML file.
 
 void view_app::load_file(const std::string& name)
@@ -309,18 +317,23 @@ void view_app::load_file(const std::string& name)
         sys->get_sphere()->set_detail(root.get_i("detail", 32));
         sys->get_sphere()->set_limit (root.get_i("limit", 256));
 
-        // Load the new data.
+        // Free the states to ensure that their scene references don't dangle.
+
+        free_states();
+
+        // Load the new scenes before deleting the old scenes to ensure that
+        // relevant data isn't flushed and reloaded unnecessarily.
 
         int scenes = sys->get_scene_count();
-        int steps  = sys->get_step_count();
 
         load_scenes(root);
-        load_steps (root);
 
-        // Delete the old data.
+        for (int i = 0; i < scenes; ++i)
+            sys->del_scene(0);
 
-        for (int i = 0; i < scenes; ++i) sys->del_scene(0);
-        for (int i = 0; i < steps;  ++i) sys->del_step (0);
+        // Load the states.
+
+        load_states(root);
 
         // Dismiss the GUI and display the first loaded scene.
 
@@ -343,10 +356,7 @@ void view_app::load_path(const std::string& name)
 
     if ((path = (const char *) ::data->load(name)))
     {
-        // Import a camera path from the loaded string.
-
-        sys->import_queue(path);
-
+        sequence.import_mov(path);
         ::data->free(name);
     }
 }
@@ -358,7 +368,8 @@ void view_app::save_path(const std::string& stem)
     // Export the path to a string.
 
     std::string path;
-    sys->export_queue(path);
+
+    sequence.export_mov(path);
 
     // Find an usused file name and write the string to it.
 
@@ -376,12 +387,14 @@ void view_app::save_path(const std::string& stem)
     }
 }
 
-// Delete all scenes and steps (and by extension ALL data) in the system.
+// Delete all states and scenes (and by extension ALL data) in the system.
 
 void view_app::unload()
 {
-    for (int i = 0; i < sys->get_scene_count(); ++i) sys->del_scene(0);
-    for (int i = 0; i < sys->get_step_count();  ++i) sys->del_step (0);
+    free_states();
+
+    for (int i = 0; i < sys->get_scene_count(); ++i)
+        sys->del_scene(0);
 }
 
 //------------------------------------------------------------------------------
@@ -428,16 +441,14 @@ void view_app::step()
 
 double view_app::get_current_ground() const
 {
-    double v[3];
-    here.get_position(v);
-    return sys->get_current_ground(v);
+    return here.get_current_ground();
 }
 
 // Return the global minimum radius of the current SCM system.
 
 double view_app::get_minimum_ground() const
 {
-    return sys->get_minimum_ground();
+    return here.get_minimum_ground();
 }
 
 //------------------------------------------------------------------------------
@@ -490,7 +501,7 @@ void view_app::draw(int frusi, const app::frustum *frusp, int chani)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    sys->render_sphere(transpose(P), transpose(M), chani);
+    sys->render_sphere(&here, transpose(P), transpose(M), chani);
 }
 
 // Render the GUI and debugging overlays.
@@ -500,7 +511,6 @@ void view_app::over(int frusi, const app::frustum *frusp, int chani)
     frusp->load_transform();
    ::view->load_transform();
 
-    // if (draw_path)  sys->render_queue();
     if (draw_cache) sys->render_cache();
 
     if (gui) gui_draw();
@@ -508,147 +518,40 @@ void view_app::over(int frusi, const app::frustum *frusp, int chani)
 
 //------------------------------------------------------------------------------
 
-/// Parse the given string as a series of camera states. Enqueue each. This
-/// function ingests Maya MOV exports.
+// Construct a seouence of states from the here to the location with the given
+// index. The behavior of this is highly application-specific, so the default
+// move is just a jump.
 
-void view_app::import_queue(const std::string& data)
+void view_app::move_to(int i)
 {
-    std::stringstream file(data);
-    std::string       line;
+    jump_to(i);
+}
 
-    queue.clear();
+// Teleport the view and scene to the location with the given index.
 
-    int n = 0;
-
-    while (std::getline(file, line))
+void view_app::jump_to(int i)
+{
+    if (0 <= i && i < max_location && !location[i].empty())
     {
-        std::stringstream in(line);
-
-        double t[3] = { 0, 0, 0 };
-        double r[3] = { 0, 0, 0 };
-        double l[3] = { 0, 0, 0 };
-
-        if (in) in >> t[0] >> t[1] >> t[2];
-        if (in) in >> r[0] >> r[1] >> r[2];
-        if (in) in >> l[0] >> l[1] >> l[2];
-
-        r[0] = radians(r[0]);
-        r[1] = radians(r[1]);
-        r[2] = radians(r[2]);
-
-        l[0] = radians(l[0]);
-        l[1] = radians(l[1]);
-        l[2] = radians(l[2]);
-
-        scm_state *S = new scm_state(t, r, l);
-
-        if (fore0) S->set_foreground(fore0->get_name());
-        if (back0) S->set_background(back0->get_name());
-
-        append_queue(S);
-
-        n++;
+        here = location[i].front();
     }
 }
 
-/// Print all steps on the current queue to the given string using the same
-/// format expected by import_queue.
+// Construct a fade from here to the location with the given given index. Do so
+// without moving the view.
 
-void view_app::export_queue(std::string& data)
+void view_app::fade_to(int i)
 {
-    std::stringstream file;
+    // TODO: Plan a sequence to fade over time.
 
-    for (size_t i = 0; i < queue.size(); ++i)
+    if (0 <= i && i < max_location && !location[i].empty())
     {
-        double d = queue[i]->get_distance();
-        double p[3];
-        double q[4];
-        double r[3];
+        scm_state there = location[i].front();
 
-        queue[i]->get_position(p);
-        queue[i]->get_orientation(q);
-
-        p[0] *= d;
-        p[1] *= d;
-        p[2] *= d;
-
-        equaternion(r, q);
-
-        file << std::setprecision(std::numeric_limits<long double>::digits10)
-             << p[0] << " "
-             << p[1] << " "
-             << p[2] << " "
-             << degrees(r[0]) << " "
-             << degrees(r[1]) << " "
-             << degrees(r[2]) << " "
-             << "0.0 0.0 0.0" << std::endl;
-    }
-    data = file.str();
-}
-
-/// Take ownership of the given step and append it to the current queue.
-
-void view_app::append_queue(scm_state *s)
-{
-    queue.push_back(s);
-}
-
-/// Flush the current step queue, deleting all steps in it.
-
-void view_app::flush_queue()
-{
-    for (size_t i = 0; i < queue.size(); i++)
-        delete queue[i];
-
-    queue.clear();
-}
-
-//------------------------------------------------------------------------------
-
-// Construct a path from the current location to the step with the given index.
-// The behavior of this is highly application-specific, so the default move is
-// just a jump.
-
-void view_app::move_to(int n)
-{
-    jump_to(n);
-}
-
-// Teleport the view configuration and scene to the step with the given index.
-
-void view_app::jump_to(int n)
-{
-    if (0 <= n && n < sys->get_step_count())
-    {
-        sys->flush_queue();
-        sys->append_queue(new scm_state(sys->get_step(n)));
-
-        here = sys->get_step_blend(1.0);
-        sys->set_scene_blend(1.0);
-
-        curr_step = n;
-    }
-}
-
-// Construct a fade from the current scene to the scene of the step with the
-// given index. Do so without moving the view.
-
-void view_app::fade_to(int n)
-{
-    if (0 <= n && n < sys->get_step_count())
-    {
-        scm_state *there = new scm_state(&here);
-
-        there->set_foreground(sys->get_step(n)->get_foreground());
-        there->set_background(sys->get_step(n)->get_background());
-
-        sys->flush_queue();
-        sys->append_queue(there);
-
-        here = sys->get_step_blend(1.0);
-        sys->set_scene_blend(1.0);
-
-        curr_step = n;
+        here.set_foreground0(there.get_foreground0());
+        here.set_foreground1(there.get_foreground1());
+        here.set_background0(there.get_background0());
+        here.set_background1(there.get_background1());
     }
 }
 
@@ -657,15 +560,17 @@ void view_app::fade_to(int n)
 // These functions allow the viewer GUI to query the scenes of the currently
 // loaded SCM system and generate buttons to navigate them.
 
-int view_app::get_step_count() const
+int view_app::get_location_count() const
 {
-    return sys ? sys->get_step_count() : 0;
+    return max_location;
 }
 
-const std::string& view_app::get_step_name(int i) const
+const std::string view_app::get_location_name(int i) const
 {
-    assert(0 <= i && i < get_step_count());
-    return sys->get_step(i)->get_name();
+    if (0 <= i && i < max_location && !location[i].empty())
+        return location[i].front().get_name();
+    else
+        return "";
 }
 
 //------------------------------------------------------------------------------
@@ -692,50 +597,6 @@ void view_app::play(bool movie)
 }
 
 //------------------------------------------------------------------------------
-
-// Transition to the next or previous step with control status c and shift
-// status s.
-
-bool view_app::dostep(int d, bool c, bool s)
-{
-    if (s == false)
-    {
-        if (c == false)
-            move_to(curr_step + d);
-        else
-            fade_to(curr_step + d);
-    }
-    else
-    {
-        if (c == false)
-            jump_to(curr_step + d);
-    }
-    return true;
-}
-
-// Handle a press of number key n with control status c and shift status s.
-
-bool view_app::numkey(int n, bool c, bool s)
-{
-    if (s == false)
-    {
-        if (c == false)
-            fade_to(n);
-        else
-            jump_to(n);
-    }
-    else
-    {
-        if (c == false)
-            move_to(n);
-        else
-        {
-            if (n == 1) flag();
-            if (n == 2) step();
-        }
-    }
-    return true;
-}
 
 // Handle a press of function key n with control status c and shift status s.
 
@@ -774,7 +635,7 @@ bool view_app::funkey(int n, bool c, bool s)
 
                 case 11: // Begin recording the view motion
 
-                    sys->flush_queue();
+                    sequence.clear();
                     record = true;
                     return true;
 
@@ -800,17 +661,6 @@ bool view_app::process_key(app::event *E)
     {
         switch (E->data.key.k)
         {
-            case SDL_SCANCODE_0:   return numkey(0,  c, s);
-            case SDL_SCANCODE_1:   return numkey(1,  c, s);
-            case SDL_SCANCODE_2:   return numkey(2,  c, s);
-            case SDL_SCANCODE_3:   return numkey(3,  c, s);
-            case SDL_SCANCODE_4:   return numkey(4,  c, s);
-            case SDL_SCANCODE_5:   return numkey(5,  c, s);
-            case SDL_SCANCODE_6:   return numkey(6,  c, s);
-            case SDL_SCANCODE_7:   return numkey(7,  c, s);
-            case SDL_SCANCODE_8:   return numkey(8,  c, s);
-            case SDL_SCANCODE_9:   return numkey(9,  c, s);
-
             case SDL_SCANCODE_F1:  return funkey(1,  c, s);
             case SDL_SCANCODE_F2:  return funkey(2,  c, s);
             case SDL_SCANCODE_F3:  return funkey(3,  c, s);
@@ -826,9 +676,6 @@ bool view_app::process_key(app::event *E)
             case SDL_SCANCODE_F13: return funkey(13, c, s);
             case SDL_SCANCODE_F14: return funkey(14, c, s);
             case SDL_SCANCODE_F15: return funkey(15, c, s);
-
-            case SDL_SCANCODE_PAGEUP:   return dostep(+1, c, s);
-            case SDL_SCANCODE_PAGEDOWN: return dostep(-1, c, s);
 
             case SDL_SCANCODE_SPACE: play(s);    return true;
             case SDL_SCANCODE_HOME:  zoom = 0.0; return true;
@@ -850,14 +697,17 @@ bool view_app::process_user(app::event *E)
         memset(name, 0, sizeof (name));
         memcpy(name, &E->data.user.d, sizeof (long long));
 
-        // Scan the steps for a matching name.
+        // Scan the locations for a matching name.
 
-        for (int i = 0; i < sys->get_step_count(); i++)
+        for (int i = 0; i < max_location; i++)
         {
-            if (sys->get_step(i)->get_name().compare(name) == 0)
+            if (!location[i].empty())
             {
-                move_to(i);
-                return true;
+                if (location[i].front().get_name().compare(name) == 0)
+                {
+                    move_to(i);
+                    return true;
+                }
             }
         }
     }
@@ -880,6 +730,7 @@ bool view_app::process_tick(app::event *E)
 
         if (delta)
         {
+#if 0
             double prev = now;
             double next = now + delta;
 
@@ -892,10 +743,11 @@ bool view_app::process_tick(app::event *E)
                 sys->set_synchronous(false);
                 delta = 0;
             }
+#endif
+            delta = 0;
         }
 
-        if (record)
-            sys->append_queue(new scm_state(here));
+        if (record) sequence.push_back(here);
     }
     return false;
 }
@@ -933,11 +785,6 @@ bool view_app::process_button(app::event *E)
 {
     const int  b = E->data.button.b;
     const bool d = E->data.button.d;
-
-    if (b == button_next && d)
-        return dostep(+1, mod_control, mod_shift);
-    if (b == button_prev && d)
-        return dostep(-1, mod_control, mod_shift);
 
     if (b == button_shift)     { mod_shift   = d;            return true; }
     if (b == button_control)   { mod_control = d;            return true; }

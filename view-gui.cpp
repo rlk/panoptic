@@ -122,7 +122,7 @@ about_panel::about_panel(view_app *V, gui::widget *w) : gui::vgroup()
 // The Data panel
 
 step_button::step_button(view_app *V, int i) :
-    gui::button(V->get_step_name(i)), V(V), i(i)
+    gui::button(V->get_location_name(i)), V(V), i(i)
 {
 }
 
@@ -133,7 +133,7 @@ void step_button::apply()
 
 step_array::step_array(view_app *V)
 {
-    for (int i = 0; i < V->get_step_count(); i++)
+    for (int i = 0; i < V->get_location_count(); i++)
         add(new step_button(V, i));
 }
 
@@ -142,7 +142,7 @@ data_panel::data_panel(view_app *V, gui::widget *w, bool simple)
 {
     if (simple)
     {
-        add((new gui::frame)->add(new step_array(V)));        
+        add((new gui::frame)->add(new step_array(V)));
     }
     else
     {
@@ -157,7 +157,7 @@ data_panel::data_panel(view_app *V, gui::widget *w, bool simple)
                 add(new gui::filler(true, false))->
                 add(new button_load_data(V, selector)));
 
-        if (V->get_step_count())
+        if (V->get_location_count())
         {
             G->add(new gui::spacer);
             G->add(new step_array(V));
