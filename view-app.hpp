@@ -125,6 +125,17 @@ private:
     virtual double get_speed() const { return 1.0; }
     virtual double get_scale() const { return 1.0; }
 
+    // Keyboard configuration
+
+    int key_location_0;
+    int key_location_1;
+    int key_location_2;
+    int key_location_3;
+    int key_location_4;
+    int key_location_5;
+    int key_location_6;
+    int key_location_7;
+
     // Joystick state
 
     int button_zoom_in;
@@ -134,7 +145,6 @@ private:
     int button_shift;
     int button_gui;
     int button_select;
-    int button_snap;
 
     // Sphere GUI State
 

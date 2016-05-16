@@ -80,16 +80,24 @@ view_app::view_app(const std::string& exe,
     scm_cache::loads_per_cycle = ::conf->get_i("scm_loads_per_cycle",
                                          scm_cache::loads_per_cycle);
 
+    // Configure the keyboard interface.
+
+    key_location_0 = ::conf->get_i("view_key_location_0", 39);
+    key_location_1 = ::conf->get_i("view_key_location_1", 30);
+    key_location_2 = ::conf->get_i("view_key_location_2", 31);
+    key_location_3 = ::conf->get_i("view_key_location_3", 32);
+    key_location_4 = ::conf->get_i("view_key_location_4", 33);
+    key_location_5 = ::conf->get_i("view_key_location_5", 34);
+    key_location_6 = ::conf->get_i("view_key_location_6", 35);
+    key_location_7 = ::conf->get_i("view_key_location_7", 36);
+
     // Configure the joystick interface. (XBox 360 defaults)
 
     button_zoom_in   = ::conf->get_i("view_button_zoom_in",   0);
     button_zoom_out  = ::conf->get_i("view_button_zoom_out",  1);
     button_zoom_home = ::conf->get_i("view_button_zoom_home", 6);
-    button_shift     = ::conf->get_i("view_button_shift",     4);
-    button_control   = ::conf->get_i("view_button_control",   5);
     button_gui       = ::conf->get_i("view_button_gui",       7);
     button_select    = ::conf->get_i("view_button_select",    0);
-    button_snap      = ::conf->get_i("view_button_snap",      8);
 }
 
 view_app::~view_app()
@@ -337,7 +345,12 @@ void view_app::load_file(const std::string& name)
 
         // Dismiss the GUI and display the first loaded scene.
 
-        jump_to(0);
+        for (int i = 0; i < max_location; i++)
+            if (!location[i].empty())
+            {
+                jump_to(i);
+                break;
+            }
 
         gui_hide();
         gui_show();
@@ -534,6 +547,9 @@ void view_app::jump_to(int i)
     if (0 <= i && i < max_location && !location[i].empty())
     {
         here = location[i].front();
+
+        location[i].pop_front();
+        location[i].push_back(here);
     }
 }
 
@@ -680,6 +696,15 @@ bool view_app::process_key(app::event *E)
             case SDL_SCANCODE_SPACE: play(s);    return true;
             case SDL_SCANCODE_HOME:  zoom = 0.0; return true;
         }
+
+        if (E->data.key.k == key_location_0) move_to(0);
+        if (E->data.key.k == key_location_1) move_to(1);
+        if (E->data.key.k == key_location_2) move_to(2);
+        if (E->data.key.k == key_location_3) move_to(3);
+        if (E->data.key.k == key_location_4) move_to(4);
+        if (E->data.key.k == key_location_5) move_to(5);
+        if (E->data.key.k == key_location_6) move_to(6);
+        if (E->data.key.k == key_location_7) move_to(7);
     }
     return prog::process_event(E);
 }
@@ -786,12 +811,9 @@ bool view_app::process_button(app::event *E)
     const int  b = E->data.button.b;
     const bool d = E->data.button.d;
 
-    if (b == button_shift)     { mod_shift   = d;            return true; }
-    if (b == button_control)   { mod_control = d;            return true; }
     if (b == button_zoom_in)   { zoom_rate   = d ? -1 : 0;   return true; }
     if (b == button_zoom_out)  { zoom_rate   = d ? +1 : 0;   return true; }
     if (b == button_zoom_home) { zoom        = 0;            return true; }
-    if (b == button_snap && d) { ::host->set_movie_mode(-1); return true; }
 
     return false;
 }
