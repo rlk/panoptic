@@ -245,6 +245,8 @@ void view_app::load_states(app::node p)
 {
     for (app::node n = p.find("state"); n; n = p.next(n, "state"))
     {
+        // Initialize a new object.
+
         scm_state s;
 
         double q[4];
@@ -278,8 +280,15 @@ void view_app::load_states(app::node p)
         s.set_zoom       (n.get_f("z", 1.0));
         s.set_fade       (n.get_f("k", 0.0));
 
+        // Add it to one of the location queues as specified.
+
         if (0 <= i && i < max_location)
             location[i].push_back(s);
+
+        // If we don't have an initial renderable, consider this one.
+
+        if (!here.renderable())
+            here = s;
     }
 }
 
@@ -343,14 +352,16 @@ void view_app::load_file(const std::string& name)
 
         load_states(root);
 
-        // Dismiss the GUI and display the first loaded scene.
+        // Display the first loaded scene.
 
-        for (int i = 0; i < max_location; i++)
-            if (!location[i].empty())
-            {
-                jump_to(i);
-                break;
-            }
+        // for (int i = 0; i < max_location; i++)
+        //     if (!location[i].empty())
+        //     {
+        //         jump_to(i);
+        //         break;
+        //     }
+
+        // Bounce the GUI to update it with new data.
 
         gui_hide();
         gui_show();
