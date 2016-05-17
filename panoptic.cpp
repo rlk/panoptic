@@ -196,6 +196,9 @@ double panoptic::get_speed() const
     return k;
 }
 
+// Return a scaling value that gives an appropriately stereoscopic view
+// of the planet from the current altitude.
+
 double panoptic::get_scale() const
 {
     if (pan_mode())
@@ -209,6 +212,17 @@ double panoptic::get_scale() const
 
         return k;
     }
+}
+
+// Set the pitch of the viewer appropriately for the current altitude.
+
+void panoptic::set_pitch(scm_state& s) const
+{
+    const double d = s.get_distance();
+    const double h =   get_minimum_ground();
+    const double a = (d - h) / h;
+
+    s.set_pitch(-M_PI_2 * mix(std::min(1.0, pow(a, 0.4)), 1.0, a));
 }
 
 //------------------------------------------------------------------------------
@@ -291,14 +305,7 @@ void panoptic::offset_position(const vec3 &d)
 
         // Set the automatic view pitch if requested.
 
-        if (auto_pitch)
-        {
-            const double d = here.get_distance();
-            const double h =      get_minimum_ground();
-            const double a = (d - h) / h;
-
-            here.set_pitch(-M_PI_2 * mix(std::min(1.0, pow(a, 0.4)), 1.0, a));
-        }
+        if (auto_pitch) set_pitch(here);
     }
 }
 
@@ -331,11 +338,6 @@ double spiral(double r0, double r1, double theta)
     return dr;
 }
 
-void panoptic::move_to(int i)
-{
-    view_app::move_to(i);
-}
-
 void panoptic::jump_to(int i)
 {
     view_app::jump_to(i);
@@ -354,97 +356,90 @@ void panoptic::fade_to(int i)
 #endif
 }
 
-#if 0
 void panoptic::move_to(int i)
 {
     // Construct a path from here to there.
 
-    if (delta == 0)
+    if (!play && 0 <= i && i < max_location && !location[i].empty())
     {
-        if (0 <= i && i < sys->get_step_count())
+        // Set the location and destination. Cycle the selected location queue.
+
+        scm_state src = here;
+        scm_state dst = location[i].front();
+
+        location[i].pop_front();
+        location[i].push_back(dst);
+
+        // Determine the beginning and ending positions and altitudes.
+
+        double g0 = src.get_current_ground();
+        double g1 = dst.get_current_ground();
+
+        double d0 = src.get_distance();
+        double d1 = dst.get_distance();
+
+        double p0[3];
+        double p1[3];
+
+        src.get_position(p0);
+        dst.get_position(p1);
+
+        // Compute the ground trace length and orbit length.
+
+        double a = acos(vdot(p0, p1));
+        double lg = spiral(g0, g1, a);
+        double lo = spiral(d0, d1, a);
+
+        // Calculate a "hump" for a low orbit path.
+
+        double aa = std::min(d0 - g0, d1 - g1);
+        double dd = lg ? log10(lg / aa) * lg / 10 : 0;
+
+        // Enqueue the path.
+
+        sequence.clear();
+
+        if (lo > 0)
         {
-            // Set the location and destination.
-
-            scm_state *src = &here;
-            scm_state *dst = sys->get_step(i);
-
-            // Determine the beginning and ending positions and altitudes.
-
-            double p0[3];
-            double p1[3];
-
-            src->get_position(p0);
-            dst->get_position(p1);
-
-            double g0 = sys->get_current_ground(p0);
-            double g1 = sys->get_current_ground(p1);
-
-            double d0 = src->get_distance();
-            double d1 = dst->get_distance();
-
-            // Compute the ground trace length and orbit length.
-
-            double a = acos(vdot(p0, p1));
-            double lg = spiral(g0, g1, a);
-            double lo = spiral(d0, d1, a);
-
-            // Calculate a "hump" for a low orbit path.
-
-            double aa = std::min(d0 - g0, d1 - g1);
-            double dd = lg ? log10(lg / aa) * lg / 10 : 0;
-
-            // Enqueue the path.
-
-            sys->flush_queue();
-
-            if (lo > 0)
+            for (double t = 0.0; t < 1.0; )
             {
-                for (double t = 0.0; t < 1.0; )
-                {
-                    double p[3];
-                    double dt = 0.01;
-                    double q = 4 * t - 4 * t * t;
+                double dt = 0.01;
+                double q = 4 * t - 4 * t * t;
 
-                    // Estimate the current velocity.
+                // Estimate the current velocity.
 
-                    scm_state t0(src, dst, t);
-                    scm_state t1(src, dst, t + dt);
+                scm_state t0(src, dst, t);
+                scm_state t1(src, dst, t + dt);
 
-                    t0.set_distance(t0.get_distance() + dd * q);
-                    t1.set_distance(t1.get_distance() + dd * q);
+                t0.set_distance(t0.get_distance() + dd * q);
+                t1.set_distance(t1.get_distance() + dd * q);
 
-                    // Queue this step.
+                // Queue this step.
 
-                    if (t < 0.5)
-                    {
-                        t0.set_foreground(src->get_foreground());
-                        t0.set_background(src->get_background());
-                    }
-                    else
-                    {
-                        t0.set_foreground(dst->get_foreground());
-                        t0.set_background(dst->get_background());
-                    }
-                    sys->append_queue(new scm_state(t0));
+                t0.set_foreground0(src.get_foreground0());
+                t0.set_background0(src.get_background0());
+                t0.set_foreground1(dst.get_foreground0());
+                t0.set_background1(dst.get_background0());
+                t0.set_fade(t);
 
-                    // Move forward at a velocity appropriate for the altitude.
+                set_pitch(t0);
 
-                    t0.get_position(p);
+                sequence.push_back(t0);
 
-                    double g = sys->get_current_ground(p);
+                // Move forward at a velocity appropriate for the altitude.
 
-                    t += 2 * (t0.get_distance() - g) * dt * dt / (t1 - t0);
-                }
+                double g = t0.get_current_ground();
+
+                t += 2 * (t0.get_distance() - g) * dt * dt / (t1 - t0);
             }
-            sys->append_queue(new scm_state(dst));
-
-            // Trigger playback.
-
-            play(false);
         }
+        sequence.push_back(dst);
+
+        // Trigger playback.
+
+        play_path(false);
     }
 }
-#endif
 
 //------------------------------------------------------------------------------
 

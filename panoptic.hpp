@@ -51,8 +51,9 @@ private:
     quat   get_local() const;
     bool   pan_mode() const;
 
-    virtual double get_speed() const;
-    virtual double get_scale() const;
+    virtual double get_speed()           const;
+    virtual double get_scale()           const;
+    virtual void   set_pitch(scm_state&) const;
 
     double speed_min;
     double speed_max;

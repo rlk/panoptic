@@ -516,8 +516,8 @@ void view_app::flag()
     printf("%.12f\t%.12f\t%.1f\n", lat, lon, rad);
 }
 
-// Report the current view configuration as an XML step element. This is a
-// sketchy hack that allows the manual construction of step lists.
+// Report the current view configuration as an XML state element. This is a
+// sketchy hack that allows the manual construction of state lists.
 
 void view_app::step()
 {
@@ -529,9 +529,9 @@ void view_app::step()
     here.get_position   (p);
     here.get_light      (l);
 
-    printf("<step q0=\"%+.12f\" q1=\"%+.12f\" q2=\"%+.12f\" q3=\"%+.12f\" "
-                 "p0=\"%+.12f\" p1=\"%+.12f\" p2=\"%+.12f\" "
-                 "l0=\"%+.12f\" l1=\"%+.12f\" l2=\"%+.12f\" r=\"%f\"/>\n",
+    printf("<state q0=\"%+.12f\" q1=\"%+.12f\" q2=\"%+.12f\" q3=\"%+.12f\" "
+                  "p0=\"%+.12f\" p1=\"%+.12f\" p2=\"%+.12f\" "
+                  "l0=\"%+.12f\" l1=\"%+.12f\" l2=\"%+.12f\" r=\"%f\"/>\n",
                 q[0], q[1], q[2], q[3],
                 p[0], p[1], p[2],
                 l[0], l[1], l[2], here.get_distance());
@@ -753,17 +753,20 @@ bool view_app::process_key(app::event *E)
             case SDL_SCANCODE_F13: case SDL_SCANCODE_F14:
             case SDL_SCANCODE_F15: return process_function(k, c, s);
 
-            case SDL_SCANCODE_HOME:  zoom = 0.0; return true;
+            case SDL_SCANCODE_HOME: zoom = 0.0; return true;
+
+            case SDL_SCANCODE_PAGEUP:   step(); return true;
+            case SDL_SCANCODE_PAGEDOWN: flag(); return true;
         }
 
-        if (k == key_location_0) move_to(0);
-        if (k == key_location_1) move_to(1);
-        if (k == key_location_2) move_to(2);
-        if (k == key_location_3) move_to(3);
-        if (k == key_location_4) move_to(4);
-        if (k == key_location_5) move_to(5);
-        if (k == key_location_6) move_to(6);
-        if (k == key_location_7) move_to(7);
+        if (k == key_location_0) { move_to(0); return true; }
+        if (k == key_location_1) { move_to(1); return true; }
+        if (k == key_location_2) { move_to(2); return true; }
+        if (k == key_location_3) { move_to(3); return true; }
+        if (k == key_location_4) { move_to(4); return true; }
+        if (k == key_location_5) { move_to(5); return true; }
+        if (k == key_location_6) { move_to(6); return true; }
+        if (k == key_location_7) { move_to(7); return true; }
     }
     return prog::process_event(E);
 }
@@ -815,7 +818,7 @@ bool view_app::process_tick(app::event *E)
         if (play)
         {
             if (head == sequence.end())
-                play = false;
+                play_path(false);
             else
             {
                 here = *head;
