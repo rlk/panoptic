@@ -344,6 +344,8 @@ void view_app::load_file(const std::string& name)
 
         free_states();
 
+        here = scm_state();
+
         // Load the new scenes before deleting the old scenes to ensure that
         // relevant data isn't flushed and reloaded unnecessarily.
 
