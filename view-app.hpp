@@ -81,14 +81,17 @@ protected:
 
     scm_system *sys;
     scm_state   here;
-    scm_deque   sequence;
+    scm_state_v sequence;
     scm_deque   location[max_location];
 
     // Recording and playback
 
-    double now;
-    double delta;
-    bool   record;
+    bool        record;
+    bool        play;
+    scm_state_i head;
+
+    void import_mov(const std::string&);
+    void export_mov(      std::string&);
 
     // Zooming
 

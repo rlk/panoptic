@@ -38,9 +38,8 @@
 
 view_app::view_app(const std::string& exe,
                    const std::string& tag) : app::prog(exe, tag),
-    now(0),
-    delta(0),
     record(false),
+    play  (false),
 
     zoom     ( 0.0),
     zoom_min (-3.0),                    // How far can we zoom in
@@ -370,6 +369,79 @@ void view_app::load_file(const std::string& name)
 
 //------------------------------------------------------------------------------
 
+/// Parse the given string as a series of camera states. Enqueue each. This
+/// function ingests Maya MOV exports.
+
+void view_app::import_mov(const std::string& data)
+{
+    std::stringstream file(data);
+    std::string       line;
+
+    sequence.clear();
+
+    while (std::getline(file, line))
+    {
+        std::stringstream in(line);
+
+        double t[3] = { 0, 0, 0 };
+        double r[3] = { 0, 0, 0 };
+        double l[3] = { 0, 0, 0 };
+
+        if (in) in >> t[0] >> t[1] >> t[2];
+        if (in) in >> r[0] >> r[1] >> r[2];
+        if (in) in >> l[0] >> l[1] >> l[2];
+
+        r[0] = radians(r[0]);
+        r[1] = radians(r[1]);
+        r[2] = radians(r[2]);
+
+        l[0] = radians(l[0]);
+        l[1] = radians(l[1]);
+        l[2] = radians(l[2]);
+
+        scm_state s(t, r, l);
+
+        sequence.push_back(s);
+    }
+}
+
+/// Print all steps on the current queue to the given string using the same
+/// format expected by import.
+
+void view_app::export_mov(std::string& data)
+{
+    std::stringstream file;
+
+    file << std::setprecision(std::numeric_limits<long double>::digits10);
+
+    for (scm_state_c i = sequence.begin(); i != sequence.end(); ++i)
+    {
+        double d = i->get_distance();
+        double p[3];
+        double q[4];
+        double r[3];
+
+        i->get_position(p);
+        i->get_orientation(q);
+
+        p[0] *= d;
+        p[1] *= d;
+        p[2] *= d;
+
+        equaternion(r, q);
+
+        file << p[0] << " "
+             << p[1] << " "
+             << p[2] << " "
+             << degrees(r[0]) << " "
+             << degrees(r[1]) << " "
+             << degrees(r[2]) << " "
+             << "0.0 0.0 0.0" << std::endl;
+    }
+    data = file.str();
+}
+
+//------------------------------------------------------------------------------
 
 // Create a path from a series of camera configurations in the named file.
 
@@ -381,7 +453,7 @@ void view_app::load_path(const std::string& name)
 
     if ((path = (const char *) ::data->load(name)))
     {
-        sequence.import_mov(path);
+        import_mov(path);
         ::data->free(name);
     }
 }
@@ -394,7 +466,7 @@ void view_app::save_path(const std::string& stem)
 
     std::string path;
 
-    sequence.export_mov(path);
+    export_mov(path);
 
     // Find an usused file name and write the string to it.
 
@@ -418,18 +490,18 @@ void view_app::save_path(const std::string& stem)
 
 void view_app::play_path(bool movie)
 {
-    if (delta > 0)
+    if (play)
     {
       ::host->set_movie_mode(false);
         sys->set_synchronous(false);
-        delta = 0;
+        play = false;
     }
     else
     {
       ::host->set_movie_mode(movie ? 1 : 0);
         sys->set_synchronous(movie);
-        delta = 1;
-        now   = 0;
+        head = sequence.begin();
+        play = true;
     }
 }
 
@@ -755,26 +827,19 @@ bool view_app::process_tick(app::event *E)
             zoom = std::min(zoom, zoom_max);
         }
 
-        if (delta)
+        if (play)
         {
-#if 0
-            double prev = now;
-            double next = now + delta;
-
-            if (sys->get_step_count()  > 0) here = sys->get_step_blend(next);
-            if (sys->get_scene_count() > 0)  now = sys->set_scene_blend(next);
-
-            if (now == prev)
+            if (head == sequence.end())
+                play = false;
+            else
             {
-              ::host->set_movie_mode(false);
-                sys->set_synchronous(false);
-                delta = 0;
+                here = *head;
+                head++;
             }
-#endif
-            delta = 0;
         }
 
-        if (record) sequence.push_back(here);
+        if (record)
+            sequence.push_back(here);
     }
     return false;
 }
