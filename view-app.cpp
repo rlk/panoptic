@@ -352,15 +352,6 @@ void view_app::load_file(const std::string& name)
 
         load_states(root);
 
-        // Display the first loaded scene.
-
-        // for (int i = 0; i < max_location; i++)
-        //     if (!location[i].empty())
-        //     {
-        //         jump_to(i);
-        //         break;
-        //     }
-
         // Bounce the GUI to update it with new data.
 
         gui_hide();
