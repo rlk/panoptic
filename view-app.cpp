@@ -305,6 +305,16 @@ void view_app::free_states()
 
 //------------------------------------------------------------------------------
 
+// Delete all states and scenes (and by extension ALL data) in the system.
+
+void view_app::unload()
+{
+    free_states();
+
+    for (int i = 0; i < sys->get_scene_count(); ++i)
+        sys->del_scene(0);
+}
+
 // Initialize the SCM system using the named XML file.
 
 void view_app::load_file(const std::string& name)
@@ -361,6 +371,9 @@ void view_app::load_file(const std::string& name)
     if (pushed) sys->pop_path();
 }
 
+//------------------------------------------------------------------------------
+
+
 // Create a path from a series of camera configurations in the named file.
 
 void view_app::load_path(const std::string& name)
@@ -402,14 +415,25 @@ void view_app::save_path(const std::string& stem)
     }
 }
 
-// Delete all states and scenes (and by extension ALL data) in the system.
+// Toggle playback of the current step queue. Movie mode ensures that all frames
+// have equal step size, that all data access is performed synchronously, and
+// that each frame is written to a sequentially-numbered image file.
 
-void view_app::unload()
+void view_app::play_path(bool movie)
 {
-    free_states();
-
-    for (int i = 0; i < sys->get_scene_count(); ++i)
-        sys->del_scene(0);
+    if (delta > 0)
+    {
+      ::host->set_movie_mode(false);
+        sys->set_synchronous(false);
+        delta = 0;
+    }
+    else
+    {
+      ::host->set_movie_mode(movie ? 1 : 0);
+        sys->set_synchronous(movie);
+        delta = 1;
+        now   = 0;
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -593,77 +617,63 @@ const std::string view_app::get_location_name(int i) const
 
 //------------------------------------------------------------------------------
 
-// Toggle playback of the current step queue. Movie mode ensures that all frames
-// have equal step size, that all data access is performed synchronously, and
-// that each frame is written to a sequentially-numbered image file.
-
-void view_app::play(bool movie)
-{
-    if (delta > 0)
-    {
-      ::host->set_movie_mode(false);
-        sys->set_synchronous(false);
-        delta = 0;
-    }
-    else
-    {
-      ::host->set_movie_mode(movie ? 1 : 0);
-        sys->set_synchronous(movie);
-        delta = 1;
-        now   = 0;
-    }
-}
-
-//------------------------------------------------------------------------------
-
 // Handle a press of function key n with control status c and shift status s.
 
-bool view_app::funkey(int n, bool c, bool s)
+bool view_app::process_function(int k, bool c, bool s)
 {
-    if (s == false)
+    scm_render *ren = sys->get_render();
+
+    switch (k)
     {
-        if (c == false)
-        {
-            scm_render *ren = sys->get_render();
+        case SDL_SCANCODE_F2: // Toggle the wire frame
 
-            switch (n)
+            ren->set_wire(!ren->get_wire());
+            return true;
+
+        case SDL_SCANCODE_F3: // Toggle the motion blur
+
+            ren->set_blur(ren->get_blur() ? 0 : 16);
+            return true;
+
+        case SDL_SCANCODE_F4: // Toggle the cache view
+
+            draw_cache = !draw_cache;
+            return true;
+
+        case SDL_SCANCODE_F5: // Flush the cache
+
+            sys->flush_cache();
+            return true;
+
+        case SDL_SCANCODE_F7: // Toggle recording the view motion
+
+            if (record)
             {
-                case 2: // Toggle the wire frame
-
-                    ren->set_wire(!ren->get_wire());
-                    return true;
-
-                case 3: // Toggle the motion blur
-
-                    ren->set_blur(ren->get_blur() ? 0 : 16);
-                    return true;
-
-                case 4: // Toggle the cache view
-
-                    draw_cache = !draw_cache;
-                    return true;
-
-                case 5: // Flush the cache
-
-                    sys->flush_cache();
-                    return true;
-
-//              case  9: Default GL flush key defined by app:prog
-//              case 10: Default screenshot key defined by app::prog
-
-                case 11: // Begin recording the view motion
-
-                    sequence.clear();
-                    record = true;
-                    return true;
-
-                case 12: // Stop recording the view motion
-
-                    record = false;
-                    save_path("path");
-                    return true;
+                record = false;
             }
-        }
+            else
+            {
+                sequence.clear();
+                record = true;
+            }
+            return true;
+
+        case SDL_SCANCODE_F8: // Play the current view motion recording
+
+            play_path(s);
+            return true;
+
+        case SDL_SCANCODE_F9: // Store the current view motion recording
+
+            if (here.get_name().empty())
+                save_path("panoptic");
+            else
+                save_path(here.get_name());
+
+            return true;
+
+//      case SDL_SCANCODE_F11: Default screenshot key defined by app::prog
+//      case SDL_SCANCODE_F12: Default GL flush key defined by app:prog
     }
     return false;
 }
@@ -672,41 +682,34 @@ bool view_app::funkey(int n, bool c, bool s)
 
 bool view_app::process_key(app::event *E)
 {
-    bool c = mod_control = (E->data.key.m & KMOD_CTRL)  != 0;
-    bool s = mod_shift   = (E->data.key.m & KMOD_SHIFT) != 0;
+    const bool c = mod_control = (E->data.key.m & KMOD_CTRL)  != 0;
+    const bool s = mod_shift   = (E->data.key.m & KMOD_SHIFT) != 0;
+    const int  k = E->data.key.k;
 
     if (E->data.key.d)
     {
-        switch (E->data.key.k)
+        switch (k)
         {
-            case SDL_SCANCODE_F1:  return funkey(1,  c, s);
-            case SDL_SCANCODE_F2:  return funkey(2,  c, s);
-            case SDL_SCANCODE_F3:  return funkey(3,  c, s);
-            case SDL_SCANCODE_F4:  return funkey(4,  c, s);
-            case SDL_SCANCODE_F5:  return funkey(5,  c, s);
-            case SDL_SCANCODE_F6:  return funkey(6,  c, s);
-            case SDL_SCANCODE_F7:  return funkey(7,  c, s);
-            case SDL_SCANCODE_F8:  return funkey(8,  c, s);
-            case SDL_SCANCODE_F9:  return funkey(9,  c, s);
-            case SDL_SCANCODE_F10: return funkey(10, c, s);
-            case SDL_SCANCODE_F11: return funkey(11, c, s);
-            case SDL_SCANCODE_F12: return funkey(12, c, s);
-            case SDL_SCANCODE_F13: return funkey(13, c, s);
-            case SDL_SCANCODE_F14: return funkey(14, c, s);
-            case SDL_SCANCODE_F15: return funkey(15, c, s);
+            case SDL_SCANCODE_F1:  case SDL_SCANCODE_F2:
+            case SDL_SCANCODE_F3:  case SDL_SCANCODE_F4:
+            case SDL_SCANCODE_F5:  case SDL_SCANCODE_F6:
+            case SDL_SCANCODE_F7:  case SDL_SCANCODE_F8:
+            case SDL_SCANCODE_F9:  case SDL_SCANCODE_F10:
+            case SDL_SCANCODE_F11: case SDL_SCANCODE_F12:
+            case SDL_SCANCODE_F13: case SDL_SCANCODE_F14:
+            case SDL_SCANCODE_F15: return process_function(k, c, s);
 
-            case SDL_SCANCODE_SPACE: play(s);    return true;
             case SDL_SCANCODE_HOME:  zoom = 0.0; return true;
         }
 
-        if (E->data.key.k == key_location_0) move_to(0);
-        if (E->data.key.k == key_location_1) move_to(1);
-        if (E->data.key.k == key_location_2) move_to(2);
-        if (E->data.key.k == key_location_3) move_to(3);
-        if (E->data.key.k == key_location_4) move_to(4);
-        if (E->data.key.k == key_location_5) move_to(5);
-        if (E->data.key.k == key_location_6) move_to(6);
-        if (E->data.key.k == key_location_7) move_to(7);
+        if (k == key_location_0) move_to(0);
+        if (k == key_location_1) move_to(1);
+        if (k == key_location_2) move_to(2);
+        if (k == key_location_3) move_to(3);
+        if (k == key_location_4) move_to(4);
+        if (k == key_location_5) move_to(5);
+        if (k == key_location_6) move_to(6);
+        if (k == key_location_7) move_to(7);
     }
     return prog::process_event(E);
 }

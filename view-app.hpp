@@ -44,10 +44,11 @@ public:
 
     virtual bool process_event(app::event *);
 
+    virtual void unload();
     virtual void   load_file(const std::string&);
     virtual void   load_path(const std::string&);
     virtual void   save_path(const std::string&);
-    virtual void unload();
+    virtual void   play_path(bool);
 
     virtual void host_up(std::string);
     virtual void host_dn();
@@ -89,8 +90,6 @@ protected:
     double delta;
     bool   record;
 
-    void play(bool);
-
     // Zooming
 
     double zoom;
@@ -120,7 +119,7 @@ private:
 
     bool draw_cache;
 
-    bool funkey(int, bool, bool);
+    bool process_function(int, bool, bool);
 
     virtual double get_speed() const { return 1.0; }
     virtual double get_scale() const { return 1.0; }
