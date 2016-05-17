@@ -47,9 +47,6 @@ view_app::view_app(const std::string& exe,
     zoom_max ( 2.0),                    // How far can we zoom out
     zoom_rate( 0.0),
 
-    mod_shift  (false),
-    mod_control(false),
-
     draw_cache(false),
 
     gui_index(0),
@@ -682,9 +679,9 @@ bool view_app::process_function(int k, bool c, bool s)
 
 bool view_app::process_key(app::event *E)
 {
-    const bool c = mod_control = (E->data.key.m & KMOD_CTRL)  != 0;
-    const bool s = mod_shift   = (E->data.key.m & KMOD_SHIFT) != 0;
-    const int  k = E->data.key.k;
+    const bool c = (E->data.key.m & KMOD_CTRL)  != 0;
+    const bool s = (E->data.key.m & KMOD_SHIFT) != 0;
+    const int  k =  E->data.key.k;
 
     if (E->data.key.d)
     {

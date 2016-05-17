@@ -97,11 +97,6 @@ protected:
     double zoom_max;
     double zoom_rate;
 
-    // Modifier state
-
-    bool mod_shift;
-    bool mod_control;
-
     // Event handlers
 
     virtual bool process_key   (app::event *);
@@ -140,8 +135,6 @@ private:
     int button_zoom_in;
     int button_zoom_out;
     int button_zoom_home;
-    int button_control;
-    int button_shift;
     int button_gui;
     int button_select;
 

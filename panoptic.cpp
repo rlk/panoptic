@@ -269,7 +269,7 @@ void panoptic::offset_position(const vec3 &d)
         mat4 zM = mat4(mat3(quat(zvector(B), atan2(-d[0] * k, r))));
         mat4 xM = mat4(mat3(quat(xvector(B), atan2( d[2] * k, r))));
 
-        if (mod_control)
+        if (0) // HACK: Light transformation temporarily disabled.
         {
             here.transform_light      (transpose(xM));
             here.transform_light      (transpose(zM));
