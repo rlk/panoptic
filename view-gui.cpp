@@ -57,6 +57,22 @@ public:
     }
 };
 
+class button_save_path : public gui::button
+{
+    view_app      *V;
+    gui::selector *S;
+
+public:
+    button_save_path(view_app *V, gui::selector *S)
+        : gui::button("Save Path"), V(V), S(S) { }
+
+    void apply()
+    {
+        if (!S->value().empty())
+            V->save_path(S->value());
+    }
+};
+
 class button_load_config : public gui::button
 {
     gui::widget *name;
@@ -167,6 +183,30 @@ data_panel::data_panel(view_app *V, gui::widget *w, bool simple)
     }
 }
 
+path_panel::path_panel(view_app *V, gui::widget *w)
+    : gui::vgroup(), selector(0)
+{
+    gui::vgroup *G = new gui::vgroup();
+
+    selector = new gui::selector(getcwd(0, 0), ".mov");
+
+    G->add(selector)->
+       add((new gui::harray())->
+            add(new gui::filler(true, false))->
+            add(new gui::filler(true, false))->
+            add(new gui::filler(true, false))->
+            add(new button_save_path(V, selector))->
+            add(new button_load_path(V, selector)));
+
+    if (V->get_location_count())
+    {
+        G->add(new gui::spacer);
+        G->add(new step_array(V));
+    }
+
+    add((new gui::frame)->add(G));
+}
+
 //-----------------------------------------------------------------------------
 // The Config panel
 
@@ -192,7 +232,8 @@ config_panel::config_panel(view_app *V, gui::widget *w) : gui::vgroup()
 //-----------------------------------------------------------------------------
 // The toplevel control panel
 
-view_gui::view_gui(view_app *V, int w, int h) : state(0), datapan(0), confpan(0)
+view_gui::view_gui(view_app *V, int w, int h) :
+    state(0), confpan(0), datapan(0), pathpan(0)
 {
     int ss = ::conf->get_i("sans_size", 16);
 
@@ -207,26 +248,30 @@ view_gui::view_gui(view_app *V, int w, int h) : state(0), datapan(0), confpan(0)
         gui::widget *A = new panel_button("About",  state, 0);
         gui::widget *B = new panel_button("Config", state, 1);
         gui::widget *C = new panel_button("Data",   state, 2);
-        gui::widget *D = new button_vr();
+        gui::widget *D = new panel_button("Path",   state, 3);
+        gui::widget *E = new button_vr();
         gui::widget *Q = new button_quit();
 
-        datapan = new   data_panel(V, state, false);
         confpan = new config_panel(V, state);
+        datapan = new   data_panel(V, state, false);
+        pathpan = new   path_panel(V, state);
 
         root = ((new gui::vgroup)->
                 add((new gui::harray)->
                     add(A)->
                     add(B)->
                     add(C)->
-                    add(new gui::spacer)->
-                    add(new gui::spacer)->
                     add(D)->
+                    add(new gui::spacer)->
+                    add(new gui::spacer)->
+                    add(E)->
                     add(Q))->
                 add(new gui::spacer)->
                 add(state->
                     add(new about_panel(V, state))->
                     add(confpan)->
-                    add(datapan)));
+                    add(datapan)->
+                    add(pathpan)));
     }
 
     root->layup();

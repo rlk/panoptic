@@ -401,6 +401,11 @@ void view_app::import_mov(const std::string& data)
 
         scm_state s(t, r, l);
 
+        s.set_foreground0(here.get_foreground0());
+        s.set_foreground1(here.get_foreground1());
+        s.set_background0(here.get_background0());
+        s.set_background1(here.get_background1());
+
         sequence.push_back(s);
     }
 }
@@ -460,7 +465,7 @@ void view_app::load_path(const std::string& name)
 
 // Store a path as a series of camera configurations in the named file.
 
-void view_app::save_path(const std::string& stem)
+void view_app::save_path(const std::string& name)
 {
     // Export the path to a string.
 
@@ -468,20 +473,9 @@ void view_app::save_path(const std::string& stem)
 
     export_mov(path);
 
-    // Find an usused file name and write the string to it.
+    // Write the string to the file.
 
-    for (int i = 1; true; i++)
-    {
-        std::stringstream name;
-
-        name << stem << std::setw(3) << std::setfill('0') << i << ".mov";
-
-        if (::data->find(name.str()) == false)
-        {
-            ::data->save(name.str(), path.c_str(), 0);
-            break;
-        }
-    }
+    ::data->save(name, path.c_str(), 0);
 }
 
 // Toggle playback of the current step queue. Movie mode ensures that all frames
@@ -730,15 +724,6 @@ bool view_app::process_function(int k, bool c, bool s)
         case SDL_SCANCODE_F8: // Play the current view motion recording
 
             play_path(s);
-            return true;
-
-        case SDL_SCANCODE_F9: // Store the current view motion recording
-
-            if (here.get_name().empty())
-                save_path("panoptic");
-            else
-                save_path(here.get_name());
-
             return true;
 
 //      case SDL_SCANCODE_F11: Default screenshot key defined by app::prog

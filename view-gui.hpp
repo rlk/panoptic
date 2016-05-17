@@ -80,6 +80,24 @@ private:
     gui::selector *selector;
 };
 
+class path_panel : public gui::vgroup
+{
+public:
+    path_panel(view_app *, gui::widget *);
+
+    std::string get_dir() {
+        return selector ? selector->get_dir() : "";
+    }
+
+    void set_dir(const std::string &dir) {
+        if (selector)
+            selector->set_dir(dir);
+    }
+
+private:
+    gui::selector *selector;
+};
+
 class config_panel : public gui::vgroup
 {
 public:
@@ -105,8 +123,9 @@ class view_gui : public gui::dialog
 {
     gui::option *state;
 
-    data_panel   *datapan;
     config_panel *confpan;
+    data_panel   *datapan;
+    path_panel   *pathpan;
 
 public:
     view_gui(view_app *, int, int);
