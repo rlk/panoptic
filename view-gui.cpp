@@ -147,10 +147,16 @@ void step_button::apply()
     V->jump_to(i);
 }
 
-step_array::step_array(view_app *V)
+step_group::step_group(view_app *V)
 {
+    gui::harray *A = new gui::harray();
+
     for (int i = 0; i < V->get_location_count(); i++)
-        add(new step_button(V, i));
+        if (!V->get_location_name(i).empty())
+            A->add(new step_button(V, i));
+
+    add(A);
+    add(new gui::filler(true, false));
 }
 
 data_panel::data_panel(view_app *V, gui::widget *w, bool simple)
@@ -158,7 +164,7 @@ data_panel::data_panel(view_app *V, gui::widget *w, bool simple)
 {
     if (simple)
     {
-        add((new gui::frame)->add(new step_array(V)));
+        add((new gui::frame)->add(new step_group(V)));
     }
     else
     {
@@ -176,7 +182,7 @@ data_panel::data_panel(view_app *V, gui::widget *w, bool simple)
         if (V->get_location_count())
         {
             G->add(new gui::spacer);
-            G->add(new step_array(V));
+            G->add(new step_group(V));
         }
 
         add((new gui::frame)->add(G));
@@ -197,12 +203,6 @@ path_panel::path_panel(view_app *V, gui::widget *w)
             add(new gui::filler(true, false))->
             add(new button_save_path(V, selector))->
             add(new button_load_path(V, selector)));
-
-    if (V->get_location_count())
-    {
-        G->add(new gui::spacer);
-        G->add(new step_array(V));
-    }
 
     add((new gui::frame)->add(G));
 }
@@ -262,7 +262,6 @@ view_gui::view_gui(view_app *V, int w, int h) :
                     add(B)->
                     add(C)->
                     add(D)->
-                    add(new gui::spacer)->
                     add(new gui::spacer)->
                     add(E)->
                     add(Q))->

@@ -34,7 +34,7 @@ public:
 };
 
 //------------------------------------------------------------------------------
-// Step selection button array.
+// Step selection button group.
 
 class step_button : public gui::button
 {
@@ -47,10 +47,10 @@ public:
     void apply();
 };
 
-class step_array : public gui::harray
+class step_group : public gui::hgroup
 {
 public:
-    step_array(view_app *V);
+    step_group(view_app *V);
 };
 
 //------------------------------------------------------------------------------
