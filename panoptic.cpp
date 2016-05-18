@@ -219,7 +219,7 @@ double panoptic::get_scale() const
 void panoptic::set_pitch(scm_state& s) const
 {
     const double d = s.get_distance();
-    const double h =   get_minimum_ground();
+    const double h = s.get_minimum_ground();
     const double a = (d - h) / h;
 
     s.set_pitch(-M_PI_2 * mix(std::min(1.0, pow(a, 0.4)), 1.0, a));
@@ -416,24 +416,26 @@ void panoptic::move_to(int i)
 
                 // Queue this step.
 
-                t0.set_foreground0(src.get_foreground0());
-                t0.set_background0(src.get_background0());
-                t0.set_foreground1(dst.get_foreground0());
-                t0.set_background1(dst.get_background0());
-                t0.set_fade(t);
-
-                set_pitch(t0);
+                if (auto_pitch) set_pitch(t0);
 
                 sequence.push_back(t0);
 
                 // Move forward at a velocity appropriate for the altitude.
 
-                double g = t0.get_current_ground();
+                double g = t0.get_minimum_ground();
 
                 t += 2 * (t0.get_distance() - g) * dt * dt / (t1 - t0);
             }
         }
+
         sequence.push_back(dst);
+
+        // Program the scene fade.
+
+        const int n = int(sequence.size());
+
+        for (int i = 0; i <= n - 2; i++)
+            sequence[i].set_fade(hermite(double(i) / double(n - 2)));
 
         // Trigger playback.
 

@@ -337,17 +337,21 @@ void view_app::load_file(const std::string& name)
 
     if (app::node root = file.get_root().find("sphere"))
     {
+        // Configure the sphere.
+
         sys->get_sphere()->set_detail(root.get_i("detail", 32));
         sys->get_sphere()->set_limit (root.get_i("limit", 256));
 
-        // Free the states to ensure that their scene references don't dangle.
+        // Free the states to ensure their scene references don't dangle.
 
         free_states();
+
+        // Null the here state to ensure it's scene references don't dangle.
 
         here = scm_state();
 
         // Load the new scenes before deleting the old scenes to ensure that
-        // relevant data isn't flushed and reloaded unnecessarily.
+        // common images aren't flushed and reloaded unnecessarily.
 
         int scenes = sys->get_scene_count();
 
@@ -356,7 +360,7 @@ void view_app::load_file(const std::string& name)
         for (int i = 0; i < scenes; ++i)
             sys->del_scene(0);
 
-        // Load the states.
+        // Load the states specified by the file.
 
         load_states(root);
 
@@ -366,13 +370,15 @@ void view_app::load_file(const std::string& name)
         gui_show();
     }
 
+    // Pop the temporary path.
+
     if (pushed) sys->pop_path();
 }
 
 //------------------------------------------------------------------------------
 
-/// Parse the given string as a series of camera states. Enqueue each. This
-/// function ingests Maya MOV exports.
+// Parse the given string as a series of camera states. Enqueue each. This
+// function ingests Maya MOV exports.
 
 void view_app::import_mov(const std::string& data)
 {
@@ -412,8 +418,8 @@ void view_app::import_mov(const std::string& data)
     }
 }
 
-/// Print all steps on the current queue to the given string using the same
-/// format expected by import.
+// Print all steps on the current queue to the given string using the same
+// format expected by import.
 
 void view_app::export_mov(std::string& data)
 {
