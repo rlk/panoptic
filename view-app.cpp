@@ -119,7 +119,10 @@ void view_app::host_up(std::string name)
     // Preload data as requested.
 
     if (char *name = getenv("SCMINIT"))
+    {
         load_file(name);
+        gui_hide();
+    }
     else
         gui_show();
 }
