@@ -14,15 +14,17 @@ struct scm
 };
 
 uniform sampler2D  color_sampler;
-uniform sampler2D  detail_sampler;
+uniform sampler2D detail_sampler;
 uniform sampler2D normal_sampler;
 
 uniform scm color;
 uniform scm detail;
 uniform scm normal;
+uniform scm height;
 
-uniform vec2 A[16];
-uniform vec2 B[16];
+uniform vec2  A[16];
+uniform vec2  B[16];
+uniform float range;
 
 //------------------------------------------------------------------------------
 
@@ -86,16 +88,18 @@ vec4 sample_normal(vec2 t)
 
 void main()
 {
+    float cloudmix = smoothstep(2.0, 3.0, range / height.k0);
+
     vec3 V = normalize(var_V);
     vec3 L = normalize(var_L);
     vec3 T = normalize(var_N);
     vec3 N = normalize(sample_normal(gl_TexCoord[0].xy).rgb * 2.0 - 1.0);
-    vec3 R = reflect(-L, N);
+    vec3 R = reflect(-L, T);
 
     vec3 color  = sample_color (gl_TexCoord[0].xy).rgb;
     vec3 detail = sample_detail(gl_TexCoord[0].xy).rgb;
 
-    vec3 cloud = vec3(0.0);
+    vec3 cloud = vec3(detail.r) * cloudmix;
     vec3 light = vec3(detail.g);
     vec3 water = vec3(detail.b);
 
