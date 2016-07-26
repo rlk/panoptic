@@ -3,33 +3,46 @@ a:visited { color:#2200CC; text-decoration: none; }
 a:hover   { color:#AA0000; text-decoration: underline; }
 a:active  { color:#FF0000; text-decoration: underline; }
 
-body {
-  margin-left:   8em;
-  margin-right:  8em;
-  margin-top:    3em;
-  margin-bottom: 3em;
-  font-family: "Calibri", "Arial", sans-serif;
-  font-size:   18px;
-  line-height: 26px;
-  color: #444;
+@media screen {
+  body {
+    margin-left:   8em;
+    margin-right:  8em;
+    margin-top:    3em;
+    margin-bottom: 3em;
+    font-family: "Calibri", "Arial", sans-serif;
+    font-size:   18px;
+    line-height: 26px;
+    color: #444;
+  }
+
+  code, tt, pre {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 15px;
+    color: #999;
+  }
+
+  pre {
+    line-height: 18px;
+  }
 }
 
-code {
-  font-family: "Consolas", "Courier New", monospace;
-  font-size: 15px;
-  color: #999;
-}
+@media print {
+  body {
+    font-family: "Calibri", "Arial", sans-serif;
+    font-size:   10pt;
+    line-height: 16pt;
+    color: #444;
+  }
 
-tt {
-  font-family: "Consolas", "Courier New", monospace;
-  font-size: 15px;
-}
+  code, tt, pre {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 10pt;
+    color: #999;
+  }
 
-pre {
-  line-height: 18px;
-  font-family: "Consolas", "Courier New", monospace;
-  font-size: 15px;
-  color: #999;
+  pre {
+    line-height: 16pt;
+  }
 }
 
 pre.small {
