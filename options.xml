@@ -48,7 +48,7 @@
   <option name="gamepad_button_turn_D">-1</option>
   <option name="gamepad_button_turn_U">-1</option>
 
-  <!-- Visualization gamepad buttons -->
+  <!-- Visualization keys -->
   <option name="view_location_0">39</option>
   <option name="view_location_1">30</option>
   <option name="view_location_2">31</option>
@@ -57,6 +57,8 @@
   <option name="view_location_5">34</option>
   <option name="view_location_6">35</option>
   <option name="view_location_7">36</option>
+
+  <!-- Visualization gamepad buttons -->
   <option name="view_button_zoom_in">  0</option>
   <option name="view_button_zoom_out"> 1</option>
   <option name="view_button_zoom_home">6</option>

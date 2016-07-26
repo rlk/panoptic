@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<link rel=stylesheet type="text/css" href="style.css">
+<title>Panoptic</title>
+</head>
+<body>
+<h1><a href="index.html">Panoptic</a></h1>
+
+<h2>Scene Definition</h2>
+
+<p>A Panoptic visualization, regardless of whether it represents a planetary visualization or a stereoscopic panorama, is defined using an XML file, to be selected from the in-application GUI. This XML file may contain an arbitrary number of scene definitions, as well as an arbitrary number of predefined views of those scenes.</p>
+
+<p>Here is a minimal example showing a 3D map of the moon with a starfield background.</p>
+
+<blockquote>
+<i>&lt;?xml version="1.0"?&gt;</i><br>
+<i>&lt;sphere detail="32" limit="254"&gt;</i><br>
+<br>
+&emsp;<i>&lt;scene name="Starfield" vert="glsl/scm-basic.vert" frag="glsl/scm-basic.frag"&gt;</i><br>
+&emsp;&emsp;<i>&lt;image name="color" scm="synaspan-254-4.tif"/&gt;</i><br>
+&emsp;<i>&lt;/scene&gt;</i><br>
+<br>
+&emsp;<i>&lt;scene name="Moon" vert="glsl/scm-displace.vert" frag="glsl/scm-basic.frag"&gt;</i><br>
+&emsp;&emsp;<i>&lt;image name="height" scm="DTM-254-7.tif" k0="1728240" k1="1748170"/&gt;</i><br>
+&emsp;&emsp;<i>&lt;image name="color" scm="WAC-254-7.tif" k0="0.0" k1="3.0"/&gt;</i><br>
+&emsp;<i>&lt;/scene&gt;</i><br>
+<br>
+&emsp;<i>&lt;state i="0" name="Moon" f0="Moon" b0="Starfield" q0="-0.000" q1="+0.000" q2="+0.000" q3="+1.000" p0="+0.000" p1="+0.000" p2="+1.000" l0="+0.000" l1="+0.894" l2="+0.447" r="3658333"/&gt;</i><br>
+<i>&lt;/sphere&gt;</i><br>
+</blockquote>
+
+<p>The top-most level gives an XML header and a single sphere element. The basic, necessary elements and their attributes are as follows.</p>
+
+<dl>
+	<dt><i>sphere</i></dt><dd>
+		<p>A <a href="http://rlk.github.io/scm/classscm__sphere.html">sphere</a> element defines geometry of a sphere, including the various scenes we wish to display on it.</p>
+		<dl>
+			<dt><i>detail</i></dt><dd>The geometry complexity of the sphere. A larger number gives a denser grid. Press F2 to see this detail.</dd>
+			<dt><i>limit</i></dt><dd>The size, in pixels, at which a page will be subdivided.</dd>
+		</dl>
+	</dd>
+
+	<dt><i>scene</i></dt><dd>
+		<p>A <a href="http://rlk.github.io/scm/classscm__scene.html">scene</a> element defines the appearance of a sphere, including the shaders and images used to render it.</p>
+		<dl>
+			<dt><i>name</i></dt><dd>A name string used in the state definition, below.</dd>
+			<dt><i>vert</i></dt><dd>The <a href="https://github.com/rlk/panoptic/tree/master/data/glsl">vertex shader</a> used to render the scene.</dd>
+			<dt><i>frag</i></dt><dd>The <a href="https://github.com/rlk/panoptic/tree/master/data/glsl">fragment shader</a> used to render the scene.</dd>
+		</dl>
+		<p>In the example above, the <i>scm-displace</i> vertex shader uses a "height" image to display terrain, and the <i>scm-basic</i> fragment shader applies the "color" image directly.</p>
+	</dd>
+
+	<dt><i>image</i></dt><dd>
+		<p>An <a href="http://rlk.github.io/scm/classscm__image.html">image</a> element configures an SCM TIFF image file, including normalization parameters.</p>
+		<dl>
+			<dt><i>name</i></dt><dd>The name by which this image is known in the scene's <a href="https://github.com/rlk/panoptic/tree/master/data/glsl">shaders</a>.</dd>
+			<dt><i>k0</i></dt><dd>The minimum value, to which an SCM pixel value of 0 should be mapped.</dd>
+			<dt><i>k1</i></dt><dd>The maximum value, to which an SCM pixel value of 1 should be mapped.</dd>
+		</dl>
+		<p>In the example above, the range of terrain values, and thus the radius of the moon, is defined using the normalization values 1,728,240 and 1,748,170. Also, the lunar color image is very dark, so a normalization range of 0 to 3 is used to stretch its brightness.</p>
+	</dt>
+
+	<dt><i>state</i></dt><dd>
+		<p>A state element configures a view position and orientation for a given scene.</p>
+		<dl>
+			<dt><i>name</i></dt><dd>A name string by which this state may be referred.</dd>
+			<dt><i>f0</i></dt><dd>The name of the scene to be displayed in the foreground.</dd>
+			<dt><i>b0</i></dt><dd>The name of the scene to be displayed in the background.</dd>
+			<dt><i>i</i></dt><dd>The index, triggering this view location.</dd>
+			<dt><i>r</i></dt><dd>The radius of the view position.</dd>
+			<dt><i>p0</i>&ndash;<i>p2</i></dt><dd>The position of the view in the form of a normalized 3 vector.</dd>
+			<dt><i>q0</i>&ndash;<i>q3</i></dt><dd>The orientation of the view in the form of a quaternion.</dd>
+		</dl>
+		<p>State triggering works like so: if <i>i</i>=0 then this location is triggered when the user presses the key defined by <a href="config.html">view_location_0</a>, by default the '0' key on the keyboard. 8 trigger slots, numbered 0 through 7, are defined. Multiple states may share the same trigger index, and they will cycle as the user presses that trigger repeatedly.
+	</dd>
+</dl>
+
+<p>Here's a somewhat more complex example. The <i>scm-shaded-overlay</i> fragment shader draws a relief-shaded terrain with a high-resolution overlay.</p>
+
+<blockquote>
+&emsp;<i>&lt;scene name="Apollo 16" vert="glsl/scm-displace.vert" frag="glsl/scm-shaded-overlay.frag"&gt;</i><br>
+&emsp;&emsp;<i>&lt;image name="height" scm="DTM-254-7.tif" k0="1000000" k1="1011531"/&gt;</i><br>
+&emsp;&emsp;<i>&lt;image name="normal" scm="DTM-254-7-N.tif"/&gt;</i><br>
+&emsp;&emsp;<i>&lt;image name="lower" scm="WAC-254-7.tif" k0="0.0" k1="4.0"/&gt;</i><br>
+&emsp;&emsp;<i>&lt;image name="upper" scm="NAC_ROI_APOLLO16HIA-254-15.tif" k0="0.0" k1="2.0"/&gt;</i><br>
+&emsp;<i>&lt;/scene&gt;</i><br>
+</blockquote>
+
+<p>This example has an atmosphere element, The <i>r</i>, <i>g</i>, and <i>b</i> attributes give the color, the <i>H</i> attribute gives the thickness, and the <i>P</i> attribute gives the density.</p>
+
+<blockquote>
+&emsp;<i>&lt;scene name="Mars" vert="glsl/scm-displace.vert" frag="glsl/scm-hybrid.frag"&gt;</i><br>
+&emsp;&emsp;<i>&lt;atmosphere r="0.6" g="0.4" b="0.3" H="3000.0" P="0.001"/&gt;</i><br>
+&emsp;&emsp;<i>&lt;image name="height" scm="MEGDR-K-180-6.tif" k0="1000000" k1="1013104"/&gt;</i><br>
+&emsp;&emsp;<i>&lt;image name="color" scm="MDIM21-180-7.tif"/&gt;</i><br>
+&emsp;<i>&lt;/scene&gt;</i><br>
+</blockquote>
+
+<p>Finally, this example shows a labeled view of the moon. The label database CSV file name and label colors are given in the attributes of the scene leement.</p>
+
+<blockquote>
+&emsp;<i>&lt;scene name="Moon Terrain" vert="glsl/scm-displace.vert" frag="glsl/scm-relief-colormap-scalar.frag" label="IAUMOON.csv" labelr="255" labelg="191" labelb="0" labela="255"&gt;</i><br>
+&emsp;&emsp;<i>&lt;image name="height" scm="DTM-254-7.tif" k0="1728240" k1="1748170/&gt;</i><br>
+&emsp;&emsp;<i>&lt;image name="normal" scm="DTM-254-7-N.tif"/&gt;</i><br>
+&emsp;&emsp;<i>&lt;image name="scalar" scm="DTM-254-7.tif"/&gt;</i><br>
+&emsp;<i>&lt;/scene&gt;</i><br>
+</blockquote>
+
+<p>The elements and attributes given in this file map directly onto objects and values in the <a href="http://rlk.github.io/scm/">SCM library</a>. Knowledge of that library is not needed to define Panoptic visualizations, but its documentation does indicate the rationalle and scope of this Panoptic scene definition.</p>
+
+
+
+</body>
+</html>
