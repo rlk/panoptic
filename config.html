@@ -33,69 +33,85 @@ while on my OS X or Linux machine it's
 Substitute your own login, of course. This file does not exist initially, so <a href="options.xml">here is a starter configuration</a> with default values.</p>
 
 <table>
-<tr><th>Rendering Configuration</th><th>Key</th><th>Default Value</th></tr>
-<tr><td>Display configuration</td><td><code>config_file</code></td><td>config/common/960x540-window.xml</td></tr>
-<tr><td>Size of sans-serif GUI text</td><td><code>sans_size</code></td><td>16</td></tr>
-<tr><td>Size of mono-spaced GUI text</td><td><code>mono_size</code></td><td>16</td></tr>
-<tr><td>Vertical blanking sync interval</td><td><code>sync</code></td><td> 1</td></tr>
-<tr><td>Image cache size</td><td><code>scm_cache_size</code></td><td>16</td></tr>
-<tr><td>Input device</td><td><code>input_mode</code></td><td>gamepad</td></tr>
+  <tr><th>Rendering Configuration</th><th>Key</th><th>Default Value</th></tr>
+  <tr><td>Display configuration</td><td><code>config_file</code></td><td>config/common/960x540-window.xml</td></tr>
+  <tr><td>Size of sans-serif GUI text</td><td><code>sans_size</code></td><td>16</td></tr>
+  <tr><td>Size of mono-spaced GUI text</td><td><code>mono_size</code></td><td>16</td></tr>
+  <tr><td>Vertical blanking sync interval</td><td><code>sync</code></td><td>1</td></tr>
+  <tr><td>Input device</td><td><code>input_mode</code></td><td>gamepad</td></tr>
 
-<tr><th>Keyboard View Controls</th></tr>
-<tr><td>View motion left</td><td>key_move_L</td><td>4&emsp;(A)</td></tr>
-<tr><td>View motion right</td><td>key_move_R</td><td>7&emsp;(D)</td></tr>
-<tr><td>View motion down</td><td>key_move_D</td><td>9&emsp;(F)</td></tr>
-<tr><td>View motion up</td><td>key_move_U</td><td>21&emsp;(R)</td></tr>
-<tr><td>View motion foreword</td><td>key_move_F</td><td>26&emsp;(W)</td></tr>
-<tr><td>View motion backward</td><td>key_move_B</td><td>22&emsp;(S)</td></tr>
-<tr><td>View rotation left</td><td>key_turn_L</td><td>20&emsp;(Q)</td></tr>
-<tr><td>View rotation right</td><td>key_turn_R</td><td>8&emsp;(E)</td></tr>
-<tr><td>View rotation down</td><td>key_turn_D</td><td>10&emsp;(G)</td></tr>
-<tr><td>View rotation up</td><td>key_turn_U</td><td>23&emsp;(T)</td></tr>
+  <tr><th>View control keys</th></tr>
+  <tr><td>View motion left key</td><td><code>key_move_L</code></td><td>4</td></tr>
+  <tr><td>View motion right key</td><td><code>key_move_R</code></td><td>7</td></tr>
+  <tr><td>View motion down key</td><td><code>key_move_D</code></td><td>9</td></tr>
+  <tr><td>View motion up key</td><td><code>key_move_U</code></td><td>21</td></tr>
+  <tr><td>View motion forward key</td><td><code>key_move_F</code></td><td>26</td></tr>
+  <tr><td>View motion backward key</td><td><code>key_move_B</code></td><td>22</td></tr>
+  <tr><td>View rotation left key</td><td><code>key_turn_L</code></td><td>20</td></tr>
+  <tr><td>View rotation right key</td><td><code>key_turn_R</code></td><td>8</td></tr>
+  <tr><td>View rotation down key</td><td><code>key_turn_D</code></td><td>10</td></tr>
+  <tr><td>View rotation up key</td><td><code>key_turn_U</code></td><td>23</td></tr>
 
-<tr><td>Keyboard motion smoothing factor</td><td>key_motion_filter</<td><td>0.9</td></td>
-<tr><td>Keyboard motion maximum speed</td><td>key_motion_speed</td><td>5.0</td></tr>
-<tr><td>Keyboard motion mode</td><td>key_motion_mode</td><td>0</td></tr>
+  <tr><th>Key motion configuration</th></tr>
+  <tr><td>View motion filter</td><td><code>key_motion_filter</code></td><td>0.9</td></tr>
+  <tr><td>View motion speed</td><td><code>key_motion_speed</code></td><td>5.0</td></tr>
+  <tr><td>View motion mode</td><td><code>key_motion_mode</code></td><td>0</td></tr>
 
+  <tr><th>View control gamepad axes</th></tr>
+  <tr><td>Gamepad motion left axis</td><td><code>gamepad_axis_move_L</code></td><td>-1</td></tr>
+  <tr><td>Gamepad motion right axis</td><td><code>gamepad_axis_move_R</code></td><td>0</td></tr>
+  <tr><td>Gamepad motion down axis</td><td><code>gamepad_axis_move_D</code></td><td>2</td></tr>
+  <tr><td>Gamepad motion up axis</td><td><code>gamepad_axis_move_U</code></td><td>5</td></tr>
+  <tr><td>Gamepad motion forward axis</td><td><code>gamepad_axis_move_F</code></td><td>-1</td></tr>
+  <tr><td>Gamepad motion backward axis</td><td><code>gamepad_axis_move_B</code></td><td>1</td></tr>
+  <tr><td>Gamepad rotation left axis</td><td><code>gamepad_axis_turn_L</code></td><td>3</td></tr>
+  <tr><td>Gamepad rotation right axis</td><td><code>gamepad_axis_turn_R</code></td><td>-1</td></tr>
+  <tr><td>Gamepad rotation down axis</td><td><code>gamepad_axis_turn_D</code></td><td>4</td></tr>
+  <tr><td>Gamepad rotation up axis</td><td><code>gamepad_axis_turn_U</code></td><td>-1</td></tr>
 
-<tr><th>Gamepad App Controls</th></tr>
-<tr><td>GUI Toggle</td><td><code>view_button_gui</code></td><td>7&emsp;(Start)</td></tr>
-<tr><td>GUI Select</td><td><code>view_button_select</code></td><td>0&emsp;(A)</td></tr>
-<tr><td>Next scene</td><td><code>view_button_next</code></td><td>2&emsp;(X)</td></tr>
-<tr><td>Previous scene</td><td><code>view_button_prev</code></td><td>3&emsp;(Y)</td></tr>
-<tr><td>Zoom in</td><td><code>view_button_zoom_in</code></td><td>0&emsp;(A)</td></tr>
-<tr><td>Zoom out</td><td><code>view_button_zoom_out</code></td><td>1&emsp;(B)</td></tr>
-<tr><td>Zoom reset</td><td><code>view_button_zoom_home</code></td><td>6&emsp;(Back)</td></tr>
-<tr><td>Shift modifier</td><td><code>view_button_shift</code></td><td>4&emsp;(LB)</td></tr>
-<tr><td>Control modifier</td><td><code>view_button_control</code></td><td>5&emsp;(RB)</td></tr>
-<tr><td>Screenshot</td><td><code>view_button_snap</code></td><td>8&emsp;(LS)</td></tr>
+  <tr><th>View control gamepad buttons</th></tr>
+  <tr><td>Gamepad motion left button</td><td><code>gamepad_button_move_L</code></td><td>-1</td></tr>
+  <tr><td>Gamepad motion right button</td><td><code>gamepad_button_move_R</code></td><td>-1</td></tr>
+  <tr><td>Gamepad motion down button</td><td><code>gamepad_button_move_D</code></td><td>-1</td></tr>
+  <tr><td>Gamepad motion up button</td><td><code>gamepad_button_move_U</code></td><td>-1</td></tr>
+  <tr><td>Gamepad motion forward button</td><td><code>gamepad_button_move_F</code></td><td>-1</td></tr>
+  <tr><td>Gamepad motion backward button</td><td><code>gamepad_button_move_B</code></td><td>-1</td></tr>
+  <tr><td>Gamepad rotation left button</td><td><code>gamepad_button_turn_L</code></td><td>-1</td></tr>
+  <tr><td>Gamepad rotation right button</td><td><code>gamepad_button_turn_R</code></td><td>-1</td></tr>
+  <tr><td>Gamepad rotation down button</td><td><code>gamepad_button_turn_D</code></td><td>-1</td></tr>
+  <tr><td>Gamepad rotation up button</td><td><code>gamepad_button_turn_U</code></td><td>-1</td></tr>
 
-<tr><th>Gamepad View Axes</th></tr>
-<tr><td>View motion right</td><td><code>gamepad_axis_move_R</code></td><td> 0</td></tr>
-<tr><td>View motion left</td><td><code>gamepad_axis_move_L</code></td><td>-1</td></tr>
-<tr><td>View motion up</td><td><code>gamepad_axis_move_U</code></td><td> 5</td></tr>
-<tr><td>View motion down</td><td><code>gamepad_axis_move_D</code></td><td> 2</td></tr>
-<tr><td>View motion backward</td><td><code>gamepad_axis_move_B</code></td><td> 1</td></tr>
-<tr><td>View motion forward</td><td><code>gamepad_axis_move_B</code></td><td>-1</td></tr>
-<tr><td>View rotation right</td><td><code>gamepad_axis_turn_R</code></td><td>-1</td></tr>
-<tr><td>View rotation left</td><td><code>gamepad_axis_turn_L</code></td><td> 3</td></tr>
-<tr><td>View rotation up</td><td><code>gamepad_axis_turn_U</code></td><td>-1</td></tr>
-<tr><td>View rotation down</td><td><code>gamepad_axis_turn_D</code></td><td> 4</td></tr>
+  <tr><th>Visualization gamepad buttons</th></tr>
+  <tr><td>Select</td><td><code>view_button_select</code></td><td>0</td></tr>
+  <tr><td>Zoom In</td><td><code>view_button_zoom_in</code></td><td>1</td></tr>
+  <tr><td>Zoom Out</td><td><code>view_button_zoom_out</code></td><td>6</td></tr>
+  <tr><td>Next</td><td><code>view_button_next</code></td><td>2</td></tr>
+  <tr><td>Previous</td><td><code>view_button_prev</code></td><td>3</td></tr>
+  <tr><td>Shift</td><td><code>view_button_shift</code></td><td>4</td></tr>
+  <tr><td>Control</td><td><code>view_button_control</code></td><td>5</td></tr>
+  <tr><td>Zoom reset</td><td><code>view_button_zoom_home</code></td><td>7</td></tr>
+  <tr><td>GUI</td><td><code>view_button_gui</code></td><td>0</td></tr>
+  <tr><td>Snap</td><td><code>view_button_snap</code></td><td>8</td></tr>
 
-<tr><th>Gamepad View Buttons</th></tr>
-<tr><td>View motion right</td><td><code>gamepad_button_move_R</code></td><td>-1</td></tr>
-<tr><td>View motion left</td><td><code>gamepad_button_move_L</code></td><td>-1</td></tr>
-<tr><td>View motion up</td><td><code>gamepad_button_move_U</code></td><td>-1</td></tr>
-<tr><td>View motion down</td><td><code>gamepad_button_move_D</code></td><td>-1</td></tr>
-<tr><td>View motion backward</td><td><code>gamepad_button_move_B</code></td><td>-1</td></tr>
-<tr><td>View motion forward</td><td><code>gamepad_button_move_B</code></td><td>-1</td></tr>
-<tr><td>View rotation right</td><td><code>gamepad_button_turn_R</code></td><td>-1</td></tr>
-<tr><td>View rotation left</td><td><code>gamepad_button_turn_L</code></td><td>-1</td></tr>
-<tr><td>View rotation up</td><td><code>gamepad_button_turn_U</code></td><td>-1</td></tr>
-<tr><td>View rotation down</td><td><code>gamepad_button_turn_D</code></td><td>-1</td></tr>
+  <tr><th>SCM library configuration</th></tr>
+  <tr><td>Cache size</td><td><code>scm_cache_size</code></td><td>16</td></tr>
+  <tr><td>Cache threads</td><td><code>scm_cache_threads</code></td><td>2</td></tr>
+  <tr><td>Need queue size</td><td><code>scm_need_queue_size</code></td><td>32</td></tr>
+  <tr><td>Load queue size</td><td><code>scm_load_queue_size</code></td><td>8</td></tr>
+  <tr><td>Loads per cycle</td><td><code>scm_loads_per_cycle</code></td><td>2</td></tr>
+
+  <tr><th>Panoptic application configuration</th></tr>
+  <tr><td>Minimum speed</td><td><code>panoptic_speed_min</code></td><td>0.0</td></tr>
+  <tr><td>Maximum speed</td><td><code>panoptic_speed_max</code></td><td>0.2</td></tr>
+  <tr><td>Minimum altitude</td><td><code>panoptic_minimum_agl</code></td><td>50.0</td></tr>
+  <tr><td>Automatic pitch control</td><td><code>panoptic_auto_pitch</code></td><td>0</td></tr>
+  <tr><td>Automatic demo delay</td><td><code>panoptic_demo_delay</code></td><td>0</td></tr>
+  <tr><td>Position report port</td><td><code>panoptic_report_port</code></td><td>8111</td></tr>
+  <tr><td>Position report host</td><td><code>panoptic_report_host</code></td><td></td></tr>
+
 </table>
 
-<p>Keyboard controls are defined using <a href="http://www.libsdl.org/tmp/SDL/include/SDL_scancode.h">SDL scancodes</a>. The gamepad axis and buttons define reasonable values for an XBox 360 Wireless Controller for Windows.</p>
+<p>Keyboard controls are defined using <a href="http://www.libsdl.org/tmp/SDL/include/SDL_scancode.h">SDL scancodes</a>, which are in turn defined by USB HID standard Usage Tables. The gamepad axis and buttons define reasonable values for an XBox 360 Wireless Controller for Windows.</p>
 
 <p>The value <code>scm_cache_size</code> is of particular interest, as it can have a significant impact on performance. It controls the amount of VRAM used to cache texture images. Decreasing it can smooth out very bad performance due to texture thrashing on small GPUs. Increasing it can smooth ease IO load on large GPUs.</p>
 

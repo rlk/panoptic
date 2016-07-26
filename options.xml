@@ -5,38 +5,74 @@
   <option name="sans_size">16</option>
   <option name="mono_size">16</option>
   <option name="sync">1</option>
-  <option name="scm_cache_size">16</option>
   <option name="input_mode">gamepad</option>
 
-  <!-- Keyboard Controls -->
-  <option name="key_move_R"> 7</option>
+  <!-- Camera control keys -->
   <option name="key_move_L"> 4</option>
-  <option name="key_move_U"> 8</option>
-  <option name="key_move_D">20</option>
-  <option name="key_move_B">22</option>
+  <option name="key_move_R"> 7</option>
+  <option name="key_move_D"> 9</option>
+  <option name="key_move_U">21</option>
   <option name="key_move_F">26</option>
+  <option name="key_move_B">22</option>
+  <option name="key_turn_L">20</option>
+  <option name="key_turn_R"> 8</option>
+  <option name="key_turn_D">10</option>
+  <option name="key_turn_U">23</option>
 
-  <!-- Gamepad Axes -->
-  <option name="gamepad_axis_pos_x"> 0</option>
-  <option name="gamepad_axis_neg_x">-1</option>
-  <option name="gamepad_axis_pos_y"> 5</option>
-  <option name="gamepad_axis_neg_y"> 2</option>
-  <option name="gamepad_axis_pos_z"> 1</option>
-  <option name="gamepad_axis_neg_z">-1</option>
-  <option name="gamepad_axis_pos_yaw">-1</option>
-  <option name="gamepad_axis_neg_yaw"> 3</option>
-  <option name="gamepad_axis_pos_pitch">-1</option>
-  <option name="gamepad_axis_neg_pitch"> 4</option>
+  <!-- Camera contral key motion configuration -->
+  <option name="key_motion_filter">0.9</option>
+  <option name="key_motion_speed">5.0</option>
+  <option name="key_motion_mode">0</option>
 
-  <!-- Gamepad Buttons -->
-  <option name="view_button_select">0</option>
-  <option name="view_button_zoom_in">0</option>
-  <option name="view_button_zoom_out">1</option>
-  <option name="view_button_next">2</option>
-  <option name="view_button_prev">3</option>
-  <option name="view_button_shift">4</option>
-  <option name="view_button_control">5</option>
-  <option name="view_button_zoom_home">6</option>
-  <option name="view_button_gui">7</option>
-  <option name="view_button_snap">8</option>
+  <!-- Camera contral gamepad axes -->
+  <option name="gamepad_axis_move_L">-1</option>
+  <option name="gamepad_axis_move_R"> 0</option>
+  <option name="gamepad_axis_move_D"> 2</option>
+  <option name="gamepad_axis_move_U"> 5</option>
+  <option name="gamepad_axis_move_F">-1</option>
+  <option name="gamepad_axis_move_B"> 1</option>
+  <option name="gamepad_axis_turn_L"> 3</option>
+  <option name="gamepad_axis_turn_R">-1</option>
+  <option name="gamepad_axis_turn_D"> 4</option>
+  <option name="gamepad_axis_turn_U">-1</option>
+
+  <!-- Camera control gamepad buttons -->
+  <option name="gamepad_button_move_L">-1</option>
+  <option name="gamepad_button_move_R">-1</option>
+  <option name="gamepad_button_move_D">-1</option>
+  <option name="gamepad_button_move_U">-1</option>
+  <option name="gamepad_button_move_F">-1</option>
+  <option name="gamepad_button_move_B">-1</option>
+  <option name="gamepad_button_turn_L">-1</option>
+  <option name="gamepad_button_turn_R">-1</option>
+  <option name="gamepad_button_turn_D">-1</option>
+  <option name="gamepad_button_turn_U">-1</option>
+
+  <!-- Visualization gamepad buttons -->
+  <option name="view_button_select">   0</option>
+  <option name="view_button_zoom_in">  1</option>
+  <option name="view_button_zoom_out"> 6</option>
+  <option name="view_button_next">     2</option>
+  <option name="view_button_prev">     3</option>
+  <option name="view_button_shift">    4</option>
+  <option name="view_button_control">  5</option>
+  <option name="view_button_zoom_home">7</option>
+  <option name="view_button_gui">      0</option>
+  <option name="view_button_snap">     8</option>
+
+  <!-- SCM library configuration -->
+  <option name="scm_cache_size">16</option>
+  <option name="scm_cache_threads">2</option>
+  <option name="scm_need_queue_size">32</option>
+  <option name="scm_load_queue_size">8</option>
+  <option name="scm_loads_per_cycle">2</option>
+
+  <!-- Panoptic application configuration -->
+  <option name="panoptic_speed_min">    0.0</option>
+  <option name="panoptic_speed_max">    0.2</option>
+  <option name="panoptic_minimum_agl"> 50.0</option>
+  <option name="panoptic_auto_pitch">0</option>
+  <option name="panoptic_demo_delay">0</option>
+  <option name="panoptic_report_port">8111</option>
+  <option name="panoptic_report_host">    </option>
 </conf>
