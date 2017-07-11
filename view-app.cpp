@@ -579,11 +579,14 @@ ogl::aabb view_app::prep(int frusc, const app::frustum *const *frusv)
 
     // Handle the zoom. Not all subclasses will appreciate this.
 
-    const mat4 V =   ::view->get_transform();
-    const mat4 P = frusv[0]->get_transform();
-    const vec4 v = transpose(P * V) * vec4(0, 0, 1, 0);
+    if (frusc)
+    {
+        const mat4 V =   ::view->get_transform();
+        const mat4 P = frusv[0]->get_transform();
+        const vec4 v = transpose(P * V) * vec4(0, 0, 1, 0);
 
-    sys->get_sphere()->set_zoom(v[0], v[1], v[2], pow(2.0, zoom));
+        sys->get_sphere()->set_zoom(v[0], v[1], v[2], pow(2.0, zoom));
+    }
 
     // Cycle the SCM cache. This is super-important.
 
