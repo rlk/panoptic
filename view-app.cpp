@@ -1006,11 +1006,11 @@ bool view_app::gui_event(app::event *E)
 
             if (const app::frustum *overlay = ::host->get_overlay())
             {
-                if (E->data.point.i == 0 && overlay->pointer_to_2D(E, x, y))
+                if (E->data.point.i == 1 && overlay->pointer_to_2D(E, x, y))
                 {
                     gui->point(toint(x * gui_w),
                                toint(y * gui_h));
-                    return true;
+                    // return true;
                 }
             }
             return false;
