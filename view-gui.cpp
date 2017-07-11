@@ -88,18 +88,6 @@ public:
     }
 };
 
-class button_vr : public gui::button
-{
-public:
-    button_vr() :
-        gui::button("Oculus Mode") { }
-
-    void apply()
-    {
-        ::host->reconfig("config/stereoscopic/Oculus-Rift.xml");
-    }
-};
-
 class button_quit : public gui::button
 {
 public:
@@ -249,7 +237,6 @@ view_gui::view_gui(view_app *V, int w, int h) :
         gui::widget *B = new panel_button("Config", state, 1);
         gui::widget *C = new panel_button("Data",   state, 2);
         gui::widget *D = new panel_button("Path",   state, 3);
-        gui::widget *E = new button_vr();
         gui::widget *Q = new button_quit();
 
         confpan = new config_panel(V, state);
@@ -263,7 +250,6 @@ view_gui::view_gui(view_app *V, int w, int h) :
                     add(C)->
                     add(D)->
                     add(new gui::spacer)->
-                    add(E)->
                     add(Q))->
                 add(new gui::spacer)->
                 add(state->
