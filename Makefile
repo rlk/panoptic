@@ -8,7 +8,7 @@ SCM_DIR   = ../scm
 
 # Panoptic configuration piggy-backs atop the Thumb configuration.
 
-include $(THUMB_DIR)/Makedefs
+-include $(THUMB_DIR)/Makedefs
 
 APPLIBS = -L$(THUMB_DIR)/$(CONFIG) -L$(SCM_DIR)/$(CONFIG) -lthumb -lscm
 CFLAGS += -I$(THUMB_DIR)/include   -I$(SCM_DIR)
@@ -23,10 +23,12 @@ TARG= panoptic
 
 #------------------------------------------------------------------------------
 
-# If the Thumb or SCM libraries change, then panoptic must be rebuilt.
+# If static Thumb or SCM libraries change, then panoptic must be rebuilt.
 
-THUMB = $(THUMB_DIR)/$(CONFIG)/libthumb.a
-SCM   =   $(SCM_DIR)/$(CONFIG)/libscm.a
+ifndef DYNAMIC
+	THUMB = $(THUMB_DIR)/$(CONFIG)/libthumb.a
+	SCM   =   $(SCM_DIR)/$(CONFIG)/libscm.a
+endif
 
 #------------------------------------------------------------------------------
 
