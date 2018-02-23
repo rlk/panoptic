@@ -18,7 +18,7 @@ B2C = $(THUMB_DIR)/etc/bin2c
 #------------------------------------------------------------------------------
 
 OBJS= view-gui.o view-app.o panoptic.o data.o
-DEPS= $(OBJS:.o=.d)
+DEPS= $(filter-out data.d, $(OBJS:.o=.d))
 TARG= panoptic
 
 #------------------------------------------------------------------------------
